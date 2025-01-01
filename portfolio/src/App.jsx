@@ -1,14 +1,7 @@
 import React from 'react';
 import './App.css';
-
-const WorkCard = ({ title, description, icon }) => (
-  <div className="work-card">
-    <div className="work-icon">{icon}</div>
-    <h3>{title}</h3>
-    <p>{description}</p>
-    <button className="learn-more">LEARN MORE</button>
-  </div>
-);
+import { FaReact, FaNode, FaPython, FaDatabase } from 'react-icons/fa';
+import { SiJavascript, SiTypescript, SiMongodb } from 'react-icons/si';
 
 const ProjectCard = ({ title, description, image }) => (
   <div className="project-card">
@@ -28,42 +21,55 @@ const ProjectCard = ({ title, description, image }) => (
 );
 
 function App() {
-  const workExperience = [
-    {
-      title: "Senior UI Engineer at Nebula",
-      description: "Led the design system revolution for interstellar interfaces",
-      icon: "🌟"
-    },
-    {
-      title: "Product Designer at Quantum",
-      description: "Crafted user experiences for quantum computing platforms",
-      icon: "⚛️"
-    },
-    {
-      title: "UX Architect at Cosmos",
-      description: "Pioneered responsive designs for space exploration tools",
-      icon: "🚀"
-    },
-    {
-      title: "Creative Lead at Aurora",
-      description: "Developed immersive AR/VR experiences for education",
-      icon: "✨"
-    }
-  ];
-
   const skills = [
-    { logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/c/c-original.svg" },
-    { logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/java/java-original.svg" },
-    { logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/python/python-original.svg" },
-    { logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/csharp/csharp-original.svg" },
-    { logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg" },
-    { logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nextjs/nextjs-original.svg" },
-    { logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/html5/html5-original.svg" },
-    { logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/css3/css3-original.svg" },
-    { logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg" },
-    { logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nodejs/nodejs-original.svg" },
-    { logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mongodb/mongodb-original.svg" },
-    { logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mysql/mysql-original.svg" }
+    { 
+      logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/c/c-original.svg",
+      name: "C"
+    },
+    { 
+      logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/java/java-original.svg",
+      name: "Java"
+    },
+    { 
+      logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/python/python-original.svg",
+      name: "Python"
+    },
+    { 
+      logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/csharp/csharp-original.svg",
+      name: "C#"
+    },
+    { 
+      logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg",
+      name: "React"
+    },
+    { 
+      logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nextjs/nextjs-original.svg",
+      name: "Next.js"
+    },
+    { 
+      logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/html5/html5-original.svg",
+      name: "HTML5"
+    },
+    { 
+      logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/css3/css3-original.svg",
+      name: "CSS3"
+    },
+    { 
+      logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg",
+      name: "JavaScript"
+    },
+    { 
+      logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nodejs/nodejs-original.svg",
+      name: "Node.js"
+    },
+    { 
+      logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mongodb/mongodb-original.svg",
+      name: "MongoDB"
+    },
+    { 
+      logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mysql/mysql-original.svg",
+      name: "MySQL"
+    }
   ];
 
   return (
@@ -73,7 +79,7 @@ function App() {
         <div className="nav-links">
           <a href="#home">Home</a>
           <a href="#about">Experience</a>
-          <a href="#lab">Lab</a>
+          <a href="#lab"></a>
           <a href="#footer">Contact</a>
         </div>
       </nav>
@@ -94,18 +100,17 @@ function App() {
           </div>
         </section>
 
-        
-
-        <section className="experience">
-          <h2>Work Experience</h2>
-          <div className="work-grid">
-            {workExperience.map((work, index) => (
-              <WorkCard key={index} {...work} />
+        <section className="skills" id="skills">
+          <h2>Technical Skills</h2>
+          <div className="skills-grid">
+            {skills.map((skill, index) => (
+              <div key={index} className="skill-card">
+                <img src={skill.logo} alt={skill.name} className="skill-logo" />
+                <h3>{skill.name}</h3>
+              </div>
             ))}
           </div>
         </section>
-
-        
 
         <section className="projects">
           <h2>Featured Projects</h2>
@@ -126,19 +131,6 @@ function App() {
               description="AI-powered digital art creation platform with collaborative features"
               image="https://via.placeholder.com/500x300"
             />
-          </div>
-        </section>
-
-        <section className="skills">
-          <h2>Technical Skills</h2>
-          <div className="skills-slider">
-            <div className="skills-track">
-              {[...skills, ...skills].map((skill, index) => (
-                <div key={index} className="skill-item">
-                  <img src={skill.logo} alt="skill logo" className="skill-logo" />
-                </div>
-              ))}
-            </div>
           </div>
         </section>
       </main>
