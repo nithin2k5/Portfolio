@@ -9,6 +9,18 @@
     "react-scripts": "5.0.1",
     "web-vitals": "^4.2.4"
   },
+
+  "builds": [
+    {
+      "src": "package.json",
+      "use": "@vercel/static-build",
+      "config": {
+        "distDir": "build"
+      }
+    }
+  ],
+
+  
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
