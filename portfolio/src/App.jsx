@@ -72,8 +72,9 @@ function App() {
         <div className="logo">⚡</div>
         <div className="nav-links">
           <a href="#home">Home</a>
-          <a href="#about">About</a>
+          <a href="#about">Experience</a>
           <a href="#lab">Lab</a>
+          <a href="#footer">Contact</a>
         </div>
       </nav>
 

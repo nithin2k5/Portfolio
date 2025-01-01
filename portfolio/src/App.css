@@ -1,6 +1,6 @@
 .app {
   min-height: 100vh;
-  background: linear-gradient(to bottom, #0A041C, #1A0B2E);
+  background-color: #130922;
 }
 
 .navbar {
@@ -40,6 +40,7 @@
   text-align: center;
   padding: 0 2rem;
   position: relative;
+  background: transparent;
 }
 
 .hero::before {
@@ -120,11 +121,13 @@
 }
 
 .work-card {
-  background: rgba(255, 255, 255, 0.05);
+  background: rgba(26, 11, 46, 0.9);
   padding: 2rem;
   border-radius: 1rem;
   backdrop-filter: blur(10px);
   transition: transform 0.3s ease;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  scroll-snap-align: start;
 }
 
 .work-card:hover {
@@ -140,7 +143,8 @@
   position: relative;
   overflow: hidden;
   border-radius: 1rem;
-  background: rgba(255, 255, 255, 0.05);
+  background: rgba(26, 11, 46, 0.9);
+  border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .project-image img {
@@ -334,7 +338,7 @@
 .social-links {
   display: flex;
   gap: 1.5rem;
-  background-color: red;
+  background-color: transparent;
   padding: 2rem;
 }
 
@@ -385,7 +389,7 @@
   text-align: center;
   padding: 4rem 2rem;
   position: relative;
-  
+  background: transparent;
 }
 
 .work-grid {
@@ -423,7 +427,7 @@
 .work-card {
   min-width: 300px;
   flex-shrink: 0;
-  background: rgba(255, 255, 255, 0.05);
+  background: rgba(26, 11, 46, 0.9);
   padding: 2rem;
   border-radius: 1rem;
   backdrop-filter: blur(10px);
@@ -565,6 +569,7 @@
   text-align: center;
   padding: 4rem 1rem;
   position: relative;
+  background: transparent;
 }
 
 .projects h2 {
@@ -602,7 +607,7 @@
 }
 
 .project-card {
-  background: var(--card-bg);
+  background: rgba(26, 11, 46, 0.9);
   border-radius: 0.8rem;
   overflow: hidden;
   transition: all 0.3s ease;
@@ -711,8 +716,8 @@
 .skills {
   position: relative;
   padding: 6rem 2rem;
-  background: radial-gradient(circle at center, rgba(139, 92, 246, 0.1) 0%, transparent 70%);
   overflow: hidden;
+  background: transparent;
 }
 
 .skills h2 {
@@ -729,7 +734,7 @@
   overflow: hidden;
   padding: 2rem 0;
 }
-
+/*
 .skills-slider::before,
 .skills-slider::after {
   content: '';
@@ -738,7 +743,7 @@
   width: 200px;
   height: 100%;
   z-index: 2;
-}
+}*/
 
 .skills-slider::before {
   left: 0;
@@ -758,7 +763,7 @@
 
 .skill-item {
   flex: 0 0 auto;
-  background: rgba(255, 255, 255, 0.05);
+  background: rgba(26, 11, 46, 0.9);
   border-radius: 12px;
   padding: 1.5rem;
   display: flex;
@@ -815,4 +820,17 @@
   .skills-track {
     gap: 2rem;
   }
+}
+
+/* Apply uniform background to all sections */
+section {
+  background: radial-gradient(
+    circle at center,
+    #1A0B2E 0%,
+    #130922 100%
+  );
+  color: white;
+  padding: 4rem 2rem;
+  margin: 0;
+  position: relative;
 }
