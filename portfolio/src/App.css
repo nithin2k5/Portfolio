@@ -885,3 +885,46 @@ section {
   margin: 0;
   position: relative;
 }
+
+/* Mobile Styles */
+@media screen and (max-width: 768px) {
+  .about {
+    padding: 2rem 1rem; /* Reduce padding on mobile */
+  }
+
+  .about h2 {
+    font-size: 2rem; /* Smaller heading on mobile */
+  }
+
+  .about-content {
+    font-size: 1.2rem; /* Smaller text size on mobile */
+    padding: 0 1rem;
+    line-height: 1.4;
+  }
+
+  .letter {
+    -webkit-text-stroke: 0.5px rgba(255, 255, 255, 0.3); /* Thinner stroke on mobile */
+  }
+}
+
+/* Small Mobile Styles */
+@media screen and (max-width: 480px) {
+  .about h2 {
+    font-size: 1.8rem;
+  }
+
+  .about-content {
+    font-size: 1rem;
+  }
+
+  .letter {
+    -webkit-text-stroke: 0.3px rgba(255, 255, 255, 0.3);
+  }
+}
+
+/* Prevent hover effects on touch devices */
+@media (hover: none) {
+  .letter:hover {
+    transform: none;
+  }
+}
