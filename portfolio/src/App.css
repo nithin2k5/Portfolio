@@ -1023,7 +1023,7 @@ section {
   }
 
   .project-card {
-    flex: 1 1 calc(100% - 1rem); /* Adjust width for smaller screens */
+    flex: 1 1 calc(100% - 1rem);
   }
 
   .project-grid{
