@@ -52,7 +52,7 @@ function App() {
     },
     { 
       logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/css3/css3-original.svg",
-      name: "CSS3"
+     nname: "CSS3"
     },
     { 
       logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg",
