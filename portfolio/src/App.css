@@ -972,7 +972,7 @@ section {
   }
 
   .project-card {
-    flex: 1 1 calc(100% - 2rem); 
+    flex: 1 1 calc(100% - 2rem); /* Adjust width to fit within the container */
     max-width: 100%;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     border-radius: 8px;
@@ -1023,7 +1023,7 @@ section {
   }
 
   .project-card {
-    flex: 1 1 calc(100% - 1rem);  
+    flex: 1 1 calc(100% - 1rem); /* Adjust width for smaller screens */
   }
 
   .project-grid{
