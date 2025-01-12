@@ -58,7 +58,7 @@
   bottom: 0;
   background: radial-gradient(circle at center, rgba(139, 92, 246, 0.1) 0%, transparent 70%);
   color: #fff;
-  overflow-x: hidden; /* Prevent horizontal scroll */
+  overflow-x: hidden;
 }
 
 .hero-content {
@@ -675,31 +675,29 @@
 
 .project-grid {
   display: flex;
-  grid-template-columns: repeat(auto-fit, minmax(240px, 320px));
-  gap: 1.5rem;
-  scroll-behavior: smooth;
-  -webkit-overflow-scrolling: touch;
-  padding: 1rem;
+  flex-wrap: wrap;
   justify-content: center;
-  max-width: 1000px;
-  overflow-x: auto;
-  margin: 0 auto;
 }
 
 .project-card {
-  background: rgba(26, 11, 46, 0.9);
-  border-radius: 0.8rem;
-  overflow: hidden;
-  transition: all 0.3s ease;
-  height: 100%;
-  max-width: 320px;
-  margin: 0 auto;
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  flex: 1 1 300px; /* Base width of 300px */
+  margin: 10px;
 }
 
-.skills-grid::-webkit-scrollbar{
-  display: none;
+@media (max-width: 768px) {
+  .project-card {
+    flex: 1 1 100%; /* Full width on smaller screens */
+  }
+}
 
+.skills-grid {
+  overflow-x: auto; /* Allow horizontal scrolling */
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* Internet Explorer and Edge */
+}
+
+.skills-grid::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, and Opera */
 }
 
 .project-image {
