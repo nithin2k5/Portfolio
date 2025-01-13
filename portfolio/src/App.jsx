@@ -52,7 +52,7 @@ function App() {
     },
     { 
       logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/css3/css3-original.svg",
-     nname: "CSS3"
+      name: "CSS3"
     },
     { 
       logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg",
@@ -121,12 +121,6 @@ function App() {
               image="https://via.placeholder.com/500x300"
             />
             <ProjectCard 
-              title="Neural Canvas"
-              description="AI-powered digital art creation platform with collaborative features"
-              image="https://via.placeholder.com/500x300"
-            />
-
-            <ProjectCard
               title="Neural Canvas"
               description="AI-powered digital art creation platform with collaborative features"
               image="https://via.placeholder.com/500x300"
