@@ -1,6 +1,6 @@
 import React from 'react';
 import './App.css';
-import { FaReact, FaNode, FaPython, FaDatabase } from 'react-icons/fa';
+import { FaReact, FaNode, FaPython, FaDatabase, FaGithub, FaLinkedin, FaTwitter, FaDribbble } from 'react-icons/fa';
 import { SiJavascript, SiTypescript, SiMongodb } from 'react-icons/si';
 
 const ProjectCard = ({ title, description, image }) => (
@@ -152,16 +152,16 @@ function App() {
                 <h3>Follow Me</h3>
                 <div className="social-links">
                   <a href="#" className="social-icon" aria-label="Github">
-                    <i className="fab fa-github"></i>
+                    <FaGithub />
                   </a>
                   <a href="#" className="social-icon" aria-label="LinkedIn">
-                    <i className="fab fa-linkedin"></i>
+                    <FaLinkedin />
                   </a>
                   <a href="#" className="social-icon" aria-label="Twitter">
-                    <i className="fab fa-twitter"></i>
+                    <FaTwitter />
                   </a>
                   <a href="#" className="social-icon" aria-label="Dribbble">
-                    <i className="fab fa-dribbble"></i>
+                    <FaDribbble />
                   </a>
                 </div>
               </div>
