@@ -100,6 +100,33 @@ function App() {
           </div>
         </section>
 
+        <section className="about" id="about">
+          <h2>About Me</h2>
+          <div className="about-content">
+            <div className="about-text">
+              <p>
+                I am a passionate Full Stack Developer with expertise in building scalable web applications 
+                and solving complex problems. With a strong foundation in both frontend and backend technologies, 
+                I strive to create efficient and user-friendly solutions that make a difference.
+              </p>
+            </div>
+            <div className="about-stats">
+              <div className="stat-card">
+                <h3>15+</h3>
+                <p>Projects Completed</p>
+              </div>
+              <div className="stat-card">
+                <h3>3</h3>
+                <p>Ongoing Projects</p>
+              </div>
+              <div className="stat-card">
+                <h3>2+</h3>
+                <p>Years Experience</p>
+              </div>
+            </div>
+          </div>
+        </section>
+
         <section className="skills" id="skills">
           <h2>Technical Skills</h2>
           <div className="skills-grid">
