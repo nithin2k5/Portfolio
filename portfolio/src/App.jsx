@@ -3,7 +3,7 @@ import './App.css';
 import { FaReact, FaNode, FaPython, FaDatabase, FaGithub, FaLinkedin, FaTwitter, FaDribbble } from 'react-icons/fa';
 import { SiJavascript, SiTypescript, SiMongodb } from 'react-icons/si';
 
-const ProjectCard = ({ title, description, image }) => (
+const ProjectCard = ({ title, description, image, techStack, liveLink, githubLink }) => (
   <div className="project-card">
     <div className="project-image">
       <img src={image} alt={title} />
@@ -13,8 +13,13 @@ const ProjectCard = ({ title, description, image }) => (
       <h3>{title}</h3>
       <p>{description}</p>
       <div className="project-tech">
-        <span>✨</span>
-        <span>✨</span>
+        {techStack && techStack.map((tech, index) => (
+          <span key={index} className="tech-tag">{tech}</span>
+        ))}
+      </div>
+      <div className="project-links">
+        <a href={liveLink} target="_blank" rel="noopener noreferrer" className="project-link">Live Demo</a>
+       
       </div>
     </div>
   </div>
@@ -78,9 +83,10 @@ function App() {
         <div className="logo">⚡</div>
         <div className="nav-links">
           <a href="#home">Home</a>
-          <a href="#about">Experience</a>
-          <a href="#lab"></a>
-          <a href="#footer">Contact</a>
+          <a href="#about">About</a>
+          <a href="#skills">Skills</a>
+          <a href="#projects">Projects</a>
+          <a href="#contact">Contact</a>
         </div>
       </nav>
 
@@ -112,7 +118,7 @@ function App() {
             </div>
             <div className="about-stats">
               <div className="stat-card">
-                <h3>15+</h3>
+                <h3>5+</h3>
                 <p>Projects Completed</p>
               </div>
               <div className="stat-card">
@@ -144,19 +150,25 @@ function App() {
           <div className="project-grid">
             <ProjectCard 
               title="Stellar Dashboard"
-              description="A revolutionary space mission control interface with real-time telemetry"
-              image="https://via.placeholder.com/500x300"
+              description="A modern analytics dashboard with real-time data visualization, custom charts, and responsive design for optimal viewing across devices."
+              image="https://images.unsplash.com/photo-1460925895917-afdab827c52f"
+              techStack={["Reactjs", "SpringBoot", "MySql"]}
+              liveLink="https://project-demo.com"
+              githubLink="https://github.com/username/project"
             />
             <ProjectCard 
               title="Neural Canvas"
-              description="AI-powered digital art creation platform with collaborative features"
-              image="https://via.placeholder.com/500x300"
+              description="Pazaar Jobs is a smart job portal with a built-in resume builder, connecting job seekers with employers for seamless hiring. "
+              image="https://i.imghippo.com/files/FHki3312Ywo.png"
+              techStack={["Nextjs", "Node.js", "MongoDB"]}
+              liveLink="https://pazaar.vercel.app"
+              githubLink="https://github.com/username/project"
             />
           </div>
         </section>
       </main>
 
-      <footer className="footer">
+      <footer className="footer" id="contact">
           <div className="footer-content">
             <div className="footer-main">
               <h2>Let's Build Something <span className="highlight">Together</span></h2>
@@ -170,25 +182,25 @@ function App() {
             <div className="footer-grid">
               <div className="footer-section">
                 <h3>Contact</h3>
-                <p>ntbm8125@gmail.com</p>
-                <p>+91 9398225082</p>
-                <p>Andhra Pradesh, India</p>
+                <p><span role="img" aria-label="email">📧</span> ntbm8125@gmail.com</p>
+                <p><span role="img" aria-label="phone">📱</span> +91 9398225082</p>
+                <p><span role="img" aria-label="location">📍</span> Andhra Pradesh, India</p>
               </div>
               
               <div className="footer-section">
                 <h3>Follow Me</h3>
                 <div className="social-links">
-                  <a href="#" className="social-icon" aria-label="Github">
-                    <FaGithub />
+                  <a href="https://github.com/yourusername" target="_blank" rel="noopener noreferrer" className="social-icon" aria-label="Github">
+                    <FaGithub size={24} />
                   </a>
-                  <a href="#" className="social-icon" aria-label="LinkedIn">
-                    <FaLinkedin />
+                  <a href="https://linkedin.com/in/yourusername" target="_blank" rel="noopener noreferrer" className="social-icon" aria-label="LinkedIn">
+                    <FaLinkedin size={24} />
                   </a>
-                  <a href="#" className="social-icon" aria-label="Twitter">
-                    <FaTwitter />
+                  <a href="https://twitter.com/yourusername" target="_blank" rel="noopener noreferrer" className="social-icon" aria-label="Twitter">
+                    <FaTwitter size={24} />
                   </a>
-                  <a href="#" className="social-icon" aria-label="Dribbble">
-                    <FaDribbble />
+                  <a href="https://dribbble.com/yourusername" target="_blank" rel="noopener noreferrer" className="social-icon" aria-label="Dribbble">
+                    <FaDribbble size={24} />
                   </a>
                 </div>
               </div>
@@ -196,16 +208,16 @@ function App() {
               <div className="footer-section">
                 <h3>Quick Links</h3>
                 <nav className="footer-nav">
-                  <a href="#work">Work</a>
+                  <a href="#skills">Skills</a>
                   <a href="#about">About</a>
                   <a href="#projects">Projects</a>
-                  <a href="#blog">Blog</a>
+                  <a href="#contact">Contact</a>
                 </nav>
               </div>
             </div>
             
             <div className="footer-bottom">
-              <p>© 2024 Nithin. All rights reserved.</p>
+              <p>© {new Date().getFullYear()} Nithin. All rights reserved.</p>
               <div className="footer-bottom-links">
                 <a href="#privacy">Privacy Policy</a>
                 <a href="#terms">Terms of Service</a>
