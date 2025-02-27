@@ -6,7 +6,8 @@
 
 .app {
   min-height: 100vh;
-  background-color: #130922;
+  background-color: #1A0B2E;
+  color: rgba(255, 255, 255, 0.9);  /* Brighter base text color */
 }
 
 .navbar {
@@ -18,6 +19,7 @@
   position: sticky;
   top: 0;
   z-index: 100;
+  color: rgba(255, 255, 255, 0.9);
 }
 
 .logo {
@@ -27,7 +29,7 @@
 }
 
 .nav-links a {
-  color: white;
+  color: rgba(255, 255, 255, 0.8);
   text-decoration: none;
   margin-left: 2rem;
   font-weight: 500;
@@ -35,7 +37,7 @@
 }
 
 .nav-links a:hover {
-  color: #8B5CF6;
+  color: var(--primary-color);
 }
 
 .hero {
@@ -69,16 +71,18 @@
 .hero-content h1 {
   font-size: 3rem;
   margin-bottom: 1rem;
+  color: rgba(255, 255, 255, 0.95);  /* Almost white for headings */
 }
 
 .hero-content h2 {
   font-size: 2.5rem;
   margin-bottom: 1.5rem;
+  color: rgba(255, 255, 255, 0.95);  /* Almost white for headings */
 }
 
 .subtitle {
   font-size: 1.2rem;
-  color: rgba(255, 255, 255, 0.8);
+  color: rgba(255, 255, 255, 0.8);  /* Slightly dimmed for subtitles */
   margin-bottom: 2rem;
 }
 
@@ -98,7 +102,7 @@
 }
 
 .highlight {
-  color: #8B5CF6;
+  color: var(--primary-color);
   position: relative;
   display: inline-block;
 }
@@ -110,7 +114,7 @@
   left: 0;
   width: 100%;
   height: 2px;
-  background: #8B5CF6;
+  background: var(--primary-color);
   transform: scaleX(0);
   transition: transform 0.3s ease;
 }
@@ -133,13 +137,13 @@
   backdrop-filter: blur(10px);
   transition: transform 0.3s ease;
   border: 1px solid rgba(255, 255, 255, 0.1);
-  color: white;
+  color: rgba(255, 255, 255, 0.9);
 }
 
 .work-card h3 {
   font-size: 1.5rem;
   margin-bottom: 0.5rem;
-  color: #8B5CF6;
+  color: var(--primary-color);
 }
 
 .work-card h4 {
@@ -150,13 +154,14 @@
 
 .work-card .period {
   font-size: 0.9rem;
-  color: rgba(255, 255, 255, 0.6);
+  color: rgba(255, 255, 255, 0.7);  /* Dimmed for secondary information */
   margin-bottom: 1rem;
 }
 
 .work-card .description {
   margin-bottom: 1.5rem;
   line-height: 1.6;
+  color: rgba(255, 255, 255, 0.8);
 }
 
 /* Skills container styles */
@@ -169,7 +174,7 @@
 .skills-container h5 {
   font-size: 1.1rem;
   margin-bottom: 1rem;
-  color: #8B5CF6;
+  color: var(--primary-color);
 }
 
 .skill-item {
@@ -190,7 +195,7 @@
 
 .skill-icon {
   font-size: 1.5rem;
-  color: #8B5CF6;
+  color: var(--primary-color);
   flex-shrink: 0;
 }
 
@@ -206,7 +211,7 @@
 
 .skill-details p {
   font-size: 0.85rem;
-  color: rgba(255, 255, 255, 0.7);
+  color: rgba(255, 255, 255, 0.8);
   line-height: 1.4;
 }
 
@@ -249,7 +254,7 @@
 }
 
 .project-label {
-  color: #8B5CF6;
+  color: var(--primary-color);
   font-size: 0.9rem;
   text-transform: uppercase;
   letter-spacing: 1px;
@@ -271,14 +276,14 @@
 }
 
 .primary-btn {
-  background: #8B5CF6;
+  background-color: var(--primary-color);
   color: white;
 }
 
 .secondary-btn {
   background: transparent;
-  border: 2px solid #8B5CF6;
-  color: white;
+  border: 2px solid var(--primary-color);
+  color: var(--primary-color);
 }
 
 .primary-btn:hover, .secondary-btn:hover {
@@ -312,8 +317,7 @@
 }
 
 .footer {
-  background: rgba(26, 11, 46, 0.8);
-  backdrop-filter: blur(10px);
+  background-color: #F5F3FF;
   padding: 6rem 2rem 2rem;
   margin-top: 4rem;
   position: relative;
@@ -363,7 +367,7 @@
 }
 
 .footer-section h3 {
-  color: #8B5CF6;
+  color: var(--primary-color);
   margin-bottom: 1.5rem;
   font-size: 1.2rem;
 }
@@ -386,7 +390,7 @@
 }
 
 .footer-nav a:hover {
-  color: #8B5CF6;
+  color: var(--primary-color);
 }
 
 .footer-bottom {
@@ -398,7 +402,7 @@
 }
 
 .footer-bottom p {
-  color: rgba(255, 255, 255, 0.6);
+  color: rgba(255, 255, 255, 0.7);
 }
 
 .footer-bottom-links {
@@ -407,13 +411,13 @@
 }
 
 .footer-bottom-links a {
-  color: rgba(255, 255, 255, 0.6);
+  color: rgba(255, 255, 255, 0.7);
   text-decoration: none;
   transition: color 0.3s ease;
 }
 
 .footer-bottom-links a:hover {
-  color: #8B5CF6;
+  color: var(--primary-color);
 }
 
 .footer-cta {
@@ -437,7 +441,7 @@
 }
 
 .social-icon:hover {
-  color: #8B5CF6;
+  color: var(--primary-color);
   transform: translateY(-3px);
 }
 
@@ -480,6 +484,12 @@
   background: transparent;
 }
 
+.experience h2 {
+  font-size: 2.5rem;
+  margin-bottom: 3rem;
+  color: white;
+}
+
 .work-grid {
   display: flex;
   gap: 2rem;
@@ -492,151 +502,89 @@
   margin: 0 auto;
 }
 
-
-.work-grid::-webkit-scrollbar {
-  height: 8px;
-}
-
-.work-grid::-webkit-scrollbar-track {
-  background: rgba(255, 255, 255, 0.1);
-  border-radius: 4px;
-}
-
-.work-grid::-webkit-scrollbar-thumb {
-  background: rgba(139, 92, 246, 0.5);
-  border-radius: 4px;
-}
-
-.work-grid::-webkit-scrollbar-thumb:hover {
-  background: rgba(139, 92, 246, 0.7);
-}
-
-/* Work Card Styles */
 .work-card {
   min-width: 300px;
-  flex-shrink: 0;
+  flex: 0 0 auto;
   background: rgba(26, 11, 46, 0.9);
   padding: 2rem;
   border-radius: 1rem;
   backdrop-filter: blur(10px);
   transition: all 0.3s ease;
   border: 1px solid rgba(255, 255, 255, 0.1);
-  scroll-snap-align: start;
+  color: rgba(255, 255, 255, 0.9);
+  text-align: left;
 }
 
-.work-card:hover {
-  transform: translateY(-5px);
-  border-color: rgba(139, 92, 246, 0.5);
-  box-shadow: 0 10px 20px rgba(139, 92, 246, 0.1);
-}
-
-/* Enhanced Learn More Button */
-.learn-more {
-  position: relative;
-  padding: 12px 24px;
-  background: transparent;
-  color: #8B5CF6;
-  border: 2px solid #8B5CF6;
-  border-radius: 6px;
-  font-weight: 600;
-  font-size: 0.9rem;
-  cursor: pointer;
-  overflow: hidden;
-  transition: all 0.3s ease;
-  margin-top: 1.5rem;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-}
-
-/* Button hover effect */
-.learn-more::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 100%;
-  height: 100%;
-  background: #8B5CF6;
-  transition: all 0.4s ease-in-out;
-  z-index: -1;
-}
-
-.learn-more:hover::before {
-  left: 0;
-}
-
-.learn-more:hover {
-  color: white;
-  transform: translateY(-2px);
-  box-shadow: 0 5px 15px rgba(139, 92, 246, 0.3);
-}
-
-
-.scroll-arrows {
-  position: absolute;
-  bottom: 1rem;
-  left: 50%;
-  transform: translateX(-50%);
-  display: flex;
-  gap: 1rem;
-  opacity: 0.7;
-}
-
-.scroll-arrow {
+.work-card h3 {
   font-size: 1.5rem;
-  color: #8B5CF6;
-  animation: bounce 1s infinite;
+  margin-bottom: 0.5rem;
+  color: var(--primary-color);
 }
 
-.scroll-arrow:nth-child(2) {
-  animation-delay: 0.2s;
+.work-card h4 {
+  font-size: 1.2rem;
+  margin-bottom: 0.5rem;
+  color: rgba(255, 255, 255, 0.9);
 }
 
-.scroll-arrow:nth-child(3) {
-  animation-delay: 0.4s;
-}
-
-@keyframes bounce {
-  0%, 100% {
-    transform: translateX(0);
-  }
-  50% {
-    transform: translateX(5px);
-  }
-}
-
-@keyframes fadeInUp {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-.work-card {
-  animation: fadeInUp 0.6s ease forwards;
-  opacity: 0;
-}
-
-.work-card:nth-child(1) { animation-delay: 0.1s; }
-.work-card:nth-child(2) { animation-delay: 0.2s; }
-.work-card:nth-child(3) { animation-delay: 0.3s; }
-.work-card:nth-child(4) { animation-delay: 0.4s; }
-
-.work-icon {
-  font-size: 3rem;
+.work-card .period {
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.7);  /* Dimmed for secondary information */
   margin-bottom: 1rem;
-  transition: transform 0.3s ease;
 }
 
-.work-card:hover .work-icon {
-  transform: scale(1.1) rotate(5deg);
+.work-card .description {
+  margin-bottom: 1.5rem;
+  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.skills-container {
+  margin-top: 1.5rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  padding-top: 1.5rem;
+}
+
+.skills-container h5 {
+  font-size: 1.1rem;
+  margin-bottom: 1rem;
+  color: var(--primary-color);
+}
+
+.skill-item {
+  margin-bottom: 1rem;
+  padding: 0.8rem;
+  background: rgba(139, 92, 246, 0.1);
+  border-radius: 0.5rem;
+  transition: all 0.3s ease;
+}
+
+.skill-item:hover {
+  background: rgba(139, 92, 246, 0.2);
+  transform: translateX(5px);
+}
+
+.skill-item h6 {
+  font-size: 1rem;
+  margin-bottom: 0.3rem;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.skill-item p {
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.8);
+  line-height: 1.4;
 }
 
 @media (max-width: 768px) {
+  .experience {
+    padding: 2rem 1rem;
+  }
+
+  .experience h2 {
+    font-size: 2rem;
+  }
+
   .work-grid {
     padding: 1rem;
     gap: 1rem;
@@ -645,11 +593,6 @@
   .work-card {
     min-width: 260px;
     padding: 1.5rem;
-  }
-
-  .learn-more {
-    padding: 10px 20px;
-    font-size: 0.8rem;
   }
 }
 
@@ -733,12 +676,12 @@
 .project-content h3 {
   font-size: 1.1rem;
   margin-bottom: 0.4rem;
-  color: var(--text-primary);
+  color: rgba(255, 255, 255, 0.95);
 }
 
 .project-content p {
   font-size: 0.85rem;
-  color: var(--text-secondary);
+  color: rgba(255, 255, 255, 0.8);
   margin-bottom: 0.8rem;
   line-height: 1.4;
   display: -webkit-box;
@@ -751,7 +694,7 @@
   font-size: 0.75rem;
   text-transform: uppercase;
   letter-spacing: 1px;
-  color: var(--primary);
+  color: var(--primary-color);
   margin-bottom: 0.4rem;
   display: inline-block;
 }
@@ -765,7 +708,7 @@
 
 .tech-tag {
   background: rgba(139, 92, 246, 0.1);
-  color: #8B5CF6;
+  color: var(--primary-color);
   padding: 0.3rem 0.8rem;
   border-radius: 1rem;
   font-size: 0.8rem;
@@ -789,17 +732,17 @@
   text-decoration: none;
   font-size: 0.9rem;
   transition: all 0.3s ease;
-  border: 1px solid #8B5CF6;
+  border: 1px solid var(--primary-color);
 }
 
 .project-link:first-child {
-  background: #8B5CF6;
+  background: var(--primary-color);
   color: white;
 }
 
 .project-link:last-child {
   background: transparent;
-  color: #8B5CF6;
+  color: var(--primary-color);
 }
 
 .project-link:hover {
@@ -809,7 +752,7 @@
 
 .project-card:hover {
   transform: translateY(-3px);
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 8px 16px rgba(139, 92, 246, 0.2);
 }
 
 .project-card:hover .project-image img {
@@ -899,6 +842,7 @@
 
 .skill-card:hover {
   transform: translateY(-5px);
+  border-color: var(--primary-color);
 }
 
 .skill-card::before {
@@ -974,11 +918,7 @@
 
 
 section {
-  background: radial-gradient(
-    circle at center,
-    #1A0B2E 0%,
-    #130922 100%
-  );
+  background-color: #F5F3FF;  /* Light violet background */
   color: white;
   padding: 4rem 2rem;
   margin: 0;
@@ -1201,7 +1141,7 @@ section {
 
 .stat-card h3 {
   font-size: 2.5rem;
-  color: #8B5CF6;
+  color: var(--primary-color);
   margin-bottom: 0.5rem;
 }
 
@@ -1301,5 +1241,94 @@ section {
 .skill-card:hover {
   animation: skillCardPulse 1.5s infinite;
   transform: translateY(-5px);
+}
+
+/* Primary Colors */
+:root {
+  --primary-color: #8B5CF6;         /* Main violet */
+  --primary-dark: #6D28D9;          /* Darker violet */
+  --primary-light: #A78BFA;         /* Lighter violet */
+  --gradient-start: #7C3AED;        /* Violet gradient start */
+  --gradient-end: #C4B5FD;          /* Violet gradient end */
+}
+
+/* Update these classes */
+.gradient-bg {
+  background: linear-gradient(135deg, var(--gradient-start), var(--gradient-end));
+}
+
+.gradient-text {
+  background: linear-gradient(135deg, var(--gradient-start), var(--gradient-end));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.primary-btn {
+  background-color: var(--primary-color);
+}
+
+.secondary-btn {
+  border: 2px solid var(--primary-color);
+  color: var(--primary-color);
+}
+
+.skill-card:hover {
+  border-color: var(--primary-color);
+}
+
+.social-icon:hover {
+  color: var(--primary-color);
+}
+
+.highlight {
+  color: var(--primary-color);
+}
+
+/* Hero section should keep the gradient */
+.hero.gradient-bg {
+  background: radial-gradient(
+    circle at center,
+    #1A0B2E 0%,
+    #130922 100%
+  );
+}
+
+/* Glass effect update for better contrast on violet background */
+.glass-effect {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Update footer background to match */
+.footer {
+  background-color: #F5F3FF;
+}
+
+/* Base background for all sections and the main app */
+.app, section, .footer {
+  background: radial-gradient(
+    circle at center,
+    #1A0B2E 0%,
+    #130922 100%
+  );
+}
+
+/* Update text colors for better contrast on dark background */
+section, .footer {
+  color: #fff;  /* White text for better readability */
+}
+
+/* Update glass effect for dark theme */
+.glass-effect {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Ensure cards and other elements have proper contrast */
+.project-card, .work-card, .skill-card {
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
