@@ -1,10 +1,12 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import './App.css';
 import './animations.css';
 import { FaReact, FaNode, FaPython, FaDatabase, FaGithub, FaLinkedin, FaTwitter, FaDribbble } from 'react-icons/fa';
 import { SiJavascript, SiTypescript, SiMongodb } from 'react-icons/si';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
+import Particles from "react-tsparticles";
+import { loadSlim } from "tsparticles-slim";
 
 const ProjectCard = ({ title, description, image, techStack, liveLink, githubLink }) => (
   <div className="project-card" data-aos="fade-up">
@@ -29,27 +31,115 @@ const ProjectCard = ({ title, description, image, techStack, liveLink, githubLin
   </div>
 );
 
-const ExperienceCard = ({ title, company, period, description, skills }) => (
-  <div className="work-card">
-    <h3>{title}</h3>
-    <h4>{company}</h4>
-    <p className="period">{period}</p>
-    <p className="description">{description}</p>
-    {skills && (
-      <div className="skills-container">
-        <h5>Key Skills</h5>
-        {skills.map((skill, index) => (
-          <div key={index} className="skill-item">
-            <div className="skill-details">
-              <h6>{skill.name}</h6>
-              <p>{skill.description}</p>
-            </div>
-          </div>
-        ))}
+const ExperienceCard = ({ title, company, period, description, skills, index, type }) => (
+  <div 
+    className={`experience-card ${type}`}
+    data-aos="fade-up"
+    data-aos-delay={index * 100}
+  >
+    <div className="experience-card-content">
+      <div className="experience-header">
+        <div className="experience-type">{type}</div>
+        <div className="experience-period">{period}</div>
       </div>
-    )}
+      <div className="experience-body">
+        <h3>{title}</h3>
+        <h4>{company}</h4>
+        <p className="description">{description}</p>
+        {skills && (
+          <div className="experience-skills">
+            {skills.map((skill, idx) => (
+              <span key={idx} className="skill-tag">
+                {skill.name}
+              </span>
+            ))}
+          </div>
+        )}
+      </div>
+    </div>
   </div>
 );
+
+const ParticlesBackground = () => {
+  const particlesInit = useCallback(async engine => {
+    await loadSlim(engine);
+  }, []);
+
+  return (
+    <Particles
+      id="tsparticles"
+      init={particlesInit}
+      options={{
+        background: {
+          color: {
+            value: "transparent",
+          },
+        },
+        fpsLimit: 120,
+        interactivity: {
+          events: {
+            onClick: {
+              enable: true,
+              mode: "push",
+            },
+            onHover: {
+              enable: true,
+              mode: "repulse"
+            },
+          },
+          modes: {
+            push: {
+              quantity: 4,
+            },
+            repulse: {
+              distance: 200,
+              duration: 0.4,
+            },
+          },
+        },
+        particles: {
+          color: {
+            value: "#8B5CF6",
+          },
+          links: {
+            color: "#8B5CF6",
+            distance: 150,
+            enable: true,
+            opacity: 0.5,
+            width: 1,
+          },
+          move: {
+            direction: "none",
+            enable: true,
+            outModes: {
+              default: "bounce",
+            },
+            random: false,
+            speed: 2,
+            straight: false,
+          },
+          number: {
+            density: {
+              enable: true,
+              area: 800,
+            },
+            value: 80,
+          },
+          opacity: {
+            value: 0.5,
+          },
+          shape: {
+            type: "circle",
+          },
+          size: {
+            value: { min: 1, max: 5 },
+          },
+        },
+        detectRetina: true,
+      }}
+    />
+  );
+};
 
 function App() {
   React.useEffect(() => {
@@ -58,6 +148,32 @@ function App() {
       once: true,
       easing: 'ease-out'
     });
+
+    // Mouse follow effect
+    const mouseFollow = document.createElement('div');
+    mouseFollow.className = 'mouse-follow';
+    document.body.appendChild(mouseFollow);
+
+    const handleMouseMove = (e) => {
+      mouseFollow.style.transform = `translate(${e.clientX - 10}px, ${e.clientY - 10}px)`;
+      
+      // Update project card hover effect
+      document.querySelectorAll('.project-card').forEach(card => {
+        const rect = card.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        
+        card.style.setProperty('--mouse-x', `${x}px`);
+        card.style.setProperty('--mouse-y', `${y}px`);
+      });
+    };
+
+    document.addEventListener('mousemove', handleMouseMove);
+
+    return () => {
+      document.removeEventListener('mousemove', handleMouseMove);
+      document.body.removeChild(mouseFollow);
+    };
   }, []);
 
   const skills = [
@@ -217,14 +333,27 @@ function App() {
         </section>
 
         <section className="experience" id="experience">
-          <h2>Experience & Achievements</h2>
-          <div className="work-grid">
-            {experiences.map((exp, index) => (
-              <ExperienceCard key={`exp-${index}`} {...exp} />
-            ))}
-            {achievements.map((achievement, index) => (
-              <ExperienceCard key={`achievement-${index}`} {...achievement} />
-            ))}
+          <ParticlesBackground />
+          <div className="experience-content">
+            <h2 data-aos="fade-up">Experience & Achievements</h2>
+            <div className="experience-timeline">
+              {experiences.map((exp, index) => (
+                <ExperienceCard 
+                  key={`exp-${index}`} 
+                  {...exp} 
+                  index={index} 
+                  type="Experience"
+                />
+              ))}
+              {achievements.map((achievement, index) => (
+                <ExperienceCard 
+                  key={`achievement-${index}`} 
+                  {...achievement} 
+                  index={index + experiences.length} 
+                  type="Achievement"
+                />
+              ))}
+            </div>
           </div>
         </section>
 
@@ -318,6 +447,8 @@ function App() {
           </div>
         </footer>
     </div>
+
+    
   );
 }
 

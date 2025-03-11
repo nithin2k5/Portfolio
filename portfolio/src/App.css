@@ -66,6 +66,7 @@
 .hero-content {
   max-width: 800px;
   text-align: center;
+  animation: fadeInUp 1s ease;
 }
 
 .hero-content h1 {
@@ -478,121 +479,264 @@
 }
 
 .experience {
-  text-align: center;
-  padding: 4rem 2rem;
   position: relative;
-  background: transparent;
-}
-
-.experience h2 {
-  font-size: 2.5rem;
-  margin-bottom: 3rem;
-  color: white;
-}
-
-.work-grid {
+  padding: 6rem 2rem;
+  overflow: hidden;
+  min-height: 100vh;
   display: flex;
-  gap: 2rem;
-  padding: 2rem;
-  overflow-x: auto;
-  scroll-behavior: smooth;
-  -webkit-overflow-scrolling: touch;
+  align-items: center;
+}
+
+.experience-content {
   position: relative;
+  z-index: 1;
+  width: 100%;
   max-width: 1200px;
   margin: 0 auto;
 }
 
-.work-card {
-  min-width: 300px;
-  flex: 0 0 auto;
-  background: rgba(26, 11, 46, 0.9);
-  padding: 2rem;
-  border-radius: 1rem;
+.experience h2 {
+  text-align: center;
+  font-size: 2.5rem;
+  margin-bottom: 4rem;
+  color: white;
+  position: relative;
+  padding-bottom: 1rem;
+}
+
+.experience h2::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100px;
+  height: 3px;
+  background: linear-gradient(90deg, transparent, var(--primary-color), transparent);
+}
+
+.experience-timeline {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  position: relative;
+  padding: 2rem 0;
+}
+
+.experience-timeline::before {
+  content: '';
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 2px;
+  height: 100%;
+  background: linear-gradient(180deg, 
+    transparent,
+    var(--primary-color),
+    var(--primary-color),
+    transparent
+  );
+  opacity: 0.3;
+}
+
+.experience-card {
+  width: calc(50% - 3rem);
+  position: relative;
+  margin: 2rem 0;
+}
+
+.experience-card:nth-child(odd) {
+  align-self: flex-end;
+  transform-origin: left center;
+}
+
+.experience-card:nth-child(even) {
+  align-self: flex-start;
+  transform-origin: right center;
+}
+
+.experience-card::before {
+  content: '';
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  background: var(--primary-color);
+  border-radius: 50%;
+  top: 20px;
+}
+
+.experience-card:nth-child(odd)::before {
+  left: -40px;
+}
+
+.experience-card:nth-child(even)::before {
+  right: -40px;
+}
+
+.experience-card-content {
+  background: rgba(255, 255, 255, 0.05);
   backdrop-filter: blur(10px);
-  transition: all 0.3s ease;
   border: 1px solid rgba(255, 255, 255, 0.1);
-  color: rgba(255, 255, 255, 0.9);
-  text-align: left;
-}
-
-.work-card h3 {
-  font-size: 1.5rem;
-  margin-bottom: 0.5rem;
-  color: var(--primary-color);
-}
-
-.work-card h4 {
-  font-size: 1.2rem;
-  margin-bottom: 0.5rem;
-  color: rgba(255, 255, 255, 0.9);
-}
-
-.work-card .period {
-  font-size: 0.9rem;
-  color: rgba(255, 255, 255, 0.7);  /* Dimmed for secondary information */
-  margin-bottom: 1rem;
-}
-
-.work-card .description {
-  margin-bottom: 1.5rem;
-  line-height: 1.6;
-  color: rgba(255, 255, 255, 0.8);
-}
-
-.skills-container {
-  margin-top: 1.5rem;
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
-  padding-top: 1.5rem;
-}
-
-.skills-container h5 {
-  font-size: 1.1rem;
-  margin-bottom: 1rem;
-  color: var(--primary-color);
-}
-
-.skill-item {
-  margin-bottom: 1rem;
-  padding: 0.8rem;
-  background: rgba(139, 92, 246, 0.1);
-  border-radius: 0.5rem;
+  border-radius: 1rem;
+  padding: 2rem;
   transition: all 0.3s ease;
 }
 
-.skill-item:hover {
-  background: rgba(139, 92, 246, 0.2);
-  transform: translateX(5px);
+.experience-card-content:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(139, 92, 246, 0.1);
+  border-color: var(--primary-color);
 }
 
-.skill-item h6 {
+.experience-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.experience-type {
+  background: var(--primary-color);
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 2rem;
+  font-size: 0.8rem;
+  font-weight: 500;
+}
+
+.experience-period {
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 0.9rem;
+}
+
+.experience-body h3 {
+  font-size: 1.3rem;
+  color: white;
+  margin-bottom: 0.5rem;
+}
+
+.experience-body h4 {
   font-size: 1rem;
-  margin-bottom: 0.3rem;
-  color: rgba(255, 255, 255, 0.9);
+  color: var(--primary-color);
+  margin-bottom: 1rem;
 }
 
-.skill-item p {
-  font-size: 0.85rem;
+.experience-body .description {
   color: rgba(255, 255, 255, 0.8);
-  line-height: 1.4;
+  line-height: 1.6;
+  margin-bottom: 1.5rem;
 }
 
-@media (max-width: 768px) {
+.experience-skills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.skill-tag {
+  background: rgba(139, 92, 246, 0.1);
+  color: var(--primary-color);
+  padding: 0.3rem 0.8rem;
+  border-radius: 1rem;
+  font-size: 0.8rem;
+  transition: all 0.3s ease;
+}
+
+.skill-tag:hover {
+  background: rgba(139, 92, 246, 0.2);
+  transform: translateY(-2px);
+}
+
+/* Animation for cards */
+@keyframes slideInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-100px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(100px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.experience-card:nth-child(odd) {
+  animation: slideInLeft 0.5s ease forwards;
+}
+
+.experience-card:nth-child(even) {
+  animation: slideInRight 0.5s ease forwards;
+}
+
+/* Responsive Design */
+@media (max-width: 968px) {
+  .experience-timeline::before {
+    left: 0;
+  }
+
+  .experience-card {
+    width: calc(100% - 3rem);
+    margin-left: 3rem;
+  }
+
+  .experience-card:nth-child(odd),
+  .experience-card:nth-child(even) {
+    align-self: flex-start;
+  }
+
+  .experience-card::before {
+    left: -40px !important;
+    right: auto !important;
+  }
+
+  .experience-card-content {
+    padding: 1.5rem;
+  }
+}
+
+@media (max-width: 576px) {
   .experience {
-    padding: 2rem 1rem;
+    padding: 4rem 1rem;
   }
 
   .experience h2 {
     font-size: 2rem;
+    margin-bottom: 3rem;
   }
 
-  .work-grid {
-    padding: 1rem;
-    gap: 1rem;
+  .experience-card {
+    width: calc(100% - 2rem);
+    margin-left: 2rem;
   }
 
-  .work-card {
-    min-width: 260px;
-    padding: 1.5rem;
+  .experience-card::before {
+    left: -30px !important;
+    width: 15px;
+    height: 15px;
+  }
+
+  .experience-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+
+  .experience-body h3 {
+    font-size: 1.1rem;
+  }
+
+  .experience-body h4 {
+    font-size: 0.9rem;
   }
 }
 
@@ -838,11 +982,13 @@
   gap: 0.5rem;
   position: relative;
   overflow: hidden;
+  animation: fadeIn 0.5s ease;
 }
 
 .skill-card:hover {
-  transform: translateY(-5px);
+  transform: translateY(-10px) scale(1.05);
   border-color: var(--primary-color);
+  animation: borderGlow 2s infinite;
 }
 
 .skill-card::before {
@@ -1261,6 +1407,9 @@ section {
   background: linear-gradient(135deg, var(--gradient-start), var(--gradient-end));
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
+  animation: glow 3s ease-in-out infinite;
+  background-size: 200% 200%;
+  animation: gradientBG 15s ease infinite;
 }
 
 .primary-btn {
@@ -1368,6 +1517,7 @@ section, .footer {
   outline: none;
   border-color: var(--primary-color);
   background: rgba(255, 255, 255, 0.1);
+  animation: borderGlow 2s infinite;
 }
 
 .success-message {
@@ -1394,3 +1544,22 @@ section, .footer {
   }
 }
 
+/* Enhanced Hero Section */
+.hero-content {
+  animation: fadeInUp 1s ease;
+}
+.avatar {
+  animation: float 6s ease-in-out infinite;
+}
+.project-card {
+  animation: fadeIn 0.5s ease;
+}
+.skill-card {
+  animation: fadeIn 0.5s ease;
+}
+.project-card:hover {
+  animation: borderGlow 2s infinite;
+}
+.skill-card:hover {
+  animation: borderGlow 2s infinite;
+}
