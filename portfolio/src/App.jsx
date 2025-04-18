@@ -1,20 +1,17 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useState, useEffect } from 'react';
 import './App.css';
-import './animations.css';
-import { FaReact, FaNode, FaPython, FaDatabase, FaGithub, FaLinkedin, FaTwitter, FaDribbble } from 'react-icons/fa';
+import { FaReact, FaNode, FaPython, FaDatabase, FaGithub, FaLinkedin, FaTwitter, FaEnvelope, FaMapMarkerAlt, FaMobileAlt } from 'react-icons/fa';
 import { SiJavascript, SiTypescript, SiMongodb } from 'react-icons/si';
-import AOS from 'aos';
-import 'aos/dist/aos.css';
 import Particles from "react-tsparticles";
 import { loadSlim } from "tsparticles-slim";
 
-const ProjectCard = ({ title, description, image, techStack, liveLink, githubLink }) => (
-  <div className="project-card" data-aos="fade-up">
+const ProjectCard = ({ title, description, image, techStack, liveLink }) => (
+  <div className="project-card">
     <div className="project-image">
-      <img src={image} alt={title} />
+      <img src={image} alt={title} loading="lazy" />
       <div className="project-overlay">
         <a href={liveLink} target="_blank" rel="noopener noreferrer" className="project-link">
-          View Project <span>→</span>
+          View Project
         </a>
       </div>
     </div>
@@ -31,20 +28,17 @@ const ProjectCard = ({ title, description, image, techStack, liveLink, githubLin
   </div>
 );
 
-const ExperienceCard = ({ title, company, period, description, skills, index, type }) => (
-  <div 
-    className={`experience-card ${type}`}
-    data-aos="fade-up"
-    data-aos-delay={index * 100}
-  >
+const ExperienceCard = ({ title, company, period, description, skills, type, year, isFirst }) => (
+  <div className={`experience-card ${type.toLowerCase()}`}>
+    {isFirst && <div className="timeline-year">{year}</div>}
     <div className="experience-card-content">
       <div className="experience-header">
-        <div className="experience-type">{type}</div>
-        <div className="experience-period">{period}</div>
-      </div>
-      <div className="experience-body">
+        <span className="experience-type">{type}</span>
         <h3>{title}</h3>
         <h4>{company}</h4>
+        <span className="experience-period">{period}</span>
+      </div>
+      <div className="experience-body">
         <p className="description">{description}</p>
         {skills && (
           <div className="experience-skills">
@@ -60,8 +54,24 @@ const ExperienceCard = ({ title, company, period, description, skills, index, ty
   </div>
 );
 
+const SkillCard = ({ logo, name, level }) => (
+  <div className="skill-card">
+    <div className="logo-container">
+      <img src={logo} alt={name} className="skill-logo" loading="lazy" />
+    </div>
+    <div className="skill-name-container">
+      <h3>{name}</h3>
+      {level && (
+        <div className="skill-level">
+          <div className="skill-level-fill" style={{ width: `${level}%` }}></div>
+        </div>
+      )}
+    </div>
+  </div>
+);
+
 const ParticlesBackground = () => {
-  const particlesInit = useCallback(async engine => {
+  const particlesInit = useCallback(async (engine) => {
     await loadSlim(engine);
   }, []);
 
@@ -70,42 +80,25 @@ const ParticlesBackground = () => {
       id="tsparticles"
       init={particlesInit}
       options={{
+        fpsLimit: 60,
+        fullScreen: {
+          enable: true,
+          zIndex: -1
+        },
         background: {
           color: {
-            value: "transparent",
-          },
-        },
-        fpsLimit: 120,
-        interactivity: {
-          events: {
-            onClick: {
-              enable: true,
-              mode: "push",
-            },
-            onHover: {
-              enable: true,
-              mode: "repulse"
-            },
-          },
-          modes: {
-            push: {
-              quantity: 4,
-            },
-            repulse: {
-              distance: 200,
-              duration: 0.4,
-            },
+            value: "#000000",
           },
         },
         particles: {
           color: {
-            value: "#8B5CF6",
+            value: "#ffffff",
           },
           links: {
-            color: "#8B5CF6",
+            color: "#ffffff",
             distance: 150,
             enable: true,
-            opacity: 0.5,
+            opacity: 0.2,
             width: 1,
           },
           move: {
@@ -115,7 +108,7 @@ const ParticlesBackground = () => {
               default: "bounce",
             },
             random: false,
-            speed: 2,
+            speed: 1,
             straight: false,
           },
           number: {
@@ -123,16 +116,16 @@ const ParticlesBackground = () => {
               enable: true,
               area: 800,
             },
-            value: 80,
+            value: 60,
           },
           opacity: {
-            value: 0.5,
+            value: 0.3,
           },
           shape: {
             type: "circle",
           },
           size: {
-            value: { min: 1, max: 5 },
+            value: { min: 1, max: 3 },
           },
         },
         detectRetina: true,
@@ -141,85 +134,210 @@ const ParticlesBackground = () => {
   );
 };
 
-function App() {
-  React.useEffect(() => {
-    AOS.init({
-      duration: 1000,
-      once: true,
-      easing: 'ease-out'
-    });
+const MobileMenu = ({ isOpen, toggleMenu }) => (
+  <div className={`mobile-menu ${isOpen ? 'active' : ''}`}>
+    <div className="mobile-menu-content">
+      <a href="#home" onClick={toggleMenu}>Home</a>
+      <a href="#about" onClick={toggleMenu}>About</a>
+      <a href="#experience" onClick={toggleMenu}>Experience</a>
+      <a href="#skills" onClick={toggleMenu}>Skills</a>
+      <a href="#projects" onClick={toggleMenu}>Projects</a>
+      <a href="#contact" onClick={toggleMenu}>Contact</a>
+    </div>
+  </div>
+);
 
-    // Mouse follow effect
-    const mouseFollow = document.createElement('div');
-    mouseFollow.className = 'mouse-follow';
-    document.body.appendChild(mouseFollow);
+const Navbar = () => {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
 
-    const handleMouseMove = (e) => {
-      mouseFollow.style.transform = `translate(${e.clientX - 10}px, ${e.clientY - 10}px)`;
-      
-      // Update project card hover effect
-      document.querySelectorAll('.project-card').forEach(card => {
-        const rect = card.getBoundingClientRect();
-        const x = e.clientX - rect.left;
-        const y = e.clientY - rect.top;
-        
-        card.style.setProperty('--mouse-x', `${x}px`);
-        card.style.setProperty('--mouse-y', `${y}px`);
-      });
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 50);
     };
 
-    document.addEventListener('mousemove', handleMouseMove);
-
-    return () => {
-      document.removeEventListener('mousemove', handleMouseMove);
-      document.body.removeChild(mouseFollow);
-    };
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  const skills = [
-    { 
-      logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/c/c-original.svg",
-      name: "C"
+  const toggleMenu = () => {
+    setIsMenuOpen(!isMenuOpen);
+    document.body.style.overflow = !isMenuOpen ? 'hidden' : 'auto';
+  };
+
+  return (
+    <nav className={`navbar ${isScrolled ? 'scrolled' : ''}`}>
+      <div className="container navbar-container">
+        <div className="logo">NK</div>
+        <div className="nav-links desktop-nav">
+          <a href="#home">Home</a>
+          <a href="#about">About</a>
+          <a href="#experience">Experience</a>
+          <a href="#skills">Skills</a>
+          <a href="#projects">Projects</a>
+          <a href="#contact">Contact</a>
+        </div>
+        <button className={`hamburger ${isMenuOpen ? 'active' : ''}`} onClick={toggleMenu} aria-label="Menu">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+        <MobileMenu isOpen={isMenuOpen} toggleMenu={toggleMenu} />
+      </div>
+    </nav>
+  );
+};
+
+const ExperienceSection = ({ experiences, achievements }) => {
+  const [activeTab, setActiveTab] = useState('all');
+  
+  // Group experiences by year
+  const experiencesByYear = {};
+  
+  // Filter items based on active tab
+  const filteredItems = activeTab === 'all' 
+    ? [...experiences, ...achievements]
+    : activeTab === 'experience' 
+      ? experiences 
+      : achievements;
+      
+  // Sort by most recent first
+  filteredItems.sort((a, b) => {
+    const yearA = parseInt(a.period.split(' - ')[1] || a.period.split(' - ')[0]);
+    const yearB = parseInt(b.period.split(' - ')[1] || b.period.split(' - ')[0]);
+    return yearB - yearA;
+  });
+
+  return (
+    <section className="experience" id="experience">
+      <div className="container">
+        <div className="section-header">
+          <h2>Professional Journey</h2>
+        </div>
+        
+        <div className="experience-tabs">
+          <button 
+            className={`experience-tab ${activeTab === 'all' ? 'active' : ''}`}
+            onClick={() => setActiveTab('all')}
+          >
+            All
+          </button>
+          <button 
+            className={`experience-tab ${activeTab === 'experience' ? 'active' : ''}`}
+            onClick={() => setActiveTab('experience')}
+          >
+            Experience
+          </button>
+          <button 
+            className={`experience-tab ${activeTab === 'achievement' ? 'active' : ''}`}
+            onClick={() => setActiveTab('achievement')}
+          >
+            Achievements
+          </button>
+        </div>
+        
+        <div className="experience-content">
+          <div className="experience-timeline">
+            {filteredItems.map((item, index) => {
+              const isExperience = experiences.includes(item);
+              const type = isExperience ? 'experience' : 'achievement';
+              const period = item.period;
+              const year = period.split(' - ')[1] || period.split(' - ')[0];
+              
+              return (
+                <ExperienceCard 
+                  key={`${type}-${index}`} 
+                  {...item} 
+                  type={isExperience ? 'Experience' : 'Achievement'}
+                  year={year}
+                  isFirst={index === 0 || (filteredItems[index-1] && 
+                    (filteredItems[index-1].period.split(' - ')[1] || filteredItems[index-1].period.split(' - ')[0]) !== year)}
+                />
+              );
+            })}
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+};
+
+function App() {
+  const skillCategories = [
+    {
+      category: "Programming Languages",
+      skills: [
+        { 
+          logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/c/c-original.svg",
+          name: "C",
+          level: 85  // Percentage of proficiency (optional)
+        },
+        { 
+          logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/java/java-original.svg",
+          name: "Java",
+          level: 80
+        },
+        { 
+          logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/python/python-original.svg",
+          name: "Python",
+          level: 90
+        },
+        { 
+          logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/csharp/csharp-original.svg",
+          name: "C#",
+          level: 75
+        },
+        { 
+          logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg",
+          name: "JavaScript",
+          level: 95
+        }
+      ]
     },
-    { 
-      logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/java/java-original.svg",
-      name: "Java"
+    {
+      category: "Frontend Technologies",
+      skills: [
+        { 
+          logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg",
+          name: "React",
+          level: 90
+        },
+        { 
+          logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nextjs/nextjs-original.svg",
+          name: "Next.js",
+          level: 85
+        },
+        { 
+          logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/html5/html5-original.svg",
+          name: "HTML5",
+          level: 95
+        },
+        { 
+          logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/css3/css3-original.svg",
+          name: "CSS3",
+          level: 90
+        }
+      ]
     },
-    { 
-      logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/python/python-original.svg",
-      name: "Python"
-    },
-    { 
-      logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/csharp/csharp-original.svg",
-      name: "C#"
-    },
-    { 
-      logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg",
-      name: "React"
-    },
-    { 
-      logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nextjs/nextjs-original.svg",
-      name: "Next.js"
-    },
-    { 
-      logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/html5/html5-original.svg",
-      name: "HTML5"
-    },
-    { 
-      logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/css3/css3-original.svg",
-      name: "CSS3"
-    },
-    { 
-      logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg",
-      name: "JavaScript"
-    },
-    { 
-      logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nodejs/nodejs-original.svg",
-      name: "Node.js"
-    },
-    { 
-      logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mysql/mysql-original.svg",
-      name: "MySQL"
+    {
+      category: "Databases",
+      skills: [
+        { 
+          logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mysql/mysql-original.svg",
+          name: "MySQL",
+          level: 85
+        },
+        {
+          logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mongodb/mongodb-original.svg",
+          name: "MongoDB",
+          level: 80
+        },
+        {
+          logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/postgresql/postgresql-original.svg",
+          name: "PostgreSQL",
+          level: 75
+        }
+      ]
     }
   ];
 
@@ -228,7 +346,7 @@ function App() {
       title: "Software Engineer",
       company: "Tech Company",
       period: "2022 - Present",
-      description: "Led development of multiple full-stack applications using modern technologies.",
+      description: "Led development of multiple full-stack applications using modern technologies. Collaborated with cross-functional teams to deliver high-quality software solutions.",
       skills: [
         {
           name: "Full Stack Development",
@@ -237,6 +355,10 @@ function App() {
         {
           name: "Team Leadership",
           description: "Mentored junior developers and managed project timelines"
+        },
+        {
+          name: "Agile Development",
+          description: "Implemented Scrum methodologies"
         }
       ]
     },
@@ -244,211 +366,219 @@ function App() {
 
   const achievements = [
     {
-      title: "Hackathon Winner",
-      company: "Tech Fest 2023",
-      period: "2023",
-      description: "Won first place in national level hackathon for innovative solution in AI.",
+      title: "Hackathon Runner Up",
+      company: "VR Siddhartha Engineering College",
+      period: "2024",
+      description: "Won second place in national level webathon with an innovative project that solved real-world problems using cutting-edge technologies.",
       skills: [
         {
-          name: "Innovation",
+          name: "Full Stack Web Development",
           description: "Developed unique AI-powered solution for healthcare"
+        },
+        {
+          name: "Problem Solving",
+          description: "Created innovative solutions under tight deadlines"
         }
       ]
     },
   ];
 
+  const projects = [
+    {
+      title: "E-commerce Website",
+      description: "A full-featured e-commerce platform with secure payment processing, user accounts, and product management capabilities.",
+      image: "https://i.imghippo.com/files/tbt2932c.png",
+      techStack: ["React", "Spring Boot", "MySQL"],
+      liveLink: "https://pazaar.vercel.app"
+    },
+    {
+      title: "Pazaar",
+      description: "Smart job portal with built-in resume builder, connecting job seekers with employers for seamless hiring experiences.",
+      image: "https://i.imghippo.com/files/FHki3312Ywo.png",
+      techStack: ["Next.js", "Node.js", "MongoDB"],
+      liveLink: "https://arbeit-vrs.vercel.app"
+    },
+    {
+      title: "SpeedxType",
+      description: "Improve your typing speed and accuracy with interactive tests and real-time performance tracking.",
+      image: "https://i.imghippo.com/files/wYe9465CIY.png",
+      techStack: ["Next.js", "CSS", "JavaScript"],
+      liveLink: "https://speedxtype.vercel.app"
+    }
+  ];
+
+  // If you prefer the simple flat list, you can flatten all skills:
+  const skills = skillCategories.reduce((allSkills, category) => {
+    return [...allSkills, ...category.skills];
+  }, []);
+
   return (
     <div className="app">
-      <nav className="navbar glass-effect">
-        <div className="logo">⚡</div>
-        <div className="nav-links">
-          <a href="#home">Home</a>
-          <a href="#about">About</a>
-          <a href="#experience">Experience</a>
-          <a href="#skills">Skills</a>
-          <a href="#projects">Projects</a>
-          <a href="#contact">Contact</a>
-        </div>
-      </nav>
+      <ParticlesBackground />
+      <Navbar />
 
       <main>
-        <section className="hero gradient-bg">
-          <div className="hero-content" data-aos="fade-up">
-            <div className="avatar-container">
-              <div className="avatar pulse">👨‍💻</div>
-            </div>
-            <h1>Hello! I Am <span className="highlight gradient-text">Nithin Kumar K</span></h1>
-            <h2>Full Stack <span className="highlight gradient-text">Developer</span></h2>
-            <p className="subtitle">Code Enthusiast, Delivering Full-Scale Solutions</p>
-            <div className="hero-cta">
-              <button className="primary-btn shine-effect">View Projects</button>
-              <button className="secondary-btn pulse-effect">Contact Me</button>
+        <section className="hero" id="home">
+          <div className="container">
+            <div className="hero-content">
+              <div className="avatar-container">
+                <div className="avatar">NK</div>
+              </div>
+              <h1>Hello, I'm <span className="highlight">Nithin Kumar K</span></h1>
+              <h2 className="profession">Full Stack Developer</h2>
+              <p className="subtitle">Passionate about creating elegant, efficient, and user-friendly web applications that solve real-world problems.</p>
+              <div className="hero-cta">
+                <a href="#projects" className="primary-btn">View Projects</a>
+                <a href="#contact" className="secondary-btn">Contact Me</a>
+              </div>
             </div>
           </div>
-          <div className="hero-shape"></div>
         </section>
 
         <section className="about" id="about">
-          <h2>About Me</h2>
-          <div className="about-content">
-            <div className="about-text">
-              <p>
-                I am a passionate Full Stack Developer with expertise in building scalable web applications 
-                and solving complex problems. With a strong foundation in both frontend and backend technologies, 
-                I strive to create efficient and user-friendly solutions that make a difference.
-              </p>
+          <div className="container">
+            <div className="section-header">
+              <h2>About Me</h2>
             </div>
-            <div className="about-stats">
-              <div className="stat-card">
-                <h3>5+</h3>
-                <p>Projects Completed</p>
+            <div className="about-content">
+              <div className="about-text">
+                <p>
+                  I am a passionate Full Stack Developer with expertise in building scalable web applications 
+                  and solving complex problems. With a strong foundation in both frontend and backend technologies, 
+                  I strive to create efficient and user-friendly solutions that make a difference.
+                </p>
+                <p>
+                  My approach combines technical excellence with creative problem-solving, enabling me to develop
+                  applications that are not only functional but also intuitive and enjoyable to use. I'm constantly
+                  learning and exploring new technologies to enhance my skill set.
+                </p>
               </div>
-              <div className="stat-card">
-                <h3>3</h3>
-                <p>Ongoing Projects</p>
-              </div>
-              <div className="stat-card">
-                <h3>2+</h3>
-                <p>Years Experience</p>
+              <div className="about-stats">
+                <div className="stat-card">
+                  <h3>5+</h3>
+                  <p>Projects Completed</p>
+                </div>
+                <div className="stat-card">
+                  <h3>3</h3>
+                  <p>Current Projects</p>
+                </div>
+                <div className="stat-card">
+                  <h3>2+</h3>
+                  <p>Years Experience</p>
+                </div>
               </div>
             </div>
           </div>
         </section>
 
         <section className="skills" id="skills">
-          <h2 data-aos="fade-up">Technical Skills</h2>
-          <div className="skills-grid">
-            {skills.map((skill, index) => (
-              <div 
-                key={index} 
-                className="skill-card glass-effect"
-                data-aos="zoom-in"
-                data-aos-delay={index * 100}
-              >
-                <img src={skill.logo} alt={skill.name} className="skill-logo" />
-                <h3>{skill.name}</h3>
+          <div className="container">
+            <div className="section-header">
+              <h2>Technical Skills</h2>
+            </div>
+            
+            {skillCategories.map((category, catIndex) => (
+              <div key={catIndex} className="skill-category">
+                <h3 className="category-title">{category.category}</h3>
+                <div className="skills-grid">
+                  {category.skills.map((skill, index) => (
+                    <SkillCard key={index} {...skill} />
+                  ))}
+                </div>
               </div>
             ))}
           </div>
         </section>
 
-        <section className="experience" id="experience">
-          <ParticlesBackground />
-          <div className="experience-content">
-            <h2 data-aos="fade-up">Experience & Achievements</h2>
-            <div className="experience-timeline">
-              {experiences.map((exp, index) => (
-                <ExperienceCard 
-                  key={`exp-${index}`} 
-                  {...exp} 
-                  index={index} 
-                  type="Experience"
-                />
-              ))}
-              {achievements.map((achievement, index) => (
-                <ExperienceCard 
-                  key={`achievement-${index}`} 
-                  {...achievement} 
-                  index={index + experiences.length} 
-                  type="Achievement"
+        <ExperienceSection experiences={experiences} achievements={achievements} />
+
+        <section className="projects" id="projects">
+          <div className="container">
+            <div className="section-header">
+              <h2>Featured Projects</h2>
+            </div>
+            <div className="project-grid">
+              {projects.map((project, index) => (
+                <ProjectCard 
+                  key={index}
+                  {...project}
                 />
               ))}
             </div>
-          </div>
-        </section>
-
-        <section className="projects">
-          <h2>Featured Projects</h2>
-          <div className="project-grid">
-            <ProjectCard 
-              title="E-commerce Website"
-              description="An eCommerce website is an online platform that allows businesses and individuals to buy and sell products or services. It features product browsing, secure payment processing, order tracking, and customer accounts, offering a convenient shopping experience available 24/7."
-              image="https://i.imghippo.com/files/tbt2932c.png"
-              techStack={["Reactjs", "SpringBoot", "MySql"]}
-              liveLink="https://pazaar.vercel.app"
-              githubLink="https://github.com/username/project"
-            />
-            <ProjectCard 
-              title="Pazaar"
-              description="Arbeit is a smart job portal with a built-in resume builder, connecting job seekers with employers for seamless hiring. "
-              image="https://i.imghippo.com/files/FHki3312Ywo.png"
-              techStack={["Nextjs", "Node.js", "MongoDB"]}
-              liveLink="https://arbeit-vrs.vercel.app"
-              githubLink="https://github.com/username/project"
-            />
-            <ProjectCard 
-              title="SpeedxType"
-              description="Improve your typing speed and accuracy with fun, interactive tests and real-time tracking. Practice, compete, and boost your skills effortlessly!"
-              image="https://i.imghippo.com/files/wYe9465CIY.png"
-              techStack={["Nextjs"]}
-              liveLink="https://speedxtype.vercel.app"
-              githubLink="https://github.com/username/project"
-            />
-            
           </div>
         </section>
       </main>
 
       <footer className="footer" id="contact">
+        <div className="container">
           <div className="footer-content">
             <div className="footer-main">
-              <h2>Let's Build Something <span className="highlight">Together</span></h2>
-              <p>I'm currently looking to join a cross-functional team that values improving people's lives through accessible design.</p>
+              <h2>Let's Work <span className="highlight">Together</span></h2>
+              <p>I'm currently available for freelance work or full-time opportunities. If you're interested in collaborating on a project or discussing potential opportunities, feel free to reach out.</p>
               <div className="footer-cta">
-                <button className="primary-btn">Start a Project</button>
-                <button className="secondary-btn">Download Resume</button>
+                <a href="mailto:ntbm8125@gmail.com" className="primary-btn">Start a Project</a>
+                <a href="#" className="secondary-btn">Download Resume</a>
               </div>
             </div>
             
             <div className="footer-grid">
               <div className="footer-section">
-                <h3>Contact</h3>
-                <p><span role="img" aria-label="email">📧</span> ntbm8125@gmail.com</p>
-                <p><span role="img" aria-label="phone">📱</span> +91 9398225082</p>
-                <p><span role="img" aria-label="location">📍</span> Andhra Pradesh, India</p>
+                <h3>Contact Information</h3>
+                <ul className="contact-list">
+                  <li>
+                    <FaEnvelope className="contact-icon" />
+                    <a href="mailto:ntbm8125@gmail.com">ntbm8125@gmail.com</a>
+                  </li>
+                  <li>
+                    <FaMobileAlt className="contact-icon" />
+                    <a href="tel:+919398225082">+91 9398225082</a>
+                  </li>
+                  <li>
+                    <FaMapMarkerAlt className="contact-icon" />
+                    <span>Andhra Pradesh, India</span>
+                  </li>
+                </ul>
               </div>
               
               <div className="footer-section">
-                <h3>Follow Me</h3>
+                <h3>Connect With Me</h3>
                 <div className="social-links">
                   <a href="https://github.com/yourusername" target="_blank" rel="noopener noreferrer" className="social-icon" aria-label="Github">
-                    <FaGithub size={24} />
+                    <FaGithub />
                   </a>
                   <a href="https://linkedin.com/in/yourusername" target="_blank" rel="noopener noreferrer" className="social-icon" aria-label="LinkedIn">
-                    <FaLinkedin size={24} />
+                    <FaLinkedin />
                   </a>
                   <a href="https://twitter.com/yourusername" target="_blank" rel="noopener noreferrer" className="social-icon" aria-label="Twitter">
-                    <FaTwitter size={24} />
-                  </a>
-                  <a href="https://dribbble.com/yourusername" target="_blank" rel="noopener noreferrer" className="social-icon" aria-label="Dribbble">
-                    <FaDribbble size={24} />
+                    <FaTwitter />
                   </a>
                 </div>
+                <p className="social-text">Follow me on social media to stay updated with my latest projects and professional journey.</p>
               </div>
               
               <div className="footer-section">
                 <h3>Quick Links</h3>
                 <nav className="footer-nav">
-                  <a href="#skills">Skills</a>
+                  <a href="#home">Home</a>
                   <a href="#about">About</a>
+                  <a href="#skills">Skills</a>
+                  <a href="#experience">Experience</a>
                   <a href="#projects">Projects</a>
-                  <a href="#contact">Contact</a>
                 </nav>
               </div>
             </div>
             
             <div className="footer-bottom">
-              <p>© {new Date().getFullYear()} Nithin. All rights reserved.</p>
+              <p>© {new Date().getFullYear()} Nithin Kumar K. All rights reserved.</p>
               <div className="footer-bottom-links">
                 <a href="#privacy">Privacy Policy</a>
                 <a href="#terms">Terms of Service</a>
               </div>
             </div>
           </div>
-        </footer>
+        </div>
+      </footer>
     </div>
-
-    
   );
 }
 
