@@ -343,22 +343,14 @@ function App() {
 
   const experiences = [
     {
-      title: "Software Engineer",
-      company: "Tech Company",
-      period: "2022 - Present",
+      title: "Computer Vision Engineer",
+      company: "Infac India ltd.",
+      period: "14/5/2025 - 4/6/2025",
       description: "Led development of multiple full-stack applications using modern technologies. Collaborated with cross-functional teams to deliver high-quality software solutions.",
       skills: [
         {
-          name: "Full Stack Development",
-          description: "Built scalable web applications using React, Node.js, and MongoDB"
-        },
-        {
-          name: "Team Leadership",
-          description: "Mentored junior developers and managed project timelines"
-        },
-        {
-          name: "Agile Development",
-          description: "Implemented Scrum methodologies"
+          name: "",
+          description: "A real-time safety monitoring system using OpenCV and MediaPipe for detecting unsafe human actions and ensuring workplace safety."
         }
       ]
     },
