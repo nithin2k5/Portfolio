@@ -80,26 +80,26 @@ const ParticlesBackground = () => {
       id="tsparticles"
       init={particlesInit}
       options={{
-        fpsLimit: 60,
+        fpsLimit: 120,
         fullScreen: {
           enable: true,
           zIndex: -1
         },
         background: {
           color: {
-            value: "#000000",
+            value: "transparent",
           },
         },
         particles: {
           color: {
-            value: "#ffffff",
+            value: ["#64ffda", "#ffffff", "#00d4ff"],
           },
           links: {
-            color: "#ffffff",
-            distance: 150,
+            color: "#64ffda",
+            distance: 120,
             enable: true,
-            opacity: 0.2,
-            width: 1,
+            opacity: 0.4,
+            width: 0.8,
           },
           move: {
             direction: "none",
@@ -107,25 +107,62 @@ const ParticlesBackground = () => {
             outModes: {
               default: "bounce",
             },
-            random: false,
-            speed: 1,
+            random: true,
+            speed: 0.8,
             straight: false,
           },
           number: {
             density: {
               enable: true,
-              area: 800,
+              area: 1000,
             },
-            value: 60,
+            value: 80,
           },
           opacity: {
-            value: 0.3,
+            value: { min: 0.1, max: 0.8 },
+            animation: {
+              enable: true,
+              speed: 1,
+              minimumValue: 0.1,
+              sync: false,
+            },
           },
           shape: {
             type: "circle",
           },
           size: {
-            value: { min: 1, max: 3 },
+            value: { min: 0.5, max: 2.5 },
+            animation: {
+              enable: true,
+              speed: 2,
+              minimumValue: 0.5,
+              sync: false,
+            },
+          },
+        },
+        interactivity: {
+          detectsOn: "canvas",
+          events: {
+            onHover: {
+              enable: true,
+              mode: "grab",
+            },
+            onClick: {
+              enable: true,
+              mode: "push",
+            },
+            resize: true,
+          },
+          modes: {
+            grab: {
+              distance: 140,
+              links: {
+                opacity: 0.8,
+              },
+            },
+            push: {
+              quantity: 4,
+            },
           },
         },
         detectRetina: true,
@@ -306,6 +343,16 @@ function App() {
           logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nextjs/nextjs-original.svg",
           name: "Next.js",
           level: 85
+        },
+        { 
+          logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg",
+          name: "React Native",
+          level: 85
+        },
+        { 
+          logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/dot-net/dot-net-original.svg",
+          name: ".NET Framework",
+          level: 75
         },
         { 
           logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/html5/html5-original.svg",
