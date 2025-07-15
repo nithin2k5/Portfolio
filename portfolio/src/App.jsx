@@ -582,15 +582,13 @@ function App() {
               <div className="footer-section">
                 <h3>Connect With Me</h3>
                 <div className="social-links">
-                  <a href="https://github.com/yourusername" target="_blank" rel="noopener noreferrer" className="social-icon" aria-label="Github">
+                  <a href="https://github.com/nithin2k5/" target="_blank" rel="noopener noreferrer" className="social-icon" aria-label="Github">
                     <FaGithub />
                   </a>
-                  <a href="https://linkedin.com/in/yourusername" target="_blank" rel="noopener noreferrer" className="social-icon" aria-label="LinkedIn">
+                  <a href="https://www.linkedin.com/in/nithin-kumar-k-b17b90297/" target="_blank" rel="noopener noreferrer" className="social-icon" aria-label="LinkedIn">
                     <FaLinkedin />
                   </a>
-                  <a href="https://twitter.com/yourusername" target="_blank" rel="noopener noreferrer" className="social-icon" aria-label="Twitter">
-                    <FaTwitter />
-                  </a>
+                  <a href="https://www.instagram.com/void.nxt/" target="_blank" rel="noopener noreferrer" className="social-icon" aria-label="Instagram"></a>
                 </div>
                 <p className="social-text">Follow me on social media to stay updated with my latest projects and professional journey.</p>
               </div>
