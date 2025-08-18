@@ -1,16 +1,25 @@
 import React, { useCallback, useState, useEffect } from 'react';
 import './App.css';
-import { FaReact, FaNode, FaPython, FaDatabase, FaGithub, FaLinkedin, FaTwitter, FaEnvelope, FaMapMarkerAlt, FaMobileAlt } from 'react-icons/fa';
+import './animations.css';
+import { FaReact, FaNode, FaPython, FaDatabase, FaGithub, FaLinkedin, FaTwitter, FaEnvelope, FaMapMarkerAlt, FaMobileAlt, FaInstagram } from 'react-icons/fa';
 import { SiJavascript, SiTypescript, SiMongodb } from 'react-icons/si';
 import Particles from "react-tsparticles";
 import { loadSlim } from "tsparticles-slim";
+import AOS from 'aos';
+import 'aos/dist/aos.css';
+import ScrollToTop from './components/ScrollToTop';
 
-const ProjectCard = ({ title, description, image, techStack, liveLink }) => (
-  <div className="project-card">
+const ProjectCard = ({ title, description, image, techStack, liveLink, index }) => (
+  <div 
+    className="project-card glass-effect" 
+    data-aos="fade-up" 
+    data-aos-delay={index * 100}
+    data-aos-duration="800"
+  >
     <div className="project-image">
       <img src={image} alt={title} loading="lazy" />
       <div className="project-overlay">
-        <a href={liveLink} target="_blank" rel="noopener noreferrer" className="project-link">
+        <a href={liveLink} target="_blank" rel="noopener noreferrer" className="project-link shine-effect">
           View Project
         </a>
       </div>
@@ -20,18 +29,23 @@ const ProjectCard = ({ title, description, image, techStack, liveLink }) => (
       <h3>{title}</h3>
       <p>{description}</p>
       <div className="project-tech">
-        {techStack && techStack.map((tech, index) => (
-          <span key={index} className="tech-tag">{tech}</span>
+        {techStack && techStack.map((tech, techIndex) => (
+          <span key={techIndex} className="tech-tag hover-effect">{tech}</span>
         ))}
       </div>
     </div>
   </div>
 );
 
-const ExperienceCard = ({ title, company, period, description, skills, type, year, isFirst }) => (
-  <div className={`experience-card ${type.toLowerCase()}`}>
+const ExperienceCard = ({ title, company, period, description, skills, type, year, isFirst, index }) => (
+  <div 
+    className={`experience-card ${type.toLowerCase()}`}
+    data-aos="fade-right"
+    data-aos-delay={index * 150}
+    data-aos-duration="1000"
+  >
     {isFirst && <div className="timeline-year">{year}</div>}
-    <div className="experience-card-content">
+    <div className="experience-card-content glass-effect">
       <div className="experience-header">
         <span className="experience-type">{type}</span>
         <h3>{title}</h3>
@@ -43,7 +57,7 @@ const ExperienceCard = ({ title, company, period, description, skills, type, yea
         {skills && (
           <div className="experience-skills">
             {skills.map((skill, idx) => (
-              <span key={idx} className="skill-tag">
+              <span key={idx} className="skill-tag hover-effect">
                 {skill.name}
               </span>
             ))}
@@ -54,8 +68,13 @@ const ExperienceCard = ({ title, company, period, description, skills, type, yea
   </div>
 );
 
-const SkillCard = ({ logo, name, level }) => (
-  <div className="skill-card">
+const SkillCard = ({ logo, name, level, index }) => (
+  <div 
+    className="skill-card glass-effect" 
+    data-aos="zoom-in" 
+    data-aos-delay={index * 100}
+    data-aos-duration="600"
+  >
     <div className="logo-container">
       <img src={logo} alt={name} className="skill-logo" loading="lazy" />
     </div>
@@ -92,14 +111,14 @@ const ParticlesBackground = () => {
         },
         particles: {
           color: {
-            value: ["#64ffda", "#ffffff", "#00d4ff"],
+            value: ["#8B5CF6", "#A78BFA", "#C4B5FD"],
           },
           links: {
-            color: "#64ffda",
-            distance: 120,
+            color: "#8B5CF6",
+            distance: 150,
             enable: true,
-            opacity: 0.4,
-            width: 0.8,
+            opacity: 0.3,
+            width: 1,
           },
           move: {
             direction: "none",
@@ -108,21 +127,21 @@ const ParticlesBackground = () => {
               default: "bounce",
             },
             random: true,
-            speed: 0.8,
+            speed: 1,
             straight: false,
           },
           number: {
             density: {
               enable: true,
-              area: 1000,
+              area: 800,
             },
-            value: 80,
+            value: 60,
           },
           opacity: {
-            value: { min: 0.1, max: 0.8 },
+            value: { min: 0.1, max: 0.6 },
             animation: {
               enable: true,
-              speed: 1,
+              speed: 1.5,
               minimumValue: 0.1,
               sync: false,
             },
@@ -131,11 +150,11 @@ const ParticlesBackground = () => {
             type: "circle",
           },
           size: {
-            value: { min: 0.5, max: 2.5 },
+            value: { min: 1, max: 3 },
             animation: {
               enable: true,
               speed: 2,
-              minimumValue: 0.5,
+              minimumValue: 1,
               sync: false,
             },
           },
@@ -174,12 +193,12 @@ const ParticlesBackground = () => {
 const MobileMenu = ({ isOpen, toggleMenu }) => (
   <div className={`mobile-menu ${isOpen ? 'active' : ''}`}>
     <div className="mobile-menu-content">
-      <a href="#home" onClick={toggleMenu}>Home</a>
-      <a href="#about" onClick={toggleMenu}>About</a>
-      <a href="#experience" onClick={toggleMenu}>Experience</a>
-      <a href="#skills" onClick={toggleMenu}>Skills</a>
-      <a href="#projects" onClick={toggleMenu}>Projects</a>
-      <a href="#contact" onClick={toggleMenu}>Contact</a>
+      <a href="#home" onClick={toggleMenu} className="hover-effect">Home</a>
+      <a href="#about" onClick={toggleMenu} className="hover-effect">About</a>
+      <a href="#experience" onClick={toggleMenu} className="hover-effect">Experience</a>
+      <a href="#skills" onClick={toggleMenu} className="hover-effect">Skills</a>
+      <a href="#projects" onClick={toggleMenu} className="hover-effect">Projects</a>
+      <a href="#contact" onClick={toggleMenu} className="hover-effect">Contact</a>
     </div>
   </div>
 );
@@ -205,14 +224,14 @@ const Navbar = () => {
   return (
     <nav className={`navbar ${isScrolled ? 'scrolled' : ''}`}>
       <div className="container navbar-container">
-        <div className="logo">NK</div>
+        <div className="logo gradient-text">NK</div>
         <div className="nav-links desktop-nav">
-          <a href="#home">Home</a>
-          <a href="#about">About</a>
-          <a href="#experience">Experience</a>
-          <a href="#skills">Skills</a>
-          <a href="#projects">Projects</a>
-          <a href="#contact">Contact</a>
+          <a href="#home" className="hover-effect">Home</a>
+          <a href="#about" className="hover-effect">About</a>
+          <a href="#experience" className="hover-effect">Experience</a>
+          <a href="#skills" className="hover-effect">Skills</a>
+          <a href="#projects" className="hover-effect">Projects</a>
+          <a href="#contact" className="hover-effect">Contact</a>
         </div>
         <button className={`hamburger ${isMenuOpen ? 'active' : ''}`} onClick={toggleMenu} aria-label="Menu">
           <span></span>
@@ -248,11 +267,11 @@ const ExperienceSection = ({ experiences, achievements }) => {
   return (
     <section className="experience" id="experience">
       <div className="container">
-        <div className="section-header">
+        <div className="section-header" data-aos="fade-up" data-aos-duration="800">
           <h2>Professional Journey</h2>
         </div>
         
-        <div className="experience-tabs">
+        <div className="experience-tabs" data-aos="fade-up" data-aos-delay="200" data-aos-duration="800">
           <button 
             className={`experience-tab ${activeTab === 'all' ? 'active' : ''}`}
             onClick={() => setActiveTab('all')}
@@ -289,6 +308,7 @@ const ExperienceSection = ({ experiences, achievements }) => {
                   year={year}
                   isFirst={index === 0 || (filteredItems[index-1] && 
                     (filteredItems[index-1].period.split(' - ')[1] || filteredItems[index-1].period.split(' - ')[0]) !== year)}
+                  index={index}
                 />
               );
             })}
@@ -300,6 +320,16 @@ const ExperienceSection = ({ experiences, achievements }) => {
 };
 
 function App() {
+  useEffect(() => {
+    AOS.init({
+      duration: 800,
+      easing: 'ease-in-out',
+      once: true,
+      offset: 100,
+      delay: 0
+    });
+  }, []);
+
   const skillCategories = [
     {
       category: "Programming Languages",
@@ -307,7 +337,7 @@ function App() {
         { 
           logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/c/c-original.svg",
           name: "C",
-          level: 85  // Percentage of proficiency (optional)
+          level: 85
         },
         { 
           logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/java/java-original.svg",
@@ -396,7 +426,7 @@ function App() {
       description: "Led development of multiple full-stack applications using modern technologies. Collaborated with cross-functional teams to deliver high-quality software solutions.",
       skills: [
         {
-          name: "",
+          name: "OpenCV",
           description: "A real-time safety monitoring system using OpenCV and MediaPipe for detecting unsafe human actions and ensuring workplace safety."
         }
       ]
@@ -457,18 +487,24 @@ function App() {
       <Navbar />
 
       <main>
-        <section className="hero" id="home">
+        <section className="hero gradient-bg" id="home">
           <div className="container">
             <div className="hero-content">
-              <div className="avatar-container">
-                <div className="avatar">NK</div>
+              <div className="avatar-container" data-aos="zoom-in" data-aos-duration="1000">
+                <div className="avatar float">NK</div>
               </div>
-              <h1>Hello, I'm <span className="highlight">Nithin Kumar K</span></h1>
-              <h2 className="profession">Full Stack Developer</h2>
-              <p className="subtitle">Passionate about creating elegant, efficient, and user-friendly web applications that solve real-world problems.</p>
-              <div className="hero-cta">
-                <a href="#projects" className="primary-btn">View Projects</a>
-                <a href="#contact" className="secondary-btn">Contact Me</a>
+              <h1 data-aos="fade-up" data-aos-delay="200" data-aos-duration="1000">
+                Hello, I'm <span className="highlight glow">Nithin Kumar K</span>
+              </h1>
+              <h2 className="profession" data-aos="fade-up" data-aos-delay="400" data-aos-duration="1000">
+                Full Stack Developer
+              </h2>
+              <p className="subtitle" data-aos="fade-up" data-aos-delay="600" data-aos-duration="1000">
+                Passionate about creating elegant, efficient, and user-friendly web applications that solve real-world problems.
+              </p>
+              <div className="hero-cta" data-aos="fade-up" data-aos-delay="800" data-aos-duration="1000">
+                <a href="#projects" className="primary-btn shine-effect">View Projects</a>
+                <a href="#contact" className="secondary-btn hover-effect">Contact Me</a>
               </div>
             </div>
           </div>
@@ -476,11 +512,11 @@ function App() {
 
         <section className="about" id="about">
           <div className="container">
-            <div className="section-header">
+            <div className="section-header" data-aos="fade-up" data-aos-duration="800">
               <h2>About Me</h2>
             </div>
             <div className="about-content">
-              <div className="about-text">
+              <div className="about-text" data-aos="fade-right" data-aos-duration="800">
                 <p>
                   I am a passionate Full Stack Developer with expertise in building scalable web applications 
                   and solving complex problems. With a strong foundation in both frontend and backend technologies, 
@@ -492,16 +528,16 @@ function App() {
                   learning and exploring new technologies to enhance my skill set.
                 </p>
               </div>
-              <div className="about-stats">
-                <div className="stat-card">
+              <div className="about-stats" data-aos="fade-left" data-aos-delay="200" data-aos-duration="800">
+                <div className="stat-card glass-effect" data-aos="zoom-in" data-aos-delay="300" data-aos-duration="600">
                   <h3>5+</h3>
                   <p>Projects Completed</p>
                 </div>
-                <div className="stat-card">
+                <div className="stat-card glass-effect" data-aos="zoom-in" data-aos-delay="400" data-aos-duration="600">
                   <h3>3</h3>
                   <p>Current Projects</p>
                 </div>
-                <div className="stat-card">
+                <div className="stat-card glass-effect" data-aos="zoom-in" data-aos-delay="500" data-aos-duration="600">
                   <h3>2+</h3>
                   <p>Years Experience</p>
                 </div>
@@ -512,16 +548,16 @@ function App() {
 
         <section className="skills" id="skills">
           <div className="container">
-            <div className="section-header">
+            <div className="section-header" data-aos="fade-up" data-aos-duration="800">
               <h2>Technical Skills</h2>
             </div>
             
             {skillCategories.map((category, catIndex) => (
-              <div key={catIndex} className="skill-category">
+              <div key={catIndex} className="skill-category" data-aos="fade-up" data-aos-delay={catIndex * 200} data-aos-duration="800">
                 <h3 className="category-title">{category.category}</h3>
                 <div className="skills-grid">
                   {category.skills.map((skill, index) => (
-                    <SkillCard key={index} {...skill} />
+                    <SkillCard key={index} {...skill} index={index} />
                   ))}
                 </div>
               </div>
@@ -533,7 +569,7 @@ function App() {
 
         <section className="projects" id="projects">
           <div className="container">
-            <div className="section-header">
+            <div className="section-header" data-aos="fade-up" data-aos-duration="800">
               <h2>Featured Projects</h2>
             </div>
             <div className="project-grid">
@@ -541,6 +577,7 @@ function App() {
                 <ProjectCard 
                   key={index}
                   {...project}
+                  index={index}
                 />
               ))}
             </div>
@@ -551,26 +588,26 @@ function App() {
       <footer className="footer" id="contact">
         <div className="container">
           <div className="footer-content">
-            <div className="footer-main">
+            <div className="footer-main" data-aos="fade-up" data-aos-duration="800">
               <h2>Let's Work <span className="highlight">Together</span></h2>
               <p>I'm currently available for freelance work or full-time opportunities. If you're interested in collaborating on a project or discussing potential opportunities, feel free to reach out.</p>
               <div className="footer-cta">
-                <a href="mailto:ntbm8125@gmail.com" className="primary-btn">Start a Project</a>
-                <a href="#" className="secondary-btn">Download Resume</a>
+                <a href="mailto:ntbm8125@gmail.com" className="primary-btn shine-effect">Start a Project</a>
+                <a href="#" className="secondary-btn hover-effect">Download Resume</a>
               </div>
             </div>
             
             <div className="footer-grid">
-              <div className="footer-section">
+              <div className="footer-section" data-aos="fade-up" data-aos-delay="200" data-aos-duration="800">
                 <h3>Contact Information</h3>
                 <ul className="contact-list">
                   <li>
                     <FaEnvelope className="contact-icon" />
-                    <a href="mailto:ntbm8125@gmail.com">ntbm8125@gmail.com</a>
+                    <a href="mailto:ntbm8125@gmail.com" className="hover-effect">ntbm8125@gmail.com</a>
                   </li>
                   <li>
                     <FaMobileAlt className="contact-icon" />
-                    <a href="tel:+919398225082">+91 9398225082</a>
+                    <a href="tel:+919398225082" className="hover-effect">+91 9398225082</a>
                   </li>
                   <li>
                     <FaMapMarkerAlt className="contact-icon" />
@@ -579,28 +616,30 @@ function App() {
                 </ul>
               </div>
               
-              <div className="footer-section">
+              <div className="footer-section" data-aos="fade-up" data-aos-delay="400" data-aos-duration="800">
                 <h3>Connect With Me</h3>
                 <div className="social-links">
-                  <a href="https://github.com/nithin2k5/" target="_blank" rel="noopener noreferrer" className="social-icon" aria-label="Github">
+                  <a href="https://github.com/nithin2k5/" target="_blank" rel="noopener noreferrer" className="social-icon hover-effect" aria-label="Github">
                     <FaGithub />
                   </a>
-                  <a href="https://www.linkedin.com/in/nithin-kumar-k-b17b90297/" target="_blank" rel="noopener noreferrer" className="social-icon" aria-label="LinkedIn">
+                  <a href="https://www.linkedin.com/in/nithin-kumar-k-b17b90297/" target="_blank" rel="noopener noreferrer" className="social-icon hover-effect" aria-label="LinkedIn">
                     <FaLinkedin />
                   </a>
-                  <a href="https://www.instagram.com/void.nxt/" target="_blank" rel="noopener noreferrer" className="social-icon" aria-label="Instagram"></a>
+                  <a href="https://www.instagram.com/void.nxt/" target="_blank" rel="noopener noreferrer" className="social-icon hover-effect" aria-label="Instagram">
+                    <FaInstagram />
+                  </a>
                 </div>
                 <p className="social-text">Follow me on social media to stay updated with my latest projects and professional journey.</p>
               </div>
               
-              <div className="footer-section">
+              <div className="footer-section" data-aos="fade-up" data-aos-delay="600" data-aos-duration="800">
                 <h3>Quick Links</h3>
                 <nav className="footer-nav">
-                  <a href="#home">Home</a>
-                  <a href="#about">About</a>
-                  <a href="#skills">Skills</a>
-                  <a href="#experience">Experience</a>
-                  <a href="#projects">Projects</a>
+                  <a href="#home" className="hover-effect">Home</a>
+                  <a href="#about" className="hover-effect">About</a>
+                  <a href="#skills" className="hover-effect">Skills</a>
+                  <a href="#experience" className="hover-effect">Experience</a>
+                  <a href="#projects" className="hover-effect">Projects</a>
                 </nav>
               </div>
             </div>
@@ -608,13 +647,15 @@ function App() {
             <div className="footer-bottom">
               <p>© {new Date().getFullYear()} Nithin Kumar K. All rights reserved.</p>
               <div className="footer-bottom-links">
-                <a href="#privacy">Privacy Policy</a>
-                <a href="#terms">Terms of Service</a>
+                <a href="#privacy" className="hover-effect">Privacy Policy</a>
+                <a href="#terms" className="hover-effect">Terms of Service</a>
               </div>
             </div>
           </div>
         </div>
       </footer>
+
+      <ScrollToTop />
     </div>
   );
 }

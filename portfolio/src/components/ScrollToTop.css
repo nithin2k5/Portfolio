@@ -1,0 +1,148 @@
+.scroll-to-top {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background: rgba(139, 92, 246, 0.1);
+  border: 2px solid rgba(139, 92, 246, 0.3);
+  color: #8B5CF6;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: 1000;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+.scroll-to-top:hover {
+  background: rgba(139, 92, 246, 0.2);
+  border-color: #8B5CF6;
+  transform: translateY(-5px);
+  box-shadow: 0 8px 30px rgba(139, 92, 246, 0.4);
+}
+
+.scroll-to-top:active {
+  transform: translateY(-2px);
+}
+
+.scroll-icon {
+  font-size: 1.2rem;
+  transition: transform 0.3s ease;
+}
+
+.scroll-to-top:hover .scroll-icon {
+  transform: translateY(-2px);
+}
+
+/* Enhanced focus states */
+.scroll-to-top:focus {
+  outline: none;
+  border-color: #A78BFA;
+  box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.3);
+}
+
+/* Animation for entrance */
+.scroll-to-top[data-aos="fade-in"] {
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+.scroll-to-top[data-aos="fade-in"].aos-animate {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Pulse animation on hover */
+@keyframes pulse {
+  0% {
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+  }
+  50% {
+    box-shadow: 0 4px 20px rgba(139, 92, 246, 0.4);
+  }
+  100% {
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+  }
+}
+
+.scroll-to-top:hover {
+  animation: pulse 2s infinite;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .scroll-to-top {
+    bottom: 20px;
+    right: 20px;
+    width: 45px;
+    height: 45px;
+  }
+  
+  .scroll-icon {
+    font-size: 1.1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .scroll-to-top {
+    bottom: 15px;
+    right: 15px;
+    width: 40px;
+    height: 40px;
+  }
+  
+  .scroll-icon {
+    font-size: 1rem;
+  }
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  .scroll-to-top {
+    background: rgba(255, 255, 255, 0.9);
+    border-color: #000000;
+    color: #000000;
+  }
+  
+  .scroll-to-top:hover {
+    background: #ffffff;
+    border-color: #000000;
+  }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  .scroll-to-top {
+    transition: none;
+  }
+  
+  .scroll-to-top:hover {
+    transform: none;
+    animation: none;
+  }
+  
+  .scroll-icon {
+    transition: none;
+  }
+  
+  .scroll-to-top:hover .scroll-icon {
+    transform: none;
+  }
+}
+
+/* Dark mode adjustments */
+@media (prefers-color-scheme: dark) {
+  .scroll-to-top {
+    background: rgba(139, 92, 246, 0.15);
+    border-color: rgba(139, 92, 246, 0.4);
+  }
+  
+  .scroll-to-top:hover {
+    background: rgba(139, 92, 246, 0.25);
+    border-color: #8B5CF6;
+  }
+}
