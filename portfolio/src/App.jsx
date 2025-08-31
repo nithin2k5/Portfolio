@@ -152,17 +152,6 @@ function App() {
                 <span>Available for opportunities</span>
               </div>
 
-              <div className="avatar-container">
-                <div className="avatar">
-                  <span className="avatar-text">NK</span>
-                  <div className="avatar-glow"></div>
-                </div>
-                <div className="avatar-decoration">
-                  <div className="decoration-line line-1"></div>
-                  <div className="decoration-line line-2"></div>
-                </div>
-              </div>
-
               <div className="hero-text">
                 <div className="greeting">
                   <span className="wave">👋</span>
@@ -181,20 +170,7 @@ function App() {
                 </p>
               </div>
 
-              <div className="hero-stats">
-                <div className="stat-item">
-                  <div className="stat-number">3+</div>
-                  <div className="stat-label">Years Experience</div>
-                </div>
-                <div className="stat-item">
-                  <div className="stat-number">10+</div>
-                  <div className="stat-label">Projects Built</div>
-                </div>
-                <div className="stat-item">
-                  <div className="stat-number">5+</div>
-                  <div className="stat-label">Technologies</div>
-                </div>
-              </div>
+
 
               <div className="hero-cta">
                 <a href="#projects" className="primary-btn">
@@ -236,12 +212,23 @@ function App() {
               <p className="about-description">
                 Hello, World! I am Nithin Kumar K, a Full-Stack Developer passionate about crafting high-performance, scalable web applications. With a strong foundation in Next.js, React, Node.js, and modern web technologies, I thrive on building seamless user experiences and optimizing system performance.
               </p>
-              <p className="about-description">
-                With experience in both frontend and backend development, I have worked on multiple projects. I also enjoy learning and exploring new technologies to stay updated with the latest industry trends.
-              </p>
-              <p className="about-description">
-                One of my notable projects includes an e-commerce platform and various web applications. I am currently seeking internship and full-time software roles where I can contribute my skills and grow as a developer.
-              </p>
+
+
+              <div className="about-stats">
+                <div className="stat-item">
+                  <div className="stat-number">3+</div>
+                  <div className="stat-label">Years Experience</div>
+                </div>
+                <div className="stat-item">
+                  <div className="stat-number">10+</div>
+                  <div className="stat-label">Projects Built</div>
+                </div>
+                <div className="stat-item">
+                  <div className="stat-number">5+</div>
+                  <div className="stat-label">Technologies</div>
+                </div>
+              </div>
+
               <div className="about-cta">
                 <a href="#contact" className="cta-btn">
                   Let's connect and collaborate!
@@ -334,23 +321,7 @@ function App() {
           </div>
         </section>
 
-        {/* Education Section */}
-        <section className="education" id="education">
-          <div className="container">
-            <div className="section-header">
-              <h2>Education</h2>
-            </div>
-            <div className="education-content">
-              <div className="education-item">
-                <div className="education-info">
-                  <h3 className="university-name">VR Siddhartha Engineering College</h3>
-                  <h4 className="degree">Bachelor of Technology in Computer Science & Engineering</h4>
-                  <p className="education-period">2021 - 2025</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
+        
 
         {/* Projects Section */}
         <section className="projects" id="projects">

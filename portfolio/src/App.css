@@ -697,6 +697,39 @@ body {
   transition: color 0.3s ease;
 }
 
+.about-stats {
+  display: flex;
+  justify-content: center;
+  gap: 3rem;
+  margin: 3rem 0;
+  flex-wrap: wrap;
+}
+
+.about-stats .stat-item {
+  text-align: center;
+  padding: 1.5rem;
+  background-color: var(--bg-secondary);
+  border-radius: 15px;
+  border: 1px solid var(--border-color);
+  min-width: 140px;
+  transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+.about-stats .stat-number {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 0.75rem;
+  transition: color 0.3s ease;
+}
+
+.about-stats .stat-label {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  font-weight: 500;
+  transition: color 0.3s ease;
+}
+
 .about-cta {
   text-align: center;
   margin-top: 2rem;
@@ -1092,8 +1125,18 @@ body {
     margin-bottom: 2rem;
   }
 
-  .hero-stats {
+  .about-stats {
     gap: 2rem;
+    margin: 2rem 0;
+  }
+
+  .about-stats .stat-item {
+    min-width: 120px;
+    padding: 1rem;
+  }
+
+  .about-stats .stat-number {
+    font-size: 2rem;
   }
 
   .stat-item {
@@ -1213,8 +1256,18 @@ body {
     font-size: 0.95rem;
   }
 
-  .hero-stats {
+  .about-stats {
     gap: 1.5rem;
+    margin: 1.5rem 0;
+  }
+
+  .about-stats .stat-item {
+    min-width: 80px;
+    padding: 0.75rem;
+  }
+
+  .about-stats .stat-number {
+    font-size: 1.8rem;
   }
 
   .stat-item {
