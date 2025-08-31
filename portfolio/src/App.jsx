@@ -1,211 +1,51 @@
-import React, { useCallback, useState, useEffect } from 'react';
+import React, { useState, useEffect, createContext, useContext } from 'react';
 import './App.css';
-import './animations.css';
-import { FaReact, FaNode, FaPython, FaDatabase, FaGithub, FaLinkedin, FaTwitter, FaEnvelope, FaMapMarkerAlt, FaMobileAlt, FaInstagram } from 'react-icons/fa';
-import { SiJavascript, SiTypescript, SiMongodb } from 'react-icons/si';
-import Particles from "react-tsparticles";
-import { loadSlim } from "tsparticles-slim";
-import AOS from 'aos';
-import 'aos/dist/aos.css';
+import { FaReact, FaNode, FaPython, FaGithub, FaEnvelope, FaArrowRight, FaHome, FaUser, FaCode, FaFolder, FaJava, FaDocker, FaMoon, FaSun } from 'react-icons/fa';
+import { SiJavascript, SiTypescript, SiMongodb, SiNextdotjs, SiMysql, SiRedis } from 'react-icons/si';
 import ScrollToTop from './components/ScrollToTop';
 
-const ProjectCard = ({ title, description, image, techStack, liveLink, index }) => (
-  <div 
-    className="project-card glass-effect" 
-    data-aos="fade-up" 
-    data-aos-delay={index * 100}
-    data-aos-duration="800"
-  >
-    <div className="project-image">
-      <img src={image} alt={title} loading="lazy" />
-      <div className="project-overlay">
-        <a href={liveLink} target="_blank" rel="noopener noreferrer" className="project-link shine-effect">
-          View Project
-        </a>
-      </div>
-    </div>
-    <div className="project-content">
-      <span className="project-label">Featured Project</span>
-      <h3>{title}</h3>
-      <p>{description}</p>
-      <div className="project-tech">
-        {techStack && techStack.map((tech, techIndex) => (
-          <span key={techIndex} className="tech-tag hover-effect">{tech}</span>
-        ))}
-      </div>
-    </div>
-  </div>
-);
+// Theme Context
+const ThemeContext = createContext();
 
-const ExperienceCard = ({ title, company, period, description, skills, type, year, isFirst, index }) => (
-  <div 
-    className={`experience-card ${type.toLowerCase()}`}
-    data-aos="fade-right"
-    data-aos-delay={index * 150}
-    data-aos-duration="1000"
-  >
-    {isFirst && <div className="timeline-year">{year}</div>}
-    <div className="experience-card-content glass-effect">
-      <div className="experience-header">
-        <span className="experience-type">{type}</span>
-        <h3>{title}</h3>
-        <h4>{company}</h4>
-        <span className="experience-period">{period}</span>
-      </div>
-      <div className="experience-body">
-        <p className="description">{description}</p>
-        {skills && (
-          <div className="experience-skills">
-            {skills.map((skill, idx) => (
-              <span key={idx} className="skill-tag hover-effect">
-                {skill.name}
-              </span>
-            ))}
-          </div>
-        )}
-      </div>
-    </div>
-  </div>
-);
+const ThemeProvider = ({ children }) => {
+  const [isDarkMode, setIsDarkMode] = useState(() => {
+    const savedTheme = localStorage.getItem('theme');
+    return savedTheme === 'dark';
+  });
 
-const SkillCard = ({ logo, name, level, index }) => (
-  <div 
-    className="skill-card glass-effect" 
-    data-aos="zoom-in" 
-    data-aos-delay={index * 100}
-    data-aos-duration="600"
-  >
-    <div className="logo-container">
-      <img src={logo} alt={name} className="skill-logo" loading="lazy" />
-    </div>
-    <div className="skill-name-container">
-      <h3>{name}</h3>
-      {level && (
-        <div className="skill-level">
-          <div className="skill-level-fill" style={{ width: `${level}%` }}></div>
-        </div>
-      )}
-    </div>
-  </div>
-);
+  useEffect(() => {
+    if (isDarkMode) {
+      document.documentElement.setAttribute('data-theme', 'dark');
+      localStorage.setItem('theme', 'dark');
+    } else {
+      document.documentElement.setAttribute('data-theme', 'light');
+      localStorage.setItem('theme', 'light');
+    }
+  }, [isDarkMode]);
 
-const ParticlesBackground = () => {
-  const particlesInit = useCallback(async (engine) => {
-    await loadSlim(engine);
-  }, []);
+  const toggleTheme = () => {
+    setIsDarkMode(prev => !prev);
+  };
 
   return (
-    <Particles
-      id="tsparticles"
-      init={particlesInit}
-      options={{
-        fpsLimit: 120,
-        fullScreen: {
-          enable: true,
-          zIndex: -1
-        },
-        background: {
-          color: {
-            value: "transparent",
-          },
-        },
-        particles: {
-          color: {
-            value: ["#8B5CF6", "#A78BFA", "#C4B5FD"],
-          },
-          links: {
-            color: "#8B5CF6",
-            distance: 150,
-            enable: true,
-            opacity: 0.3,
-            width: 1,
-          },
-          move: {
-            direction: "none",
-            enable: true,
-            outModes: {
-              default: "bounce",
-            },
-            random: true,
-            speed: 1,
-            straight: false,
-          },
-          number: {
-            density: {
-              enable: true,
-              area: 800,
-            },
-            value: 60,
-          },
-          opacity: {
-            value: { min: 0.1, max: 0.6 },
-            animation: {
-              enable: true,
-              speed: 1.5,
-              minimumValue: 0.1,
-              sync: false,
-            },
-          },
-          shape: {
-            type: "circle",
-          },
-          size: {
-            value: { min: 1, max: 3 },
-            animation: {
-              enable: true,
-              speed: 2,
-              minimumValue: 1,
-              sync: false,
-            },
-          },
-        },
-        interactivity: {
-          detectsOn: "canvas",
-          events: {
-            onHover: {
-              enable: true,
-              mode: "grab",
-            },
-            onClick: {
-              enable: true,
-              mode: "push",
-            },
-            resize: true,
-          },
-          modes: {
-            grab: {
-              distance: 140,
-              links: {
-                opacity: 0.8,
-              },
-            },
-            push: {
-              quantity: 4,
-            },
-          },
-        },
-        detectRetina: true,
-      }}
-    />
+    <ThemeContext.Provider value={{ isDarkMode, toggleTheme }}>
+      {children}
+    </ThemeContext.Provider>
   );
 };
 
-const MobileMenu = ({ isOpen, toggleMenu }) => (
-  <div className={`mobile-menu ${isOpen ? 'active' : ''}`}>
-    <div className="mobile-menu-content">
-      <a href="#home" onClick={toggleMenu} className="hover-effect">Home</a>
-      <a href="#about" onClick={toggleMenu} className="hover-effect">About</a>
-      <a href="#experience" onClick={toggleMenu} className="hover-effect">Experience</a>
-      <a href="#skills" onClick={toggleMenu} className="hover-effect">Skills</a>
-      <a href="#projects" onClick={toggleMenu} className="hover-effect">Projects</a>
-      <a href="#contact" onClick={toggleMenu} className="hover-effect">Contact</a>
-    </div>
-  </div>
-);
+const useTheme = () => {
+  const context = useContext(ThemeContext);
+  if (!context) {
+    throw new Error('useTheme must be used within a ThemeProvider');
+  }
+  return context;
+};
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
+  const { isDarkMode, toggleTheme } = useTheme();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -223,434 +63,344 @@ const Navbar = () => {
 
   return (
     <nav className={`navbar ${isScrolled ? 'scrolled' : ''}`}>
-      <div className="container navbar-container">
-        <div className="logo gradient-text">NK</div>
+      <div className="navbar-container">
+        <div className="logo">NK</div>
         <div className="nav-links desktop-nav">
-          <a href="#home" className="hover-effect">Home</a>
-          <a href="#about" className="hover-effect">About</a>
-          <a href="#experience" className="hover-effect">Experience</a>
-          <a href="#skills" className="hover-effect">Skills</a>
-          <a href="#projects" className="hover-effect">Projects</a>
-          <a href="#contact" className="hover-effect">Contact</a>
+          <button className="nav-button" onClick={() => document.getElementById('home').scrollIntoView({ behavior: 'smooth' })}>
+            <FaHome className="nav-icon" />
+          </button>
+          <button className="nav-button" onClick={() => document.getElementById('about').scrollIntoView({ behavior: 'smooth' })}>
+            <FaUser className="nav-icon" />
+          </button>
+          <button className="nav-button" onClick={() => document.getElementById('stack').scrollIntoView({ behavior: 'smooth' })}>
+            <FaCode className="nav-icon" />
+          </button>
+          <button className="nav-button" onClick={() => document.getElementById('projects').scrollIntoView({ behavior: 'smooth' })}>
+            <FaFolder className="nav-icon" />
+          </button>
+          <button className="nav-button" onClick={() => document.getElementById('contact').scrollIntoView({ behavior: 'smooth' })}>
+            <FaEnvelope className="nav-icon" />
+          </button>
         </div>
+        <button className="theme-toggle" onClick={toggleTheme} aria-label="Toggle theme">
+          {isDarkMode ? <FaSun className="nav-icon" /> : <FaMoon className="nav-icon" />}
+        </button>
         <button className={`hamburger ${isMenuOpen ? 'active' : ''}`} onClick={toggleMenu} aria-label="Menu">
           <span></span>
           <span></span>
           <span></span>
         </button>
-        <MobileMenu isOpen={isMenuOpen} toggleMenu={toggleMenu} />
+        <div className={`mobile-menu ${isMenuOpen ? 'active' : ''}`}>
+          <div className="mobile-menu-content">
+            <a href="#home" onClick={toggleMenu}>Home</a>
+            <a href="#about" onClick={toggleMenu}>About</a>
+            <a href="#stack" onClick={toggleMenu}>Stack</a>
+            <a href="#projects" onClick={toggleMenu}>Projects</a>
+            <a href="#contact" onClick={toggleMenu}>Contact</a>
+          </div>
+        </div>
       </div>
     </nav>
   );
 };
 
-const ExperienceSection = ({ experiences, achievements }) => {
-  const [activeTab, setActiveTab] = useState('all');
-  
-  // Group experiences by year
-  const experiencesByYear = {};
-  
-  // Filter items based on active tab
-  const filteredItems = activeTab === 'all' 
-    ? [...experiences, ...achievements]
-    : activeTab === 'experience' 
-      ? experiences 
-      : achievements;
-      
-  // Sort by most recent first
-  filteredItems.sort((a, b) => {
-    const yearA = parseInt(a.period.split(' - ')[1] || a.period.split(' - ')[0]);
-    const yearB = parseInt(b.period.split(' - ')[1] || b.period.split(' - ')[0]);
-    return yearB - yearA;
-  });
-
-  return (
-    <section className="experience" id="experience">
-      <div className="container">
-        <div className="section-header" data-aos="fade-up" data-aos-duration="800">
-          <h2>Professional Journey</h2>
-        </div>
-        
-        <div className="experience-tabs" data-aos="fade-up" data-aos-delay="200" data-aos-duration="800">
-          <button 
-            className={`experience-tab ${activeTab === 'all' ? 'active' : ''}`}
-            onClick={() => setActiveTab('all')}
-          >
-            All
-          </button>
-          <button 
-            className={`experience-tab ${activeTab === 'experience' ? 'active' : ''}`}
-            onClick={() => setActiveTab('experience')}
-          >
-            Experience
-          </button>
-          <button 
-            className={`experience-tab ${activeTab === 'achievement' ? 'active' : ''}`}
-            onClick={() => setActiveTab('achievement')}
-          >
-            Achievements
-          </button>
-        </div>
-        
-        <div className="experience-content">
-          <div className="experience-timeline">
-            {filteredItems.map((item, index) => {
-              const isExperience = experiences.includes(item);
-              const type = isExperience ? 'experience' : 'achievement';
-              const period = item.period;
-              const year = period.split(' - ')[1] || period.split(' - ')[0];
-              
-              return (
-                <ExperienceCard 
-                  key={`${type}-${index}`} 
-                  {...item} 
-                  type={isExperience ? 'Experience' : 'Achievement'}
-                  year={year}
-                  isFirst={index === 0 || (filteredItems[index-1] && 
-                    (filteredItems[index-1].period.split(' - ')[1] || filteredItems[index-1].period.split(' - ')[0]) !== year)}
-                  index={index}
-                />
-              );
-            })}
-          </div>
-        </div>
-      </div>
-    </section>
-  );
-};
-
 function App() {
-  useEffect(() => {
-    AOS.init({
-      duration: 800,
-      easing: 'ease-in-out',
-      once: true,
-      offset: 100,
-      delay: 0
-    });
-  }, []);
-
-  const skillCategories = [
-    {
-      category: "Programming Languages",
-      skills: [
-        { 
-          logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/c/c-original.svg",
-          name: "C",
-          level: 85
-        },
-        { 
-          logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/java/java-original.svg",
-          name: "Java",
-          level: 80
-        },
-        { 
-          logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/python/python-original.svg",
-          name: "Python",
-          level: 90
-        },
-        { 
-          logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/csharp/csharp-original.svg",
-          name: "C#",
-          level: 75
-        },
-        { 
-          logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg",
-          name: "JavaScript",
-          level: 95
-        }
-      ]
-    },
-    {
-      category: "Frontend Technologies",
-      skills: [
-        { 
-          logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg",
-          name: "React",
-          level: 90
-        },
-        { 
-          logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nextjs/nextjs-original.svg",
-          name: "Next.js",
-          level: 85
-        },
-        { 
-          logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg",
-          name: "React Native",
-          level: 85
-        },
-        { 
-          logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/dot-net/dot-net-original.svg",
-          name: ".NET Framework",
-          level: 75
-        },
-        { 
-          logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/html5/html5-original.svg",
-          name: "HTML5",
-          level: 95
-        },
-        { 
-          logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/css3/css3-original.svg",
-          name: "CSS3",
-          level: 90
-        }
-      ]
-    },
-    {
-      category: "Databases",
-      skills: [
-        { 
-          logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mysql/mysql-original.svg",
-          name: "MySQL",
-          level: 85
-        },
-        {
-          logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mongodb/mongodb-original.svg",
-          name: "MongoDB",
-          level: 80
-        },
-        {
-          logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/postgresql/postgresql-original.svg",
-          name: "PostgreSQL",
-          level: 75
-        }
-      ]
-    }
-  ];
-
-  const experiences = [
-    {
-      title: "Computer Vision Engineer",
-      company: "Infac India ltd.",
-      period: "14/5/2025 - 4/6/2025",
-      description: "Led development of multiple full-stack applications using modern technologies. Collaborated with cross-functional teams to deliver high-quality software solutions.",
-      skills: [
-        {
-          name: "OpenCV",
-          description: "A real-time safety monitoring system using OpenCV and MediaPipe for detecting unsafe human actions and ensuring workplace safety."
-        }
-      ]
-    },
-  ];
-
-  const achievements = [
-    {
-      title: "Hackathon Runner Up",
-      company: "VR Siddhartha Engineering College",
-      period: "2024",
-      description: "Won second place in national level webathon with an innovative project that solved real-world problems using cutting-edge technologies.",
-      skills: [
-        {
-          name: "Full Stack Web Development",
-          description: "Developed unique AI-powered solution for healthcare"
-        },
-        {
-          name: "Problem Solving",
-          description: "Created innovative solutions under tight deadlines"
-        }
-      ]
-    },
-  ];
+  const { isDarkMode } = useTheme();
 
   const projects = [
     {
-      title: "E-commerce Website",
+      title: "Pazaar",
       description: "A full-featured e-commerce platform with secure payment processing, user accounts, and product management capabilities.",
-      image: "https://i.imghippo.com/files/tbt2932c.png",
       techStack: ["React", "Spring Boot", "MySQL"],
-      liveLink: "https://pazaar.vercel.app"
+      liveLink: "https://pazaar.vercel.app",
+      githubLink: "https://github.com/nithin2k5/pazaar"
     },
     {
-      title: "Pazaar",
+      title: "Arbeit",
       description: "Smart job portal with built-in resume builder, connecting job seekers with employers for seamless hiring experiences.",
-      image: "https://i.imghippo.com/files/FHki3312Ywo.png",
       techStack: ["Next.js", "Node.js", "MongoDB"],
-      liveLink: "https://arbeit-vrs.vercel.app"
+      liveLink: "https://arbeit-vrs.vercel.app",
+      githubLink: "https://github.com/nithin2k5/arbeit"
     },
     {
       title: "SpeedxType",
       description: "Improve your typing speed and accuracy with interactive tests and real-time performance tracking.",
-      image: "https://i.imghippo.com/files/wYe9465CIY.png",
       techStack: ["Next.js", "CSS", "JavaScript"],
-      liveLink: "https://speedxtype.vercel.app"
+      liveLink: "https://speedxtype.vercel.app",
+      githubLink: "https://github.com/nithin2k5/speedxtype"
     }
   ];
 
-  // If you prefer the simple flat list, you can flatten all skills:
-  const skills = skillCategories.reduce((allSkills, category) => {
-    return [...allSkills, ...category.skills];
-  }, []);
-
   return (
     <div className="app">
-      <ParticlesBackground />
       <Navbar />
 
       <main>
-        <section className="hero gradient-bg" id="home">
+        {/* Hero Section */}
+        <section className="hero" id="home">
+          <div className="hero-background">
+            <div className="floating-shapes">
+              <div className="shape shape-1"></div>
+              <div className="shape shape-2"></div>
+              <div className="shape shape-3"></div>
+            </div>
+          </div>
           <div className="container">
             <div className="hero-content">
-              <div className="avatar-container" data-aos="zoom-in" data-aos-duration="1000">
-                <div className="avatar float">NK</div>
+              <div className="hero-status">
+                <div className="status-dot"></div>
+                <span>Available for opportunities</span>
               </div>
-              <h1 data-aos="fade-up" data-aos-delay="200" data-aos-duration="1000">
-                Hello, I'm <span className="highlight glow">Nithin Kumar K</span>
-              </h1>
-              <h2 className="profession" data-aos="fade-up" data-aos-delay="400" data-aos-duration="1000">
-                Full Stack Developer
-              </h2>
-              <p className="subtitle" data-aos="fade-up" data-aos-delay="600" data-aos-duration="1000">
-                Passionate about creating elegant, efficient, and user-friendly web applications that solve real-world problems.
-              </p>
-              <div className="hero-cta" data-aos="fade-up" data-aos-delay="800" data-aos-duration="1000">
-                <a href="#projects" className="primary-btn shine-effect">View Projects</a>
-                <a href="#contact" className="secondary-btn hover-effect">Contact Me</a>
+
+              <div className="avatar-container">
+                <div className="avatar">
+                  <span className="avatar-text">NK</span>
+                  <div className="avatar-glow"></div>
+                </div>
+                <div className="avatar-decoration">
+                  <div className="decoration-line line-1"></div>
+                  <div className="decoration-line line-2"></div>
+                </div>
+              </div>
+
+              <div className="hero-text">
+                <div className="greeting">
+                  <span className="wave">👋</span>
+                  <span className="greeting-text">Hello, I'm</span>
+                </div>
+                <h1 className="hero-title">
+                  <span className="hero-name">Nithin Kumar K</span>
+                </h1>
+                <div className="typing-container">
+                  <span className="typed-text"></span>
+                  <span className="cursor">|</span>
+                </div>
+                <p className="hero-description">
+                  Third year Computer Science student passionate about crafting digital experiences through code.
+                  Full Stack Developer based in India, specializing in modern web technologies and scalable applications.
+                </p>
+              </div>
+
+              <div className="hero-stats">
+                <div className="stat-item">
+                  <div className="stat-number">3+</div>
+                  <div className="stat-label">Years Experience</div>
+                </div>
+                <div className="stat-item">
+                  <div className="stat-number">10+</div>
+                  <div className="stat-label">Projects Built</div>
+                </div>
+                <div className="stat-item">
+                  <div className="stat-number">5+</div>
+                  <div className="stat-label">Technologies</div>
+                </div>
+              </div>
+
+              <div className="hero-cta">
+                <a href="#projects" className="primary-btn">
+                  <span>View My Work</span>
+                  <FaArrowRight className="btn-icon" />
+                </a>
+                <a href="#contact" className="secondary-btn">
+                  <FaEnvelope className="btn-icon" />
+                  <span>Let's Connect</span>
+                </a>
+              </div>
+
+              <div className="hero-social">
+                <a href="https://github.com/nithin2k5" target="_blank" rel="noopener noreferrer" className="social-link">
+                  <FaGithub />
+                </a>
+                <a href="mailto:ntbm8125@gmail.com" className="social-link">
+                  <FaEnvelope />
+                </a>
+              </div>
+
+              <div className="scroll-indicator">
+                <div className="scroll-mouse">
+                  <div className="scroll-wheel"></div>
+                </div>
+                <span>Scroll to explore</span>
               </div>
             </div>
           </div>
         </section>
 
+        {/* About Section */}
         <section className="about" id="about">
           <div className="container">
-            <div className="section-header" data-aos="fade-up" data-aos-duration="800">
-              <h2>About Me</h2>
+            <div className="section-header">
+              <h2>About</h2>
             </div>
             <div className="about-content">
-              <div className="about-text" data-aos="fade-right" data-aos-duration="800">
-                <p>
-                  I am a passionate Full Stack Developer with expertise in building scalable web applications 
-                  and solving complex problems. With a strong foundation in both frontend and backend technologies, 
-                  I strive to create efficient and user-friendly solutions that make a difference.
-                </p>
-                <p>
-                  My approach combines technical excellence with creative problem-solving, enabling me to develop
-                  applications that are not only functional but also intuitive and enjoyable to use. I'm constantly
-                  learning and exploring new technologies to enhance my skill set.
-                </p>
-              </div>
-              <div className="about-stats" data-aos="fade-left" data-aos-delay="200" data-aos-duration="800">
-                <div className="stat-card glass-effect" data-aos="zoom-in" data-aos-delay="300" data-aos-duration="600">
-                  <h3>5+</h3>
-                  <p>Projects Completed</p>
-                </div>
-                <div className="stat-card glass-effect" data-aos="zoom-in" data-aos-delay="400" data-aos-duration="600">
-                  <h3>3</h3>
-                  <p>Current Projects</p>
-                </div>
-                <div className="stat-card glass-effect" data-aos="zoom-in" data-aos-delay="500" data-aos-duration="600">
-                  <h3>2+</h3>
-                  <p>Years Experience</p>
-                </div>
+              <p className="about-description">
+                Hello, World! I am Nithin Kumar K, a Full-Stack Developer passionate about crafting high-performance, scalable web applications. With a strong foundation in Next.js, React, Node.js, and modern web technologies, I thrive on building seamless user experiences and optimizing system performance.
+              </p>
+              <p className="about-description">
+                With experience in both frontend and backend development, I have worked on multiple projects. I also enjoy learning and exploring new technologies to stay updated with the latest industry trends.
+              </p>
+              <p className="about-description">
+                One of my notable projects includes an e-commerce platform and various web applications. I am currently seeking internship and full-time software roles where I can contribute my skills and grow as a developer.
+              </p>
+              <div className="about-cta">
+                <a href="#contact" className="cta-btn">
+                  Let's connect and collaborate!
+                </a>
               </div>
             </div>
           </div>
         </section>
 
-        <section className="skills" id="skills">
+        {/* Tech Stack Section */}
+        <section className="tech-stack" id="stack">
           <div className="container">
-            <div className="section-header" data-aos="fade-up" data-aos-duration="800">
-              <h2>Technical Skills</h2>
+            <div className="section-header">
+              <h2>Stack</h2>
             </div>
-            
-            {skillCategories.map((category, catIndex) => (
-              <div key={catIndex} className="skill-category" data-aos="fade-up" data-aos-delay={catIndex * 200} data-aos-duration="800">
-                <h3 className="category-title">{category.category}</h3>
-                <div className="skills-grid">
-                  {category.skills.map((skill, index) => (
-                    <SkillCard key={index} {...skill} index={index} />
-                  ))}
+            <div className="tech-grid">
+              <div className="tech-item">
+                <div className="tech-icon">
+                  <SiTypescript />
                 </div>
+                <span className="tech-name">TypeScript</span>
               </div>
-            ))}
+              <div className="tech-item">
+                <div className="tech-icon">
+                  <SiJavascript />
+                </div>
+                <span className="tech-name">JavaScript</span>
+              </div>
+              <div className="tech-item">
+                <div className="tech-icon">
+                  <FaPython />
+                </div>
+                <span className="tech-name">Python</span>
+              </div>
+              <div className="tech-item">
+                <div className="tech-icon">
+                  <FaJava />
+                </div>
+                <span className="tech-name">Java</span>
+              </div>
+              <div className="tech-item">
+                <div className="tech-icon">
+                  <FaNode />
+                </div>
+                <span className="tech-name">Node.js</span>
+              </div>
+              <div className="tech-item">
+                <div className="tech-icon">
+                  <FaReact />
+                </div>
+                <span className="tech-name">React</span>
+              </div>
+              <div className="tech-item">
+                <div className="tech-icon">
+                  <SiNextdotjs />
+                </div>
+                <span className="tech-name">Next.js</span>
+              </div>
+              <div className="tech-item">
+                <div className="tech-icon">
+                  <FaGithub />
+                </div>
+                <span className="tech-name">Git</span>
+              </div>
+              <div className="tech-item">
+                <div className="tech-icon">
+                  <FaDocker />
+                </div>
+                <span className="tech-name">Docker</span>
+              </div>
+              <div className="tech-item">
+                <div className="tech-icon">
+                  <SiMongodb />
+                </div>
+                <span className="tech-name">MongoDB</span>
+              </div>
+              <div className="tech-item">
+                <div className="tech-icon">
+                  <SiMysql />
+                </div>
+                <span className="tech-name">MySQL</span>
+              </div>
+              <div className="tech-item">
+                <div className="tech-icon">
+                  <SiRedis />
+                </div>
+                <span className="tech-name">Redis</span>
+              </div>
+            </div>
           </div>
         </section>
 
-        <ExperienceSection experiences={experiences} achievements={achievements} />
+        {/* Education Section */}
+        <section className="education" id="education">
+          <div className="container">
+            <div className="section-header">
+              <h2>Education</h2>
+            </div>
+            <div className="education-content">
+              <div className="education-item">
+                <div className="education-info">
+                  <h3 className="university-name">VR Siddhartha Engineering College</h3>
+                  <h4 className="degree">Bachelor of Technology in Computer Science & Engineering</h4>
+                  <p className="education-period">2021 - 2025</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
 
+        {/* Projects Section */}
         <section className="projects" id="projects">
           <div className="container">
-            <div className="section-header" data-aos="fade-up" data-aos-duration="800">
-              <h2>Featured Projects</h2>
+            <div className="section-header">
+              <h2>Projects</h2>
             </div>
-            <div className="project-grid">
+            <div className="projects-list">
               {projects.map((project, index) => (
-                <ProjectCard 
+                <div
                   key={index}
-                  {...project}
-                  index={index}
-                />
+                  className="project-item"
+                >
+                  <div className="project-header">
+                    <h3 className="project-title">{project.title}</h3>
+                    <div className="project-links">
+                      <a href={project.liveLink} target="_blank" rel="noopener noreferrer" className="project-link">
+                        Live
+                      </a>
+                      <a href={project.githubLink} target="_blank" rel="noopener noreferrer" className="project-link">
+                        Source
+                      </a>
+                    </div>
+                  </div>
+                  <p className="project-description">{project.description}</p>
+                  <div className="project-tech">
+                    {project.techStack && project.techStack.map((tech, techIndex) => (
+                      <span key={techIndex} className="tech-tag">{tech}</span>
+                    ))}
+                  </div>
+                </div>
               ))}
             </div>
           </div>
         </section>
       </main>
 
+      {/* Contact Section */}
       <footer className="footer" id="contact">
         <div className="container">
-          <div className="footer-content">
-            <div className="footer-main" data-aos="fade-up" data-aos-duration="800">
-              <h2>Let's Work <span className="highlight">Together</span></h2>
-              <p>I'm currently available for freelance work or full-time opportunities. If you're interested in collaborating on a project or discussing potential opportunities, feel free to reach out.</p>
-              <div className="footer-cta">
-                <a href="mailto:ntbm8125@gmail.com" className="primary-btn shine-effect">Start a Project</a>
-                <a href="#" className="secondary-btn hover-effect">Download Resume</a>
-              </div>
-            </div>
-            
-            <div className="footer-grid">
-              <div className="footer-section" data-aos="fade-up" data-aos-delay="200" data-aos-duration="800">
-                <h3>Contact Information</h3>
-                <ul className="contact-list">
-                  <li>
-                    <FaEnvelope className="contact-icon" />
-                    <a href="mailto:ntbm8125@gmail.com" className="hover-effect">ntbm8125@gmail.com</a>
-                  </li>
-                  <li>
-                    <FaMobileAlt className="contact-icon" />
-                    <a href="tel:+919398225082" className="hover-effect">+91 9398225082</a>
-                  </li>
-                  <li>
-                    <FaMapMarkerAlt className="contact-icon" />
-                    <span>Andhra Pradesh, India</span>
-                  </li>
-                </ul>
-              </div>
-              
-              <div className="footer-section" data-aos="fade-up" data-aos-delay="400" data-aos-duration="800">
-                <h3>Connect With Me</h3>
-                <div className="social-links">
-                  <a href="https://github.com/nithin2k5/" target="_blank" rel="noopener noreferrer" className="social-icon hover-effect" aria-label="Github">
-                    <FaGithub />
-                  </a>
-                  <a href="https://www.linkedin.com/in/nithin-kumar-k-b17b90297/" target="_blank" rel="noopener noreferrer" className="social-icon hover-effect" aria-label="LinkedIn">
-                    <FaLinkedin />
-                  </a>
-                  <a href="https://www.instagram.com/void.nxt/" target="_blank" rel="noopener noreferrer" className="social-icon hover-effect" aria-label="Instagram">
-                    <FaInstagram />
-                  </a>
-                </div>
-                <p className="social-text">Follow me on social media to stay updated with my latest projects and professional journey.</p>
-              </div>
-              
-              <div className="footer-section" data-aos="fade-up" data-aos-delay="600" data-aos-duration="800">
-                <h3>Quick Links</h3>
-                <nav className="footer-nav">
-                  <a href="#home" className="hover-effect">Home</a>
-                  <a href="#about" className="hover-effect">About</a>
-                  <a href="#skills" className="hover-effect">Skills</a>
-                  <a href="#experience" className="hover-effect">Experience</a>
-                  <a href="#projects" className="hover-effect">Projects</a>
-                </nav>
-              </div>
-            </div>
-            
-            <div className="footer-bottom">
-              <p>© {new Date().getFullYear()} Nithin Kumar K. All rights reserved.</p>
-              <div className="footer-bottom-links">
-                <a href="#privacy" className="hover-effect">Privacy Policy</a>
-                <a href="#terms" className="hover-effect">Terms of Service</a>
-              </div>
-            </div>
+          <div className="section-header">
+            <h2>Contact</h2>
+          </div>
+          <div className="contact-content">
+            <a href="mailto:ntbm8125@gmail.com" className="contact-link">
+              Send Email
+            </a>
+          </div>
+          <div className="footer-bottom">
+            <p>© 2025 Nithin Kumar K. All rights reserved.</p>
           </div>
         </div>
       </footer>
@@ -661,3 +411,4 @@ function App() {
 }
 
 export default App;
+export { ThemeProvider };

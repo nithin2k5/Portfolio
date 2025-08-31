@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { FaArrowUp } from 'react-icons/fa';
-import './ScrollToTop.css';
 
 const ScrollToTop = () => {
   const [isVisible, setIsVisible] = useState(false);
@@ -34,11 +33,9 @@ const ScrollToTop = () => {
     <>
       {isVisible && (
         <button
-          className="scroll-to-top glass-effect"
+          className="scroll-to-top"
           onClick={scrollToTop}
           aria-label="Scroll to top"
-          data-aos="fade-in"
-          data-aos-duration="500"
         >
           <FaArrowUp className="scroll-icon" />
         </button>
