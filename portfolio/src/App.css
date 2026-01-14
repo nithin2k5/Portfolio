@@ -3,32 +3,9 @@
 @import url('https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&display=swap');
 
 :root {
-  /* Light Theme Variables */
-  --bg-primary: #ffffff;
-  --bg-secondary: #f9f9f9;
-  --text-primary: #000000;
-  --text-secondary: #666666;
-  --border-color: #000000;
-  --navbar-bg: #ffffff;
-  --navbar-border: #000000;
-  --button-bg: #ffffff;
-  --button-hover: #000000;
-  --section-bg: #ffffff;
-  --section-alt-bg: #f9f9f9;
-  --shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  --mobile-menu-bg: #ffffff;
-  --tech-item-bg: #ffffff;
-  --education-bg: #ffffff;
-  --projects-bg: #ffffff;
-  --footer-bg: #f9f9f9;
-  --tech-tag-bg: #f9f9f9;
-  --contact-link-bg: #ffffff;
-}
-
-/* Dark Theme Variables */
-[data-theme="dark"] {
+  /* Black Theme Variables (Default) */
   --bg-primary: #000000;
-  --bg-secondary: #111111;
+  --bg-secondary: #000000;
   --text-primary: #ffffff;
   --text-secondary: #cccccc;
   --border-color: #ffffff;
@@ -37,15 +14,61 @@
   --button-bg: #000000;
   --button-hover: #ffffff;
   --section-bg: #000000;
-  --section-alt-bg: #111111;
+  --section-alt-bg: #000000;
   --shadow: 0 4px 8px rgba(255, 255, 255, 0.1);
   --mobile-menu-bg: #000000;
   --tech-item-bg: #000000;
   --education-bg: #000000;
   --projects-bg: #000000;
-  --footer-bg: #111111;
-  --tech-tag-bg: #111111;
+  --footer-bg: #000000;
+  --tech-tag-bg: #000000;
   --contact-link-bg: #000000;
+}
+
+/* Dark Theme (Black) */
+[data-theme="dark"] {
+  --bg-primary: #000000;
+  --bg-secondary: #000000;
+  --text-primary: #ffffff;
+  --text-secondary: #cccccc;
+  --border-color: #ffffff;
+  --navbar-bg: #000000;
+  --navbar-border: #ffffff;
+  --button-bg: #000000;
+  --button-hover: #ffffff;
+  --section-bg: #000000;
+  --section-alt-bg: #000000;
+  --shadow: 0 4px 8px rgba(255, 255, 255, 0.1);
+  --mobile-menu-bg: #000000;
+  --tech-item-bg: #000000;
+  --education-bg: #000000;
+  --projects-bg: #000000;
+  --footer-bg: #000000;
+  --tech-tag-bg: #000000;
+  --contact-link-bg: #000000;
+}
+
+/* Light Theme (White) */
+[data-theme="light"] {
+  --bg-primary: #ffffff;
+  --bg-secondary: #ffffff;
+  --text-primary: #000000;
+  --text-secondary: #333333;
+  --border-color: #000000;
+  --navbar-bg: #ffffff;
+  --navbar-border: #000000;
+  --button-bg: #ffffff;
+  --button-hover: #000000;
+  --section-bg: #ffffff;
+  --section-alt-bg: #ffffff;
+  --shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  --mobile-menu-bg: #ffffff;
+  --tech-item-bg: #ffffff;
+  --education-bg: #ffffff;
+  --projects-bg: #ffffff;
+  --footer-bg: #ffffff;
+  --tech-tag-bg: #ffffff;
+  --contact-link-bg: #ffffff;
 }
 
 * {
@@ -60,6 +83,8 @@ html, body {
   font-family: 'Courier Prime', monospace;
   scroll-behavior: smooth;
   line-height: 1.6;
+  margin: 0;
+  padding: 0;
   transition: background-color 0.3s ease, color 0.3s ease;
 }
 
@@ -72,7 +97,14 @@ body {
   background-color: var(--bg-primary);
   color: var(--text-primary);
   min-height: 100vh;
+  width: 100%;
   transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+main {
+  background-color: var(--bg-primary);
+  width: 100%;
+  transition: background-color 0.3s ease;
 }
 
 /* Navigation */
@@ -211,6 +243,8 @@ body {
   text-align: center;
   position: relative;
   overflow: hidden;
+  background-color: var(--section-bg);
+  transition: background-color 0.3s ease;
 }
 
 .hero-background {
@@ -396,8 +430,23 @@ body {
   color: var(--text-secondary);
 }
 
-.wave {
+.wave-icon {
   animation: wave 2s ease-in-out infinite;
+  display: inline-block;
+  color: var(--text-secondary);
+  font-size: 1.2rem;
+  vertical-align: middle;
+}
+
+.wave-icon-hero {
+  animation: wave 2s ease-in-out infinite;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 1.25rem;
+  vertical-align: middle;
+  line-height: 1;
 }
 
 @keyframes wave {
@@ -678,7 +727,7 @@ body {
 /* About Section */
 .about {
   padding: 60px 0;
-  background-color: var(--section-alt-bg);
+  background-color: #000000;
   transition: background-color 0.3s ease;
 }
 
@@ -755,7 +804,7 @@ body {
 /* Tech Stack Section */
 .tech-stack {
   padding: 60px 0;
-  background-color: var(--section-bg);
+  background-color: #000000;
   transition: background-color 0.3s ease;
 }
 
@@ -845,7 +894,7 @@ body {
 /* Projects Section */
 .projects {
   padding: 60px 0;
-  background-color: var(--projects-bg);
+  background-color: #000000;
   transition: background-color 0.3s ease;
 }
 
@@ -931,7 +980,7 @@ body {
 /* Footer */
 .footer {
   padding: 60px 0 40px;
-  background-color: var(--footer-bg);
+  background-color: #000000;
   border-top: 2px solid var(--border-color);
   transition: background-color 0.3s ease, border-color 0.3s ease;
 }
@@ -981,9 +1030,9 @@ body {
   width: 50px;
   height: 50px;
   border-radius: 0;
-  background-color: #ffffff;
-  border: 2px solid #000000;
-  color: #000000;
+  background-color: #000000;
+  border: 2px solid #ffffff;
+  color: #ffffff;
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -993,8 +1042,8 @@ body {
 }
 
 .scroll-to-top:hover {
-  background-color: #000000;
-  color: #ffffff;
+  background-color: #ffffff;
+  color: #000000;
 }
 
 .scroll-icon {
@@ -1058,9 +1107,9 @@ body {
 
 .resume-btn {
   padding: 1rem 2rem;
-  border: 2px solid #000000;
-  background-color: #ffffff;
-  color: #000000;
+  border: 2px solid #ffffff;
+  background-color: #000000;
+  color: #ffffff;
   text-decoration: none;
   font-weight: 600;
   font-size: 16px;
@@ -1070,8 +1119,8 @@ body {
 }
 
 .resume-btn:hover {
-  background-color: #000000;
-  color: #ffffff;
+  background-color: #ffffff;
+  color: #000000;
 }
 
 /* Responsive Design */
@@ -1333,20 +1382,29 @@ body {
   outline-offset: 2px;
 }
 
-/* Scrollbar */
+/* Scrollbar - Small */
 ::-webkit-scrollbar {
-  width: 3px;
+  width: 4px;
+  height: 4px;
 }
 
 ::-webkit-scrollbar-track {
-  background: #ffffff;
+  background: var(--bg-primary, #000000);
+  transition: background-color 0.3s ease;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #000000;
-  border-radius: 0;
+  background: var(--text-primary, #ffffff);
+  border-radius: 2px;
+  transition: background-color 0.3s ease;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #666666;
+  background: var(--text-secondary, #cccccc);
+}
+
+/* Firefox scrollbar */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--text-primary, #ffffff) var(--bg-primary, #000000);
 }

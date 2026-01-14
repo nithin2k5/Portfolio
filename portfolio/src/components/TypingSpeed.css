@@ -1,0 +1,106 @@
+.typing-speed-container {
+  width: 100%;
+  border: 2px solid;
+  background-color: var(--bg-primary, #000000);
+  border-radius: 12px;
+  padding: 32px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+[data-theme="dark"] .typing-speed-container {
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+[data-theme="light"] .typing-speed-container {
+  border-color: rgba(0, 0, 0, 0.1);
+}
+
+.typing-speed-icon-wrapper {
+  width: 64px;
+  height: 64px;
+  border: 2px solid;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 32px;
+  transition: border-color 0.3s ease;
+}
+
+[data-theme="dark"] .typing-speed-icon-wrapper {
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+[data-theme="light"] .typing-speed-icon-wrapper {
+  border-color: rgba(0, 0, 0, 0.2);
+}
+
+.typing-speed-icon-wrapper svg {
+  width: 32px;
+  height: 32px;
+  color: var(--text-primary, #ffffff);
+  transition: color 0.3s ease;
+}
+
+.typing-speed-display {
+  text-align: center;
+  margin-bottom: 24px;
+}
+
+.typing-speed-number {
+  font-size: 48px;
+  font-weight: 700;
+  color: var(--text-primary, #ffffff);
+  margin-bottom: 12px;
+  transition: color 0.3s ease;
+}
+
+@media (min-width: 768px) {
+  .typing-speed-number {
+    font-size: 64px;
+  }
+}
+
+.typing-speed-label-wpm {
+  color: var(--text-secondary, rgba(255, 255, 255, 0.6));
+  font-size: 14px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-bottom: 16px;
+  transition: color 0.3s ease;
+}
+
+.typing-speed-label-text {
+  color: var(--text-primary, rgba(255, 255, 255, 0.8));
+  font-size: 14px;
+  font-weight: 300;
+  text-align: center;
+  margin-bottom: 24px;
+  transition: color 0.3s ease;
+}
+
+[data-theme="dark"] .typing-speed-label-text {
+  color: rgba(255, 255, 255, 0.8);
+}
+
+[data-theme="light"] .typing-speed-label-text {
+  color: rgba(0, 0, 0, 0.8);
+}
+
+.typing-speed-divider {
+  height: 1px;
+  width: 80px;
+  transition: background-color 0.3s ease;
+}
+
+[data-theme="dark"] .typing-speed-divider {
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+[data-theme="light"] .typing-speed-divider {
+  background-color: rgba(0, 0, 0, 0.2);
+}

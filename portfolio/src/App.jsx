@@ -1,34 +1,43 @@
 import React, { useState, useEffect, createContext, useContext } from 'react';
 import './App.css';
-import { FaReact, FaNode, FaPython, FaGithub, FaEnvelope, FaArrowRight, FaHome, FaUser, FaCode, FaFolder, FaJava, FaDocker, FaMoon, FaSun } from 'react-icons/fa';
+import { FaReact, FaNode, FaPython, FaGithub, FaEnvelope, FaArrowRight, FaHome, FaUser, FaCode, FaFolder, FaJava, FaDocker, FaMoon, FaSun, FaHandPaper } from 'react-icons/fa';
 import { SiJavascript, SiTypescript, SiMongodb, SiNextdotjs, SiMysql, SiRedis } from 'react-icons/si';
 import ScrollToTop from './components/ScrollToTop';
+import GitHubHeatmap from './components/GitHubHeatmap';
+import TypingSpeed from './components/TypingSpeed';
+import './components/GitHubSection.css';
 
 // Theme Context
 const ThemeContext = createContext();
 
 const ThemeProvider = ({ children }) => {
-  const [isDarkMode, setIsDarkMode] = useState(() => {
+  const [theme, setTheme] = useState(() => {
     const savedTheme = localStorage.getItem('theme');
-    return savedTheme === 'dark';
+    return savedTheme || 'dark'; // 'dark' for black, 'light' for white
   });
 
   useEffect(() => {
-    if (isDarkMode) {
-      document.documentElement.setAttribute('data-theme', 'dark');
-      localStorage.setItem('theme', 'dark');
+    document.documentElement.setAttribute('data-theme', theme);
+    localStorage.setItem('theme', theme);
+    
+    // Update body and html background colors
+    if (theme === 'light') {
+      document.documentElement.style.backgroundColor = '#ffffff';
+      document.body.style.backgroundColor = '#ffffff';
+      document.body.style.color = '#000000';
     } else {
-      document.documentElement.setAttribute('data-theme', 'light');
-      localStorage.setItem('theme', 'light');
+      document.documentElement.style.backgroundColor = '#000000';
+      document.body.style.backgroundColor = '#000000';
+      document.body.style.color = '#ffffff';
     }
-  }, [isDarkMode]);
+  }, [theme]);
 
   const toggleTheme = () => {
-    setIsDarkMode(prev => !prev);
+    setTheme(prev => prev === 'dark' ? 'light' : 'dark');
   };
 
   return (
-    <ThemeContext.Provider value={{ isDarkMode, toggleTheme }}>
+    <ThemeContext.Provider value={{ theme, isDarkMode: theme === 'dark', toggleTheme }}>
       {children}
     </ThemeContext.Provider>
   );
@@ -154,7 +163,7 @@ function App() {
 
               <div className="hero-text">
                 <div className="greeting">
-                  <span className="wave">👋</span>
+                  <FaHandPaper className="wave-icon" />
                   <span className="greeting-text">Hello, I'm</span>
                 </div>
                 <h1 className="hero-title">
@@ -233,6 +242,35 @@ function App() {
                 <a href="#contact" className="cta-btn">
                   Let's connect and collaborate!
                 </a>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* GitHub Activity & Typing Speed Section */}
+        <section id="github" className="github-section">
+          <div className="github-section-container">
+            {/* Section Header */}
+            <div className="github-section-header">
+              <div className="github-section-header-label-wrapper">
+                <span className="github-section-header-label">Activity</span>
+                <div className="github-section-header-divider"></div>
+              </div>
+              <h2 className="github-section-title">
+                GitHub Activity & Skills
+              </h2>
+            </div>
+
+            {/* Combined Layout: 70% Heatmap, 30% Typing Speed */}
+            <div className="github-section-layout">
+              {/* GitHub Heatmap - 70% */}
+              <div className="github-section-heatmap-wrapper">
+                <GitHubHeatmap />
+              </div>
+
+              {/* Typing Speed - 30% */}
+              <div className="github-section-typing-wrapper">
+                <TypingSpeed />
               </div>
             </div>
           </div>

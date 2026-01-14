@@ -1,0 +1,85 @@
+.github-section {
+  padding: 96px 16px;
+  background-color: var(--section-bg, #000000);
+  position: relative;
+  transition: background-color 0.3s ease;
+}
+
+.github-section-container {
+  max-width: 1280px;
+  margin: 0 auto;
+}
+
+.github-section-header {
+  text-align: center;
+  margin-bottom: 64px;
+}
+
+.github-section-header-label-wrapper {
+  display: inline-block;
+  margin-bottom: 16px;
+}
+
+.github-section-header-label {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--text-secondary, rgba(255, 255, 255, 0.4));
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  transition: color 0.3s ease;
+}
+
+.github-section-header-divider {
+  height: 1px;
+  width: 48px;
+  background-color: var(--border-color, #ffffff);
+  margin: 8px auto 0;
+  transition: background-color 0.3s ease;
+}
+
+.github-section-title {
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--text-primary, #ffffff);
+  letter-spacing: -0.02em;
+  margin-bottom: 16px;
+  transition: color 0.3s ease;
+}
+
+@media (min-width: 768px) {
+  .github-section-title {
+    font-size: 30px;
+  }
+}
+
+.github-section-layout {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+@media (min-width: 768px) {
+  .github-section-layout {
+    flex-direction: row;
+  }
+}
+
+.github-section-heatmap-wrapper {
+  width: 100%;
+}
+
+@media (min-width: 768px) {
+  .github-section-heatmap-wrapper {
+    width: 70%;
+  }
+}
+
+.github-section-typing-wrapper {
+  width: 100%;
+}
+
+@media (min-width: 768px) {
+  .github-section-typing-wrapper {
+    width: 30%;
+  }
+}

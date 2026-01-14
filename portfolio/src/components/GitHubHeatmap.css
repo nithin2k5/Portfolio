@@ -1,0 +1,288 @@
+.github-heatmap-container {
+  width: 100%;
+  border: 2px solid;
+  background-color: var(--bg-primary, #000000);
+  border-radius: 12px;
+  padding: 32px;
+  transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+[data-theme="dark"] .github-heatmap-container {
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+[data-theme="light"] .github-heatmap-container {
+  border-color: rgba(0, 0, 0, 0.1);
+}
+
+.github-heatmap-loading {
+  width: 100%;
+  border: 2px solid;
+  background-color: var(--bg-primary, #000000);
+  border-radius: 12px;
+  padding: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 500px;
+  transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+[data-theme="dark"] .github-heatmap-loading {
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+[data-theme="light"] .github-heatmap-loading {
+  border-color: rgba(0, 0, 0, 0.1);
+}
+
+.github-heatmap-loading-content {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.github-heatmap-loading-content svg {
+  width: 24px;
+  height: 24px;
+  color: var(--text-primary, #ffffff);
+  transition: color 0.3s ease;
+}
+
+.github-heatmap-loading-text {
+  color: var(--text-secondary, rgba(255, 255, 255, 0.6));
+  font-size: 14px;
+  transition: color 0.3s ease;
+}
+
+.github-heatmap-header {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  margin-bottom: 32px;
+  padding-bottom: 24px;
+  border-bottom: 1px solid;
+  transition: border-color 0.3s ease;
+}
+
+[data-theme="dark"] .github-heatmap-header {
+  border-bottom-color: rgba(255, 255, 255, 0.1);
+}
+
+[data-theme="light"] .github-heatmap-header {
+  border-bottom-color: rgba(0, 0, 0, 0.1);
+}
+
+.github-heatmap-icon-wrapper {
+  width: 48px;
+  height: 48px;
+  border: 2px solid;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: border-color 0.3s ease;
+}
+
+[data-theme="dark"] .github-heatmap-icon-wrapper {
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+[data-theme="light"] .github-heatmap-icon-wrapper {
+  border-color: rgba(0, 0, 0, 0.2);
+}
+
+.github-heatmap-icon-wrapper svg {
+  width: 24px;
+  height: 24px;
+  color: var(--text-primary, #ffffff);
+  transition: color 0.3s ease;
+}
+
+.github-heatmap-stats {
+  display: flex;
+  flex-direction: column;
+}
+
+.github-heatmap-stats-number {
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--text-primary, #ffffff);
+  margin-bottom: 4px;
+  transition: color 0.3s ease;
+}
+
+@media (min-width: 768px) {
+  .github-heatmap-stats-number {
+    font-size: 30px;
+  }
+}
+
+.github-heatmap-stats-label {
+  color: var(--text-secondary, rgba(255, 255, 255, 0.6));
+  font-size: 12px;
+  font-weight: 500;
+  transition: color 0.3s ease;
+}
+
+.github-heatmap-content {
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding-bottom: 8px;
+}
+
+.github-heatmap-content::-webkit-scrollbar {
+  height: 4px;
+}
+
+.github-heatmap-content::-webkit-scrollbar-track {
+  background: var(--bg-primary, #000000);
+  border-radius: 2px;
+}
+
+.github-heatmap-content::-webkit-scrollbar-thumb {
+  background: var(--text-primary, #ffffff);
+  border-radius: 2px;
+  opacity: 0.5;
+}
+
+.github-heatmap-content::-webkit-scrollbar-thumb:hover {
+  opacity: 0.8;
+}
+
+.github-heatmap-inner {
+  min-width: 500px;
+  width: 100%;
+}
+
+.github-heatmap-month-labels {
+  position: relative;
+  height: 20px;
+  margin-bottom: 12px;
+  margin-left: 32px;
+}
+
+.github-heatmap-month-label {
+  position: absolute;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--text-secondary, rgba(255, 255, 255, 0.6));
+  transition: color 0.3s ease;
+}
+
+.github-heatmap-grid {
+  display: flex;
+  gap: 4px;
+  margin-bottom: 16px;
+}
+
+.github-heatmap-week {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.github-heatmap-day {
+  width: 10px;
+  height: 10px;
+  border-radius: 2px;
+  border: 1px solid;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+[data-theme="dark"] .github-heatmap-day {
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+[data-theme="light"] .github-heatmap-day {
+  border-color: rgba(0, 0, 0, 0.1);
+}
+
+.github-heatmap-day:hover {
+  transform: scale(1.25);
+}
+
+[data-theme="dark"] .github-heatmap-day:hover {
+  border-color: rgba(255, 255, 255, 0.3);
+}
+
+[data-theme="light"] .github-heatmap-day:hover {
+  border-color: rgba(0, 0, 0, 0.3);
+}
+
+[data-theme="dark"] .github-heatmap-day-intensity-0 {
+  background-color: rgba(255, 255, 255, 0.05);
+}
+
+[data-theme="dark"] .github-heatmap-day-intensity-1 {
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+[data-theme="dark"] .github-heatmap-day-intensity-2 {
+  background-color: rgba(255, 255, 255, 0.4);
+}
+
+[data-theme="dark"] .github-heatmap-day-intensity-3 {
+  background-color: rgba(255, 255, 255, 0.6);
+}
+
+[data-theme="dark"] .github-heatmap-day-intensity-4 {
+  background-color: #ffffff;
+}
+
+[data-theme="light"] .github-heatmap-day-intensity-0 {
+  background-color: rgba(0, 0, 0, 0.05);
+}
+
+[data-theme="light"] .github-heatmap-day-intensity-1 {
+  background-color: rgba(0, 0, 0, 0.2);
+}
+
+[data-theme="light"] .github-heatmap-day-intensity-2 {
+  background-color: rgba(0, 0, 0, 0.4);
+}
+
+[data-theme="light"] .github-heatmap-day-intensity-3 {
+  background-color: rgba(0, 0, 0, 0.6);
+}
+
+[data-theme="light"] .github-heatmap-day-intensity-4 {
+  background-color: #000000;
+}
+
+.github-heatmap-legend {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 8px;
+  font-size: 12px;
+}
+
+.github-heatmap-legend-text {
+  color: var(--text-secondary, rgba(255, 255, 255, 0.6));
+  font-weight: 500;
+  transition: color 0.3s ease;
+}
+
+.github-heatmap-legend-items {
+  display: flex;
+  gap: 4px;
+}
+
+.github-heatmap-legend-item {
+  width: 10px;
+  height: 10px;
+  border-radius: 2px;
+  border: 1px solid;
+  transition: border-color 0.3s ease;
+}
+
+[data-theme="dark"] .github-heatmap-legend-item {
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+[data-theme="light"] .github-heatmap-legend-item {
+  border-color: rgba(0, 0, 0, 0.1);
+}
