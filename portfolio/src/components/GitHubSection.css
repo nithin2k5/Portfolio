@@ -56,16 +56,20 @@
   display: flex;
   flex-direction: column;
   gap: 24px;
+  align-items: stretch;
 }
 
 @media (min-width: 768px) {
   .github-section-layout {
     flex-direction: row;
+    align-items: stretch;
   }
 }
 
 .github-section-heatmap-wrapper {
   width: 100%;
+  display: flex;
+  align-items: stretch;
 }
 
 @media (min-width: 768px) {
@@ -76,6 +80,8 @@
 
 .github-section-typing-wrapper {
   width: 100%;
+  display: flex;
+  align-items: stretch;
 }
 
 @media (min-width: 768px) {

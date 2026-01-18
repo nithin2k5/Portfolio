@@ -1,9 +1,12 @@
 .github-heatmap-container {
   width: 100%;
+  height: 100%;
   border: 2px solid;
   background-color: var(--bg-primary, #000000);
   border-radius: 12px;
   padding: 32px;
+  display: flex;
+  flex-direction: column;
   transition: background-color 0.3s ease, border-color 0.3s ease;
 }
 
