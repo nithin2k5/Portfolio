@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { FaGithub } from 'react-icons/fa';
+import { motion } from 'framer-motion';
 import './GitHubHeatmap.css';
 
 const GitHubHeatmap = () => {
@@ -12,24 +13,24 @@ const GitHubHeatmap = () => {
     const fetchGitHubContributions = async () => {
       try {
         setLoading(true);
-        
+
         const userResponse = await fetch(`https://api.github.com/users/${username}`);
         if (!userResponse.ok) {
           throw new Error('GitHub user not found');
         }
         const user = await userResponse.json();
-        
+
         // Fetch multiple pages of events to get more accurate data
         let allEvents = [];
         let page = 1;
         const maxPages = 10; // Fetch up to 10 pages (1000 events)
-        
+
         while (page <= maxPages) {
           try {
             const eventsResponse = await fetch(
               `https://api.github.com/users/${username}/events/public?per_page=100&page=${page}`
             );
-            
+
             if (!eventsResponse.ok) {
               // If we get rate limited or error, break
               if (eventsResponse.status === 403 || eventsResponse.status === 404) {
@@ -39,39 +40,39 @@ const GitHubHeatmap = () => {
               page++;
               continue;
             }
-            
+
             const events = await eventsResponse.json();
-            
+
             if (!Array.isArray(events) || events.length === 0) {
               break;
             }
-            
+
             allEvents = allEvents.concat(events);
-            
+
             // If we got less than 100 events, we've reached the end
             if (events.length < 100) {
               break;
             }
-            
+
             // Small delay to avoid rate limiting
             if (page < maxPages) {
               await new Promise(resolve => setTimeout(resolve, 100));
             }
-            
+
             page++;
           } catch (error) {
             console.error(`Error fetching page ${page}:`, error);
             break;
           }
         }
-        
+
         const contributionMap = new Map();
         const today = new Date();
         today.setHours(0, 0, 0, 0);
         const weeks = 70;
         const daysPerWeek = 7;
         const totalDays = weeks * daysPerWeek;
-        
+
         // Initialize all dates with 0 contributions
         for (let i = 0; i < totalDays; i++) {
           const date = new Date(today);
@@ -80,18 +81,18 @@ const GitHubHeatmap = () => {
           const dateKey = date.toISOString().split('T')[0];
           contributionMap.set(dateKey, 0);
         }
-        
+
         // Process events and count contributions
         allEvents.forEach(event => {
           if (event.created_at) {
             const eventDate = new Date(event.created_at);
             eventDate.setHours(0, 0, 0, 0);
             const dateKey = eventDate.toISOString().split('T')[0];
-            
+
             // Only count events within our date range
             if (contributionMap.has(dateKey)) {
               let contributionCount = 0;
-              
+
               // Count contributions based on event type
               if (event.type === 'PushEvent') {
                 // Count commits in push events
@@ -100,7 +101,7 @@ const GitHubHeatmap = () => {
                 // Count other contribution types as 1
                 contributionCount = 1;
               }
-              
+
               if (contributionCount > 0) {
                 const currentCount = contributionMap.get(dateKey) || 0;
                 contributionMap.set(dateKey, currentCount + contributionCount);
@@ -108,10 +109,10 @@ const GitHubHeatmap = () => {
             }
           }
         });
-        
+
         const data = [];
         let total = 0;
-        
+
         for (let i = 0; i < totalDays; i++) {
           const date = new Date(today);
           date.setDate(date.getDate() - (totalDays - 1 - i));
@@ -119,13 +120,13 @@ const GitHubHeatmap = () => {
           const dateKey = date.toISOString().split('T')[0];
           const count = contributionMap.get(dateKey) || 0;
           total += count;
-          
+
           data.push({
             date: new Date(date),
             count: count
           });
         }
-        
+
         setContributions(data);
         setTotalContributions(total);
       } catch (error) {
@@ -149,7 +150,7 @@ const GitHubHeatmap = () => {
         date.setDate(date.getDate() - i);
         const count = Math.floor(Math.random() * 11);
         fallbackTotal += count;
-        
+
         data.push({
           date: date,
           count: count
@@ -195,39 +196,45 @@ const GitHubHeatmap = () => {
 
   if (loading || contributions.length === 0) {
     return (
-      <div className="github-heatmap-loading">
-        <div className="github-heatmap-loading-content">
-          <FaGithub />
-          <div className="github-heatmap-loading-text">Loading GitHub activity...</div>
-        </div>
+      <div className="w-full flex flex-col items-center justify-center py-20 border border-primary/5 bg-primary/[0.01]">
+        <motion.div
+          animate={{ rotate: 360 }}
+          transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
+          className="mb-4"
+        >
+          <FaGithub className="w-8 h-8 text-primary/20" />
+        </motion.div>
+        <p className="text-[10px] font-black tracking-[0.3em] text-primary/20 uppercase">Syncing Activity...</p>
       </div>
     );
   }
 
   return (
-    <div className="github-heatmap-container">
+    <div className="w-full">
       {/* Stats Header */}
-      <div className="github-heatmap-header">
-        <div className="github-heatmap-icon-wrapper">
-          <FaGithub />
+      <div className="flex items-center gap-5 mb-8 pb-6 border-b border-primary/10">
+        <div className="w-12 h-12 border border-primary/20 rounded-full flex items-center justify-center">
+          <FaGithub className="w-6 h-6 text-foreground" />
         </div>
-        <div className="github-heatmap-stats">
-          <div className="github-heatmap-stats-number">
+        <div className="flex flex-col">
+          <div className="text-2xl md:text-3xl font-black text-foreground">
             {totalContributions.toLocaleString()}
           </div>
-          <div className="github-heatmap-stats-label">Contributions</div>
+          <div className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest">
+            CONTRIBUTIONS
+          </div>
         </div>
       </div>
 
       {/* Heatmap */}
-      <div className="github-heatmap-content">
-        <div className="github-heatmap-inner">
+      <div className="overflow-x-auto pb-2 scrollbar-none">
+        <div className="min-w-[600px] w-full">
           {/* Month Labels */}
-          <div className="github-heatmap-month-labels">
+          <div className="relative h-5 mb-3 ml-8">
             {monthLabels.map((month, idx) => (
               <div
                 key={idx}
-                className="github-heatmap-month-label"
+                className="absolute text-[10px] font-bold text-muted-foreground uppercase tracking-tight"
                 style={{ left: `${(month.index / 70) * 100}%`, transform: 'translateX(-50%)' }}
               >
                 {month.label}
@@ -236,15 +243,21 @@ const GitHubHeatmap = () => {
           </div>
 
           {/* Heatmap Grid */}
-          <div className="github-heatmap-grid">
+          <div className="flex gap-1 mb-4">
             {weeks.map((week, weekIndex) => (
-              <div key={weekIndex} className="github-heatmap-week">
+              <div key={weekIndex} className="flex flex-col gap-1">
                 {week.map((day, dayIndex) => {
                   const intensity = getIntensity(day.count);
                   return (
                     <div
                       key={dayIndex}
-                      className={`github-heatmap-day github-heatmap-day-intensity-${intensity}`}
+                      className={`w-[10px] h-[10px] rounded-[1px] cursor-pointer transition-all duration-300 hover:scale-125
+                        ${intensity === 0 ? 'bg-primary/[0.05]' : ''}
+                        ${intensity === 1 ? 'bg-primary/20' : ''}
+                        ${intensity === 2 ? 'bg-primary/40' : ''}
+                        ${intensity === 3 ? 'bg-primary/60' : ''}
+                        ${intensity === 4 ? 'bg-primary' : ''}
+                      `}
                       title={`${day.date.toLocaleDateString()}: ${day.count} contributions`}
                     />
                   );
@@ -254,17 +267,23 @@ const GitHubHeatmap = () => {
           </div>
 
           {/* Legend */}
-          <div className="github-heatmap-legend">
-            <span className="github-heatmap-legend-text">Less</span>
-            <div className="github-heatmap-legend-items">
+          <div className="flex items-center justify-end gap-2 text-[10px] font-bold text-muted-foreground uppercase tracking-widest">
+            <span>Less</span>
+            <div className="flex gap-1">
               {[0, 1, 2, 3, 4].map((intensity) => (
                 <div
                   key={intensity}
-                  className={`github-heatmap-legend-item github-heatmap-day-intensity-${intensity}`}
+                  className={`w-[10px] h-[10px] rounded-[1px]
+                    ${intensity === 0 ? 'bg-primary/[0.05]' : ''}
+                    ${intensity === 1 ? 'bg-primary/20' : ''}
+                    ${intensity === 2 ? 'bg-primary/40' : ''}
+                    ${intensity === 3 ? 'bg-primary/60' : ''}
+                    ${intensity === 4 ? 'bg-primary' : ''}
+                  `}
                 />
               ))}
             </div>
-            <span className="github-heatmap-legend-text">More</span>
+            <span>More</span>
           </div>
         </div>
       </div>

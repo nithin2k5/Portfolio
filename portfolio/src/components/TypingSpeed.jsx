@@ -1,34 +1,27 @@
 import React from 'react';
 import { FaKeyboard } from 'react-icons/fa';
-import './TypingSpeed.css';
 
 const TypingSpeed = () => {
   const wpm = 70;
 
   return (
-    <div className="typing-speed-container">
-      {/* Icon */}
-      <div className="typing-speed-icon-wrapper">
+    <div className="flex flex-col items-center justify-center space-y-4">
+      <div className="w-12 h-12 border border-primary/10 flex items-center justify-center text-primary/40">
         <FaKeyboard />
       </div>
 
-      {/* WPM Display */}
-      <div className="typing-speed-display">
-        <div className="typing-speed-number">
+      <div className="text-center">
+        <div className="text-6xl font-black text-foreground tracking-tighter">
           {wpm}
         </div>
-        <div className="typing-speed-label-wpm">
+        <div className="text-[10px] font-black tracking-[0.3em] text-primary/40 uppercase">
           WPM
         </div>
       </div>
 
-      {/* Label */}
-      <div className="typing-speed-label-text">
-        Typing Speed
+      <div className="text-xs font-bold text-foreground/60 tracking-widest uppercase">
+        Typing Velocity
       </div>
-
-      {/* Decorative line */}
-      <div className="typing-speed-divider"></div>
     </div>
   );
 };

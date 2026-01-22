@@ -1,6 +1,7 @@
 import React from 'react';
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from './ui/card';
 import { Button } from './ui/button';
+import { motion } from 'framer-motion';
+import { FaArrowRight } from 'react-icons/fa';
 
 const About = () => {
   const stats = [
@@ -10,55 +11,98 @@ const About = () => {
   ];
 
   return (
-    <section id="about" className="py-24 px-4 bg-black relative">
-      <div className="container max-w-5xl mx-auto">
+    <section id="about" className="py-32 px-4 bg-background relative transition-colors duration-500">
+      {/* Vertical Section Name */}
+      <div className="absolute top-32 left-10 hidden lg:block h-full">
+        <div className="flex flex-col gap-2 sticky top-32">
+          <div className="w-10 h-[1px] bg-foreground/20"></div>
+          <p className="text-[10px] uppercase tracking-widest text-foreground/40 font-bold rotate-90 origin-left mt-8 whitespace-nowrap">ABOUT</p>
+        </div>
+      </div>
+
+      <div className="container max-w-5xl mx-auto lg:ml-20">
         {/* Section Header */}
-        <div className="text-center mb-16">
-          <div className="inline-block mb-4">
-            <span className="text-xs font-medium text-white/40 tracking-widest uppercase">About Me</span>
-            <div className="h-px w-12 bg-white mx-auto mt-2"></div>
-          </div>
-          <h2 className="text-3xl md:text-4xl font-bold text-white tracking-tight mb-4">
-            About
-          </h2>
+        <div className="mb-20 text-left">
+          <motion.div
+            initial={{ opacity: 0, x: -20 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            className="inline-block mb-4"
+          >
+            <span className="text-xs font-black text-primary/40 tracking-[0.3em] uppercase">The Story</span>
+          </motion.div>
+          <motion.h2
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.1 }}
+            className="text-4xl md:text-6xl font-black text-foreground tracking-tighter"
+          >
+            ABOUT ME.
+          </motion.h2>
         </div>
 
-        <div className="space-y-12">
-          {/* Main Description Card */}
-          <div className="border-2 border-white/10 bg-white/5 backdrop-blur-sm p-6 md:p-8 rounded-2xl hover:border-white/20 transition-all duration-500">
-            <p className="text-base md:text-lg text-white/80 leading-relaxed font-light max-w-3xl mx-auto text-center">
-              Hello, World! I am <span className="font-medium text-white">Nithin Kumar K</span>, a Full-Stack Developer passionate about crafting high-performance, scalable web applications. With a strong foundation in Next.js, React, Node.js, and modern web technologies, I thrive on building seamless user experiences and optimizing system performance.
-            </p>
-          </div>
+        <div className="grid grid-cols-1 md:grid-cols-12 gap-12">
+          {/* Main Description */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.2 }}
+            className="md:col-span-8"
+          >
+            <div className="border-l-4 border-primary pl-8 space-y-6">
+              <p className="text-xl md:text-2xl text-foreground/80 leading-tight font-medium">
+                Hello, World! I am <span className="text-primary italic">Nithin Kumar K</span>, a Full-Stack developer passionate about crafting high-performance, scalable web applications.
+              </p>
+              <p className="text-base md:text-lg text-muted-foreground leading-relaxed">
+                With a strong foundation in Next.js, React, Node.js, and modern web technologies, I thrive on building seamless user experiences and optimizing system performance. My approach combines technical precision with creative problem-solving.
+              </p>
+              <p className="text-base md:text-lg text-muted-foreground leading-relaxed">
+                Currently pursuing my third year in Computer Science, I spend my time exploring the latest in software architecture and contributing to open-source projects.
+              </p>
+            </div>
+          </motion.div>
 
           {/* Stats Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="md:col-span-4 space-y-6">
             {stats.map((stat, index) => (
-              <div 
-                key={index} 
-                className="border-2 border-white/10 bg-white/5 backdrop-blur-sm p-6 rounded-2xl hover:border-white/30 hover:bg-white/10 transition-all duration-500 group text-center"
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, scale: 0.95 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                viewport={{ once: true }}
+                transition={{ delay: 0.1 * index + 0.3 }}
+                className="p-6 border-2 border-primary/5 bg-primary/[0.02] transition-all duration-500 hover:border-primary/20 group"
               >
-                <div className="text-4xl md:text-5xl font-bold text-white mb-3 group-hover:scale-110 transition-transform duration-300">
+                <div className="text-4xl font-black text-foreground mb-1 group-hover:translate-x-2 transition-transform duration-300">
                   {stat.number}
                 </div>
-                <div className="text-sm font-medium text-white/60 uppercase tracking-wider">
+                <div className="text-xs font-bold text-muted-foreground uppercase tracking-widest">
                   {stat.label}
                 </div>
-              </div>
+              </motion.div>
             ))}
           </div>
-
-          {/* CTA */}
-          <div className="text-center pt-6">
-            <Button
-              size="lg"
-              onClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })}
-              className="px-8 py-4 text-sm font-medium rounded-none border-2 border-white hover:bg-white hover:text-black transition-all duration-300"
-            >
-              Let's connect and collaborate!
-            </Button>
-          </div>
         </div>
+
+        {/* CTA */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ delay: 0.6 }}
+          className="mt-20 flex justify-start"
+        >
+          <Button
+            size="lg"
+            onClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })}
+            className="group h-14 px-10 text-base font-bold rounded-none bg-foreground text-background hover:bg-foreground/90 transition-all duration-300"
+          >
+            START A PROJECT
+            <FaArrowRight className="ml-3 w-4 h-4 group-hover:translate-x-2 transition-transform" />
+          </Button>
+        </motion.div>
       </div>
     </section>
   );

@@ -1,416 +1,95 @@
-import React, { useState, useEffect, createContext, useContext } from 'react';
-import './App.css';
-import { FaReact, FaNode, FaPython, FaGithub, FaEnvelope, FaArrowRight, FaHome, FaUser, FaCode, FaFolder, FaJava, FaDocker, FaMoon, FaSun, FaHandPaper } from 'react-icons/fa';
-import { SiJavascript, SiTypescript, SiMongodb, SiNextdotjs, SiMysql, SiRedis } from 'react-icons/si';
-import ScrollToTop from './components/ScrollToTop';
+import React from 'react';
+// import './App.css'; // Removed for premium design
+import Navbar from './components/Navbar';
+import Hero from './components/Hero';
+import About from './components/About';
+import TechStack from './components/TechStack';
+import Projects from './components/Projects';
+import Contact from './components/Contact';
 import GitHubHeatmap from './components/GitHubHeatmap';
 import TypingSpeed from './components/TypingSpeed';
-import './components/GitHubSection.css';
-
-// Theme Context
-const ThemeContext = createContext();
-
-const ThemeProvider = ({ children }) => {
-  const [theme, setTheme] = useState(() => {
-    const savedTheme = localStorage.getItem('theme');
-    return savedTheme || 'dark'; // 'dark' for black, 'light' for white
-  });
-
-  useEffect(() => {
-    document.documentElement.setAttribute('data-theme', theme);
-    localStorage.setItem('theme', theme);
-    
-    // Update body and html background colors
-    if (theme === 'light') {
-      document.documentElement.style.backgroundColor = '#ffffff';
-      document.body.style.backgroundColor = '#ffffff';
-      document.body.style.color = '#000000';
-    } else {
-      document.documentElement.style.backgroundColor = '#000000';
-      document.body.style.backgroundColor = '#000000';
-      document.body.style.color = '#ffffff';
-    }
-  }, [theme]);
-
-  const toggleTheme = () => {
-    setTheme(prev => prev === 'dark' ? 'light' : 'dark');
-  };
-
-  return (
-    <ThemeContext.Provider value={{ theme, isDarkMode: theme === 'dark', toggleTheme }}>
-      {children}
-    </ThemeContext.Provider>
-  );
-};
-
-const useTheme = () => {
-  const context = useContext(ThemeContext);
-  if (!context) {
-    throw new Error('useTheme must be used within a ThemeProvider');
-  }
-  return context;
-};
-
-const Navbar = () => {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [isScrolled, setIsScrolled] = useState(false);
-  const { isDarkMode, toggleTheme } = useTheme();
-
-  useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 50);
-    };
-
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
-
-  const toggleMenu = () => {
-    setIsMenuOpen(!isMenuOpen);
-    document.body.style.overflow = !isMenuOpen ? 'hidden' : 'auto';
-  };
-
-  return (
-    <nav className={`navbar ${isScrolled ? 'scrolled' : ''}`}>
-      <div className="navbar-container">
-        <div className="logo">NK</div>
-        <div className="nav-links desktop-nav">
-          <button className="nav-button" onClick={() => document.getElementById('home').scrollIntoView({ behavior: 'smooth' })}>
-            <FaHome className="nav-icon" />
-          </button>
-          <button className="nav-button" onClick={() => document.getElementById('about').scrollIntoView({ behavior: 'smooth' })}>
-            <FaUser className="nav-icon" />
-          </button>
-          <button className="nav-button" onClick={() => document.getElementById('stack').scrollIntoView({ behavior: 'smooth' })}>
-            <FaCode className="nav-icon" />
-          </button>
-          <button className="nav-button" onClick={() => document.getElementById('projects').scrollIntoView({ behavior: 'smooth' })}>
-            <FaFolder className="nav-icon" />
-          </button>
-          <button className="nav-button" onClick={() => document.getElementById('contact').scrollIntoView({ behavior: 'smooth' })}>
-            <FaEnvelope className="nav-icon" />
-          </button>
-        </div>
-        <button className="theme-toggle" onClick={toggleTheme} aria-label="Toggle theme">
-          {isDarkMode ? <FaSun className="nav-icon" /> : <FaMoon className="nav-icon" />}
-        </button>
-        <button className={`hamburger ${isMenuOpen ? 'active' : ''}`} onClick={toggleMenu} aria-label="Menu">
-          <span></span>
-          <span></span>
-          <span></span>
-        </button>
-        <div className={`mobile-menu ${isMenuOpen ? 'active' : ''}`}>
-          <div className="mobile-menu-content">
-            <a href="#home" onClick={toggleMenu}>Home</a>
-            <a href="#about" onClick={toggleMenu}>About</a>
-            <a href="#stack" onClick={toggleMenu}>Stack</a>
-            <a href="#projects" onClick={toggleMenu}>Projects</a>
-            <a href="#contact" onClick={toggleMenu}>Contact</a>
-          </div>
-        </div>
-      </div>
-    </nav>
-  );
-};
+import ScrollToTop from './components/ScrollToTop';
+import { motion } from 'framer-motion';
 
 function App() {
-  const { isDarkMode } = useTheme();
-
-  const projects = [
-    {
-      title: "Pazaar",
-      description: "A full-featured e-commerce platform with secure payment processing, user accounts, and product management capabilities.",
-      techStack: ["React", "Spring Boot", "MySQL"],
-      liveLink: "https://pazaar.vercel.app",
-      githubLink: "https://github.com/nithin2k5/pazaar"
-    },
-    {
-      title: "Arbeit",
-      description: "Smart job portal with built-in resume builder, connecting job seekers with employers for seamless hiring experiences.",
-      techStack: ["Next.js", "Node.js", "MongoDB"],
-      liveLink: "https://arbeit-vrs.vercel.app",
-      githubLink: "https://github.com/nithin2k5/arbeit"
-    },
-    {
-      title: "SpeedxType",
-      description: "Improve your typing speed and accuracy with interactive tests and real-time performance tracking.",
-      techStack: ["Next.js", "CSS", "JavaScript"],
-      liveLink: "https://speedxtype.vercel.app",
-      githubLink: "https://github.com/nithin2k5/speedxtype"
-    }
-  ];
-
   return (
-    <div className="app">
+    <div className="min-h-screen bg-background text-foreground transition-colors duration-500 font-sans selection:bg-foreground selection:text-background">
       <Navbar />
 
       <main>
-        {/* Hero Section */}
-        <section className="hero" id="home">
-          <div className="hero-background">
-            <div className="floating-shapes">
-              <div className="shape shape-1"></div>
-              <div className="shape shape-2"></div>
-              <div className="shape shape-3"></div>
+        <Hero />
+
+        <About />
+
+        {/* Custom Section for Activity */}
+        <section id="activity" className="py-32 px-4 bg-background relative border-y border-primary/5">
+          {/* Vertical Section Name */}
+          <div className="absolute top-32 left-10 hidden lg:block h-full">
+            <div className="flex flex-col gap-2 sticky top-32">
+              <div className="w-10 h-[1px] bg-foreground/20"></div>
+              <p className="text-[10px] uppercase tracking-widest text-foreground/40 font-bold rotate-90 origin-left mt-8 whitespace-nowrap">ACTIVITY</p>
             </div>
           </div>
-          <div className="container">
-            <div className="hero-content">
-              <div className="hero-status">
-                <div className="status-dot"></div>
-                <span>Available for opportunities</span>
-              </div>
 
-              <div className="hero-text">
-                <div className="greeting">
-                  <FaHandPaper className="wave-icon" />
-                  <span className="greeting-text">Hello, I'm</span>
+          <div className="container max-w-6xl mx-auto">
+            <div className="mb-20 text-left lg:ml-20">
+              <motion.div
+                initial={{ opacity: 0, x: -20 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                className="inline-block mb-4"
+              >
+                <span className="text-xs font-black text-primary/40 tracking-[0.3em] uppercase">The Pulse</span>
+              </motion.div>
+              <motion.h2
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: 0.1 }}
+                className="text-4xl md:text-6xl font-black text-foreground tracking-tighter"
+              >
+                ACTIVITY.
+              </motion.h2>
+            </div>
+
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch lg:ml-20">
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                className="lg:col-span-8 group flex"
+              >
+                <div className="w-full p-8 border border-primary/10 bg-primary/[0.01] transition-colors hover:border-primary/20 hover:bg-primary/[0.02]">
+                  <GitHubHeatmap />
                 </div>
-                <h1 className="hero-title">
-                  <span className="hero-name">Nithin Kumar K</span>
-                </h1>
-                <div className="typing-container">
-                  <span className="typed-text"></span>
-                  <span className="cursor">|</span>
+              </motion.div>
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: 0.2 }}
+                className="lg:col-span-4 group flex"
+              >
+                <div className="w-full p-8 border border-primary/10 bg-primary/[0.01] flex items-center justify-center transition-colors hover:border-primary/20 hover:bg-primary/[0.02]">
+                  <TypingSpeed />
                 </div>
-                <p className="hero-description">
-                  Third year Computer Science student passionate about crafting digital experiences through code.
-                  Full Stack Developer based in India, specializing in modern web technologies and scalable applications.
-                </p>
-              </div>
-
-
-
-              <div className="hero-cta">
-                <a href="#projects" className="primary-btn">
-                  <span>View My Work</span>
-                  <FaArrowRight className="btn-icon" />
-                </a>
-                <a href="#contact" className="secondary-btn">
-                  <FaEnvelope className="btn-icon" />
-                  <span>Let's Connect</span>
-                </a>
-              </div>
-
-              <div className="hero-social">
-                <a href="https://github.com/nithin2k5" target="_blank" rel="noopener noreferrer" className="social-link">
-                  <FaGithub />
-                </a>
-                <a href="mailto:ntbm8125@gmail.com" className="social-link">
-                  <FaEnvelope />
-                </a>
-              </div>
-
-              <div className="scroll-indicator">
-                <div className="scroll-mouse">
-                  <div className="scroll-wheel"></div>
-                </div>
-                <span>Scroll to explore</span>
-              </div>
+              </motion.div>
             </div>
           </div>
         </section>
 
-        {/* About Section */}
-        <section className="about" id="about">
-          <div className="container">
-            <div className="section-header">
-              <h2>About</h2>
-            </div>
-            <div className="about-content">
-              <p className="about-description">
-                Hello, World! I am Nithin Kumar K, a Full-Stack Developer passionate about crafting high-performance, scalable web applications. With a strong foundation in Next.js, React, Node.js, and modern web technologies, I thrive on building seamless user experiences and optimizing system performance.
-              </p>
+        <TechStack />
 
+        <Projects />
 
-              <div className="about-stats">
-                <div className="stat-item">
-                  <div className="stat-number">3+</div>
-                  <div className="stat-label">Years Experience</div>
-                </div>
-                <div className="stat-item">
-                  <div className="stat-number">10+</div>
-                  <div className="stat-label">Projects Built</div>
-                </div>
-                <div className="stat-item">
-                  <div className="stat-number">5+</div>
-                  <div className="stat-label">Technologies</div>
-                </div>
-              </div>
-
-              <div className="about-cta">
-                <a href="#contact" className="cta-btn">
-                  Let's connect and collaborate!
-                </a>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* GitHub Activity & Typing Speed Section */}
-        <section id="github" className="github-section">
-          <div className="github-section-container">
-            {/* Section Header */}
-            <div className="github-section-header">
-              <div className="github-section-header-label-wrapper">
-                <span className="github-section-header-label">Activity</span>
-                <div className="github-section-header-divider"></div>
-              </div>
-              <h2 className="github-section-title">
-                GitHub Activity & Skills
-              </h2>
-            </div>
-
-            {/* Combined Layout: 70% Heatmap, 30% Typing Speed */}
-            <div className="github-section-layout">
-              {/* GitHub Heatmap - 70% */}
-              <div className="github-section-heatmap-wrapper">
-                <GitHubHeatmap />
-              </div>
-
-              {/* Typing Speed - 30% */}
-              <div className="github-section-typing-wrapper">
-                <TypingSpeed />
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* Tech Stack Section */}
-        <section className="tech-stack" id="stack">
-          <div className="container">
-            <div className="section-header">
-              <h2>Stack</h2>
-            </div>
-            <div className="tech-grid">
-              <div className="tech-item">
-                <div className="tech-icon">
-                  <SiTypescript />
-                </div>
-                <span className="tech-name">TypeScript</span>
-              </div>
-              <div className="tech-item">
-                <div className="tech-icon">
-                  <SiJavascript />
-                </div>
-                <span className="tech-name">JavaScript</span>
-              </div>
-              <div className="tech-item">
-                <div className="tech-icon">
-                  <FaPython />
-                </div>
-                <span className="tech-name">Python</span>
-              </div>
-              <div className="tech-item">
-                <div className="tech-icon">
-                  <FaJava />
-                </div>
-                <span className="tech-name">Java</span>
-              </div>
-              <div className="tech-item">
-                <div className="tech-icon">
-                  <FaNode />
-                </div>
-                <span className="tech-name">Node.js</span>
-              </div>
-              <div className="tech-item">
-                <div className="tech-icon">
-                  <FaReact />
-                </div>
-                <span className="tech-name">React</span>
-              </div>
-              <div className="tech-item">
-                <div className="tech-icon">
-                  <SiNextdotjs />
-                </div>
-                <span className="tech-name">Next.js</span>
-              </div>
-              <div className="tech-item">
-                <div className="tech-icon">
-                  <FaGithub />
-                </div>
-                <span className="tech-name">Git</span>
-              </div>
-              <div className="tech-item">
-                <div className="tech-icon">
-                  <FaDocker />
-                </div>
-                <span className="tech-name">Docker</span>
-              </div>
-              <div className="tech-item">
-                <div className="tech-icon">
-                  <SiMongodb />
-                </div>
-                <span className="tech-name">MongoDB</span>
-              </div>
-              <div className="tech-item">
-                <div className="tech-icon">
-                  <SiMysql />
-                </div>
-                <span className="tech-name">MySQL</span>
-              </div>
-              <div className="tech-item">
-                <div className="tech-icon">
-                  <SiRedis />
-                </div>
-                <span className="tech-name">Redis</span>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        
-
-        {/* Projects Section */}
-        <section className="projects" id="projects">
-          <div className="container">
-            <div className="section-header">
-              <h2>Projects</h2>
-            </div>
-            <div className="projects-list">
-              {projects.map((project, index) => (
-                <div
-                  key={index}
-                  className="project-item"
-                >
-                  <div className="project-header">
-                    <h3 className="project-title">{project.title}</h3>
-                    <div className="project-links">
-                      <a href={project.liveLink} target="_blank" rel="noopener noreferrer" className="project-link">
-                        Live
-                      </a>
-                      <a href={project.githubLink} target="_blank" rel="noopener noreferrer" className="project-link">
-                        Source
-                      </a>
-                    </div>
-                  </div>
-                  <p className="project-description">{project.description}</p>
-                  <div className="project-tech">
-                    {project.techStack && project.techStack.map((tech, techIndex) => (
-                      <span key={techIndex} className="tech-tag">{tech}</span>
-                    ))}
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
+        <Contact />
       </main>
 
-      {/* Contact Section */}
-      <footer className="footer" id="contact">
-        <div className="container">
-          <div className="section-header">
-            <h2>Contact</h2>
-          </div>
-          <div className="contact-content">
-            <a href="mailto:ntbm8125@gmail.com" className="contact-link">
-              Send Email
-            </a>
-          </div>
-          <div className="footer-bottom">
-            <p>© 2025 Nithin Kumar K. All rights reserved.</p>
-          </div>
+      <footer className="py-12 px-4 border-t border-primary/5 text-center">
+        <div className="container max-w-5xl mx-auto">
+          <p className="text-[10px] font-black tracking-[0.5em] text-primary/20 uppercase">
+            © Nithin Kumar K <span className="mx-4">/</span> Designed with Precision
+          </p>
         </div>
       </footer>
 
@@ -420,4 +99,4 @@ function App() {
 }
 
 export default App;
-export { ThemeProvider };
+export { ThemeProvider } from './components/ThemeContext';
