@@ -13,16 +13,15 @@ const About = () => {
   return (
     <section id="about" className="py-32 px-4 bg-background relative transition-colors duration-500">
       {/* Vertical Section Name */}
-      <div className="absolute top-32 left-10 hidden lg:block h-full">
-        <div className="flex flex-col gap-2 sticky top-32">
-          <div className="w-10 h-[1px] bg-foreground/20"></div>
-          <p className="text-[10px] uppercase tracking-widest text-foreground/40 font-bold rotate-90 origin-left mt-8 whitespace-nowrap">ABOUT</p>
-        </div>
+      <div className="absolute left-0 top-0 bottom-0 w-12 md:w-24 border-r border-primary/5 flex items-center justify-center hidden md:flex select-none">
+        <span className="text-[10px] font-black text-primary/20 tracking-[0.5em] uppercase whitespace-nowrap -rotate-90">
+          ABOUT
+        </span>
       </div>
 
-      <div className="container max-w-5xl mx-auto lg:ml-20">
+      <div className="container max-w-5xl mx-auto">
         {/* Section Header */}
-        <div className="mb-20 text-left">
+        <div className="mb-20 text-center">
           <motion.div
             initial={{ opacity: 0, x: -20 }}
             whileInView={{ opacity: 1, x: 0 }}
