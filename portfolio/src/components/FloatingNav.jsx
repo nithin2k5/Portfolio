@@ -1,17 +1,17 @@
 import React, { useState, useEffect } from 'react';
-import { Home, User, Briefcase, Award, Code, Mail } from 'lucide-react';
+import { Home, User, Briefcase, Award, Code } from 'lucide-react';
+
+const navItems = [
+    { id: 'hero', icon: Home, label: 'Home' },
+    { id: 'tech', icon: Code, label: 'Stack' },
+    { id: 'projects', icon: Briefcase, label: 'Work' },
+    { id: 'hackathons', icon: Award, label: 'Awards' },
+    { id: 'experience', icon: User, label: 'Exp' }
+];
 
 const FloatingNav = () => {
     const [activeSection, setActiveSection] = useState('home');
     const [isVisible, setIsVisible] = useState(false);
-
-    const navItems = [
-        { id: 'hero', icon: Home, label: 'Home' },
-        { id: 'tech', icon: Code, label: 'Stack' },
-        { id: 'projects', icon: Briefcase, label: 'Work' },
-        { id: 'hackathons', icon: Award, label: 'Awards' },
-        { id: 'experience', icon: User, label: 'Exp' }
-    ];
 
     useEffect(() => {
         const handleScroll = () => {

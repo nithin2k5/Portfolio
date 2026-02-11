@@ -1,5 +1,5 @@
 import React from 'react';
-import { Trophy, Award, Star, Calendar, MapPin, ArrowUpRight } from 'lucide-react';
+import { Trophy, Award, Star, Calendar, MapPin } from 'lucide-react';
 
 const Achievements = () => {
     const hackathons = [
