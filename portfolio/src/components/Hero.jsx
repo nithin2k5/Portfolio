@@ -6,7 +6,7 @@ const Hero = () => {
         <section className="space-y-8">
             <div className="space-y-1">
                 <h1 className="text-xl font-bold dark:text-white text-zinc-900">Nithin Kumar K</h1>
-                <p className="text-muted">Full-Stack Developer</p>
+                <p className="text-muted">Full-Stack Developerip</p>
                 <p className="text-muted">Andhra Pradesh, India</p>
             </div>
 

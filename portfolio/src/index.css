@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -6,21 +6,27 @@
 
 @layer base {
     :root {
-        --background: 0 0% 0%;
-        --foreground: 0 0% 100%;
-        --muted: 0 0% 60%;
-        --border: 0 0% 20%;
+        --background: 210 20% 98%;
+        --foreground: 240 10% 3.9%;
+        --muted: 240 3.8% 46.1%;
+        --border: 240 5.9% 90%;
     }
 
-    [data-theme='light'] {
-        --background: 0 0% 100%;
-        --foreground: 0 0% 0%;
-        --muted: 0 0% 40%;
-        --border: 0 0% 90%;
+    [data-theme='dark'] {
+        --background: 0 0% 0%;
+        --foreground: 0 0% 100%;
+        --muted: 240 5% 64.9%;
+        --border: 240 3.7% 15.9%;
+    }
+
+    html {
+        scroll-behavior: smooth;
     }
 
     body {
-        @apply bg-background text-foreground font-sans antialiased selection:bg-black/10 dark:selection:bg-white/20 transition-colors duration-300;
+        @apply font-sans antialiased selection:bg-zinc-900 selection:text-white dark:selection:bg-white dark:selection:text-zinc-900 transition-colors duration-300;
+        background-color: hsl(var(--background));
+        color: hsl(var(--foreground));
     }
 }
 

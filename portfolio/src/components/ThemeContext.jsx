@@ -4,9 +4,13 @@ const ThemeContext = createContext();
 
 export const ThemeProvider = ({ children }) => {
   const [isDarkMode, setIsDarkMode] = useState(() => {
+    // User requested to make sure it opens in dark theme first.
+    // We will default to true. We can still respect local storage if we want, 
+    // but to guarantee it opens in dark theme for new/returning users let's just default to true 
+    // and ignore light preference for the initial load if we want to force it, or just 
+    // change the fallback. Let's change the fallback and also ensure if it's the very first time it's dark.
     const savedTheme = localStorage.getItem('theme');
-    // Default to dark if no preference is saved
-    return savedTheme === 'light' ? false : true;
+    return savedTheme ? savedTheme === 'dark' : true;
   });
 
   useEffect(() => {
@@ -20,9 +24,7 @@ export const ThemeProvider = ({ children }) => {
     }
     localStorage.setItem('theme', theme);
 
-    // Update body background
-    document.body.style.backgroundColor = isDarkMode ? '#000000' : '#ffffff';
-    document.body.style.color = isDarkMode ? '#ffffff' : '#000000';
+    // Update body background handled by index.css
   }, [isDarkMode]);
 
   const toggleTheme = () => {
