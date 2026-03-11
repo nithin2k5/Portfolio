@@ -67,13 +67,13 @@ const App = () => {
                                         <a
                                             href={item.href}
                                             className={`group flex items-center gap-4 text-xs font-bold tracking-widest uppercase transition-all duration-300 ${activeSection === item.href.slice(1)
-                                                    ? 'text-zinc-900 dark:text-white'
-                                                    : 'text-zinc-400 dark:text-zinc-500 hover:text-zinc-900 dark:hover:text-white'
+                                                ? 'text-zinc-900 dark:text-white'
+                                                : 'text-zinc-400 dark:text-zinc-500 hover:text-zinc-900 dark:hover:text-white'
                                                 }`}
                                         >
                                             <span className={`h-px transition-all duration-300 ${activeSection === item.href.slice(1)
-                                                    ? 'w-16 bg-zinc-900 dark:bg-white'
-                                                    : 'w-8 bg-zinc-300 dark:bg-zinc-700 group-hover:w-16 group-hover:bg-zinc-900 dark:group-hover:bg-white'
+                                                ? 'w-16 bg-zinc-900 dark:bg-white'
+                                                : 'w-8 bg-zinc-300 dark:bg-zinc-700 group-hover:w-16 group-hover:bg-zinc-900 dark:group-hover:bg-white'
                                                 }`}></span>
                                             {item.name}
                                         </a>
@@ -89,14 +89,22 @@ const App = () => {
                             <a href="https://linkedin.com" target="_blank" rel="noreferrer" className="hover:text-zinc-500 dark:hover:text-zinc-400 transition-colors">LinkedIn</a>
                             <a href="mailto:ntbm8125@gmail.com" className="hover:text-zinc-500 dark:hover:text-zinc-400 transition-colors">Email</a>
                         </div>
-                        <a
-                            href="/2300031401_nithin.pdf"
-                            target="_blank"
-                            rel="noreferrer"
-                            className="inline-block px-8 py-3 bg-zinc-900 text-white dark:bg-white dark:text-zinc-900 text-xs font-bold tracking-widest uppercase hover:opacity-80 transition-opacity shadow-sm"
-                        >
-                            Available for Hire
-                        </a>
+                        <div className="flex flex-col gap-4">
+                            <a
+                                href="/2300031401_nithin.pdf"
+                                target="_blank"
+                                rel="noreferrer"
+                                className="inline-flex justify-center px-6 py-3 border border-zinc-200 dark:border-zinc-800 text-zinc-900 dark:text-white text-xs font-bold tracking-widest uppercase hover:bg-zinc-50 dark:hover:bg-zinc-800 transition-colors shadow-sm text-center"
+                            >
+                                Resume
+                            </a>
+                            <a
+                                href="mailto:ntbm8125@gmail.com?subject=Available%20for%20Hire"
+                                className="inline-flex justify-center px-6 py-3 bg-zinc-900 text-white dark:bg-white dark:text-zinc-900 text-xs font-bold tracking-widest uppercase hover:opacity-80 transition-opacity shadow-sm text-center border border-zinc-900 dark:border-white"
+                            >
+                                Available for Hire
+                            </a>
+                        </div>
                     </div>
                 </header>
 
