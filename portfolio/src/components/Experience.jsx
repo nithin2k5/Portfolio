@@ -3,11 +3,18 @@ import React from 'react';
 const Experience = () => {
     const experiences = [
         {
-            period: '2025—PRESENT',
+            period: 'MAY 2025—JUNE 2025',
             company: 'Infac India Pvt Ltd',
             role: 'Computer Vision Engineer',
             description: 'Built a safety system using MediaPipe and OpenCV for hydraulic press operations. Focus on real-time video processing and bounding box implementation.'
         },
+        {
+            period: '29 JAN 2026—PRESENT',
+            company: 'myCrux.',
+            role: 'Fullstack Developer',
+            description: 'Contributing to the end-to-end development of a comprehensive fashion e-commerce platform. Responsibilities include designing responsive web interfaces, building cross-platform mobile application features, and implementing robust backend services to ensure a seamless shopping experience.'
+        },
+
     ];
 
     return (
