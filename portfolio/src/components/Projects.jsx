@@ -14,12 +14,15 @@ const Projects = () => {
             tech: ['REACT NATIVE', 'TYPESCRIPT', 'API'],
             link: 'https://github.com/nithin2k5/swasthya-app.git'
         },
+        
         {
-            title: 'DataG',
+            title: 'NebulaML',
             description: 'YOLO data generator tool for computer vision datasets. Streamlines annotation and augmentations.',
             tech: ['PYTHON', 'YOLO', 'OPENCV'],
             link: 'https://github.com/nithin2k5/yoloGenerator.git'
-        }
+        },
+        
+       
     ];
 
     return (
