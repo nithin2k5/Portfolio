@@ -21,8 +21,12 @@ const Projects = () => {
             tech: ['PYTHON', 'YOLO', 'OPENCV'],
             link: 'https://github.com/nithin2k5/yoloGenerator.git'
         },
-        
-       
+        {
+            title: 'Conduit detector',
+            description: 'A computer vision application to detect and analyze conduits in various environments.',
+            tech: ['PYTHON', 'OPENCV', 'MACHINE LEARNING'],
+            link: 'https://github.com/nithin2k5/infac-p3.git'
+        }
     ];
 
     return (

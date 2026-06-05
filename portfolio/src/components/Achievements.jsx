@@ -5,23 +5,23 @@ const awards = [
     {
         rank: '1st Place',
         icon: <Trophy size={20} className="text-amber-500/80" />,
-        title: '24-Hour Hackathon',
-        org: 'Research Conclave, Siddhartha Academy University',
-        year: '2025',
+        title: 'Research Conclave 2026',
+        org: 'VR Siddhartha Engineering College',
+        year: '2026',
+    },
+    {
+        rank: 'Domain Winners',
+        icon: <Trophy size={20} className="text-amber-500/80" />,
+        title: 'Nxtgen Hackathon',
+        org: 'SRM University',
+        year: '2026',
     },
     {
         rank: '2nd Place',
         icon: <Award size={20} />,
-        title: 'VR Siddhartha Webathon',
-        org: 'Created an immersive web-based VR experience platform.',
+        title: 'Research Conclave 2025',
+        org: 'VR Siddhartha Engineering College',
         year: '2025',
-    },
-    {
-        rank: '2nd Place',
-        icon: <Award size={20} />,
-        title: 'CodeForCause',
-        org: 'Built a social impact platform connecting volunteers with local NGOs.',
-        year: '2023',
     },
     {
         rank: 'Finalist',
@@ -29,6 +29,13 @@ const awards = [
         title: 'BITS Hackathon',
         org: 'National Level, BITS Pilani Hyderabad',
         year: '2024',
+    },
+    {
+        rank: '2nd Place',
+        icon: <Award size={20} />,
+        title: 'CodeForCause',
+        org: 'Built a social impact platform connecting volunteers with local NGOs.',
+        year: '2023',
     },
 ];
 

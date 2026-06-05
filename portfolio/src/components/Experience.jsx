@@ -3,9 +3,9 @@ import React from 'react';
 const Experience = () => {
     const experiences = [
         {
-            period: '2025—PRESENT',
+            period: 'MAY 2025 — JULY 2025',
             company: 'Infac India Pvt Ltd',
-            role: 'Computer Vision Engineer',
+            role: 'Computer Vision Engineer Intern',
             description: 'Built a safety system using MediaPipe and OpenCV for hydraulic press operations. Focus on real-time video processing and bounding box implementation.'
         },
     ];
