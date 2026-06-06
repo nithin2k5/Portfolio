@@ -4,7 +4,7 @@ const TechStack = () => {
   const categories = [
     {
       name: 'LANGUAGES',
-      skills: ['TypeScript', 'Python', 'SQL', '.NET']
+      skills: ['JavaScript', 'Python', 'SQL']
     },
     {
       name: 'FRONTEND',
@@ -16,7 +16,7 @@ const TechStack = () => {
     },
     {
       name: 'CLOUD / DEV',
-      skills: ['Docker', 'Git', 'OpenCV / MediaPipe']
+      skills: ['Nginx', 'Git', 'OpenCV / MediaPipe']
     }
   ];
 
