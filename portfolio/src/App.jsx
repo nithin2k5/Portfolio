@@ -5,6 +5,7 @@ import Projects from './components/Projects';
 import Achievements from './components/Achievements';
 import Experience from './components/Experience';
 import TechStack from './components/TechStack';
+import GithubActivity from './components/GithubActivity';
 import Footer from './components/Footer';
 
 const App = () => {
@@ -35,6 +36,7 @@ const App = () => {
         { name: 'Projects', href: '#projects' },
         { name: 'Tech Stack', href: '#tech' },
         { name: 'Awards', href: '#awards' },
+        { name: 'Activity', href: '#activity' },
     ];
 
     return (
@@ -124,6 +126,10 @@ const App = () => {
 
                     <section id="awards" className="scroll-mt-16 lg:scroll-mt-24">
                         <Achievements />
+                    </section>
+
+                    <section id="activity" className="scroll-mt-16 lg:scroll-mt-24">
+                        <GithubActivity />
                     </section>
 
                     <Footer />
