@@ -11,11 +11,12 @@ const GithubActivity = () => {
     };
 
     return (
-        <section className="space-y-12 pt-8">
+        <section className="space-y-12 border-t border-zinc-200/60 dark:border-zinc-800/60 pt-16">
             <h3 className="text-xs font-bold tracking-widest text-zinc-400 dark:text-zinc-500 uppercase">
                 GitHub Contributions
             </h3>
             <div className="w-full overflow-x-auto custom-scrollbar pb-2">
+                <div className="min-w-max">
                 <GitHubCalendar 
                     username="nithin2k5" 
                     colorScheme={isDarkMode ? 'dark' : 'light'}
@@ -24,6 +25,7 @@ const GithubActivity = () => {
                     blockMargin={5}
                     fontSize={12}
                 />
+                </div>
             </div>
         </section>
     );
