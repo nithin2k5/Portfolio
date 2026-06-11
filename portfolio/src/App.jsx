@@ -34,9 +34,9 @@ const App = () => {
     const navItems = [
         { name: 'Experience', href: '#experience' },
         { name: 'Projects', href: '#projects' },
+        { name: 'Activity', href: '#activity' },
         { name: 'Tech Stack', href: '#tech' },
         { name: 'Awards', href: '#awards' },
-        { name: 'Activity', href: '#activity' },
     ];
 
     return (
@@ -120,16 +120,16 @@ const App = () => {
                         <Projects />
                     </section>
 
+                    <section id="activity" className="scroll-mt-16 lg:scroll-mt-24">
+                        <GithubActivity />
+                    </section>
+
                     <section id="tech" className="scroll-mt-16 lg:scroll-mt-24">
                         <TechStack />
                     </section>
 
                     <section id="awards" className="scroll-mt-16 lg:scroll-mt-24">
                         <Achievements />
-                    </section>
-
-                    <section id="activity" className="scroll-mt-16 lg:scroll-mt-24">
-                        <GithubActivity />
                     </section>
 
                     <Footer />
