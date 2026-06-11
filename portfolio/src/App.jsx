@@ -111,7 +111,7 @@ const App = () => {
                 </header>
 
                 {/* Right Main Content (Scrollable) */}
-                <main className="pt-12 lg:pt-24 lg:flex-1 lg:pb-24 space-y-32">
+                <main className="pt-12 lg:pt-24 lg:flex-1 min-w-0 lg:pb-24 space-y-32">
                     <section id="experience" className="scroll-mt-16 lg:scroll-mt-24">
                         <Experience />
                     </section>
