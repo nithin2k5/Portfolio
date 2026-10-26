@@ -69,21 +69,31 @@ const FilterMenu = ({ value, onChange }) => {
     );
 };
 
-const ProjectRow = ({ project }) => (
+const ProjectRow = ({ project, hovered, onHover }) => (
     <a
+        onMouseEnter={onHover}
+        onFocus={onHover}
         href={project.link}
         target="_blank"
         rel="noreferrer"
         data-say={`Open ${project.title} →`}
-        className="group flex w-full items-start gap-3 rounded-xl px-5 py-3 text-left transition-colors hover:bg-accent"
+        className="group relative flex w-full items-start gap-3 rounded-xl px-5 py-3 text-left outline-none"
     >
+        {/* One shared highlight that glides between rows */}
+        {hovered && (
+            <motion.span
+                layoutId="project-hover"
+                className="absolute inset-0 rounded-xl bg-accent"
+                transition={{ type: 'spring', stiffness: 380, damping: 32 }}
+            />
+        )}
         <span
-            className="mt-0.5 flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border border-black/5 text-base font-bold text-white grayscale transition duration-300 ease-out-expo group-hover:scale-105 group-hover:grayscale-0"
+            className="relative mt-0.5 flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border border-black/5 text-base font-bold text-white grayscale transition duration-300 ease-out-expo group-hover:scale-105 group-hover:grayscale-0"
             style={{ backgroundColor: project.color }}
         >
             {project.title[0]}
         </span>
-        <span className="min-w-0 flex-1">
+        <span className="relative min-w-0 flex-1">
             <span className="flex items-center gap-1.5">
                 <span className="truncate text-[15px] font-semibold text-foreground">{project.title}</span>
                 <ArrowUpRight
@@ -105,6 +115,7 @@ const ProjectRow = ({ project }) => (
 
 const Projects = () => {
     const [filter, setFilter] = useState('All');
+    const [hovered, setHovered] = useState(null);
     const visible = filter === 'All' ? projects : projects.filter((p) => p.category === filter);
 
     return (
@@ -113,7 +124,7 @@ const Projects = () => {
                 <SectionTitle count={visible.length}>Projects</SectionTitle>
                 <FilterMenu value={filter} onChange={setFilter} />
             </div>
-            <motion.div layout className="flex flex-col lg:gap-1">
+            <motion.div layout className="flex flex-col lg:gap-1" onMouseLeave={() => setHovered(null)}>
                 <AnimatePresence mode="popLayout" initial={false}>
                     {visible.map((project) => (
                         <motion.div
@@ -124,7 +135,11 @@ const Projects = () => {
                             exit={{ opacity: 0, scale: 0.98 }}
                             transition={{ duration: 0.35, ease: EASE }}
                         >
-                            <ProjectRow project={project} />
+                            <ProjectRow
+                                project={project}
+                                hovered={hovered === project.title}
+                                onHover={() => setHovered(project.title)}
+                            />
                         </motion.div>
                     ))}
                 </AnimatePresence>
