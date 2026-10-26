@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
-import { AnimatePresence, animate, motion, useReducedMotion } from 'framer-motion';
+import { animate, motion, useReducedMotion } from 'framer-motion';
 import Reveal, { EASE, SectionTitle } from './Reveal';
 import { profile } from '../data/portfolio';
 
@@ -63,14 +63,17 @@ const CountUp = ({ value }) => {
     return shown.toLocaleString();
 };
 
-const Dot = ({ day, delay, onHover }) => {
+const describe = (day) =>
+    `${day.count === 0 ? 'No' : day.count} contribution${day.count === 1 ? '' : 's'} · ${formatDay(day.date)}`;
+
+const Dot = ({ day, delay }) => {
     if (!day) return <span style={{ width: CELL, height: CELL }} />;
     const size = SIZES[day.level];
     return (
         <span
             className="group/dot flex items-center justify-center"
             style={{ width: CELL, height: CELL }}
-            onMouseEnter={(e) => onHover(day, e.currentTarget)}
+            data-say={describe(day)}
         >
             <span
                 className="rounded-full transition-transform duration-150 group-hover/dot:scale-150"
@@ -98,10 +101,11 @@ const GithubActivity = () => {
     const [year, setYear] = useState('last');
     const [data, setData] = useState(null);
     const [error, setError] = useState(false);
-    const [tip, setTip] = useState(null);
     const scrollRef = useRef(null);
-    const wrapRef = useRef(null);
     const drag = useRef(null);
+    const glide = useRef(null);
+
+    useEffect(() => () => cancelAnimationFrame(glide.current), []);
 
     useEffect(() => {
         let cancelled = false;
@@ -118,29 +122,32 @@ const GithubActivity = () => {
     const weeks = useMemo(() => (data?.contributions?.length ? toWeeks(data.contributions) : []), [data]);
     const total = data?.total?.[year === 'last' ? 'lastYear' : year] ?? 0;
 
-    const onHover = (day, el) => {
-        if (drag.current?.moved) return;
-        const box = el.getBoundingClientRect();
-        const wrap = wrapRef.current.getBoundingClientRect();
-        setTip({ day, x: box.left - wrap.left + CELL / 2, y: box.top - wrap.top });
-    };
-
-    // Drag horizontally to scroll through the year
+    // Drag horizontally to scroll through the year, gliding to a stop on release
     const onPointerDown = (e) => {
         if (e.pointerType !== 'mouse') return;
-        drag.current = { x: e.clientX, left: scrollRef.current.scrollLeft, moved: false };
+        cancelAnimationFrame(glide.current);
+        drag.current = { x: e.clientX, left: scrollRef.current.scrollLeft, lastX: e.clientX, lastT: performance.now(), v: 0 };
     };
     const onPointerMove = (e) => {
-        if (!drag.current) return;
-        const dx = e.clientX - drag.current.x;
-        if (Math.abs(dx) > 3) {
-            drag.current.moved = true;
-            setTip(null);
-        }
-        scrollRef.current.scrollLeft = drag.current.left - dx;
+        const d = drag.current;
+        if (!d) return;
+        const now = performance.now();
+        d.v = (e.clientX - d.lastX) / Math.max(now - d.lastT, 1);
+        d.lastX = e.clientX;
+        d.lastT = now;
+        scrollRef.current.scrollLeft = d.left - (e.clientX - d.x);
     };
     const endDrag = () => {
+        const d = drag.current;
         drag.current = null;
+        if (!d || Math.abs(d.v) < 0.05) return;
+        let v = d.v * 16;
+        const step = () => {
+            scrollRef.current.scrollLeft -= v;
+            v *= 0.92;
+            if (Math.abs(v) > 0.3) glide.current = requestAnimationFrame(step);
+        };
+        glide.current = requestAnimationFrame(step);
     };
 
     return (
@@ -164,17 +171,16 @@ const GithubActivity = () => {
                 </div>
             </div>
 
-            <div ref={wrapRef} className="relative" onMouseLeave={() => setTip(null)}>
+            <div className="relative">
                 <div
                     ref={scrollRef}
                     dir="rtl"
-                    data-say="Drag me ↔ or hover a dot"
+                    data-say="Drag me ↔"
                     className="no-scrollbar cursor-grab select-none overflow-x-auto pb-1 active:cursor-grabbing"
                     onPointerDown={onPointerDown}
                     onPointerMove={onPointerMove}
                     onPointerUp={endDrag}
                     onPointerLeave={endDrag}
-                    onScroll={() => setTip(null)}
                 >
                     <motion.div
                         key={weeks.length ? `${year}` : 'loading'}
@@ -188,7 +194,7 @@ const GithubActivity = () => {
                             ? weeks.map((week, i) => (
                                   <div key={i} className="flex flex-col gap-[2px]">
                                       {week.map((day, j) => (
-                                          <Dot key={day?.date ?? `pad-${j}`} day={day} delay={i * 9 + j * 25} onHover={onHover} />
+                                          <Dot key={day?.date ?? `pad-${j}`} day={day} delay={i * 9 + j * 25} />
                                       ))}
                                   </div>
                               ))
@@ -203,23 +209,6 @@ const GithubActivity = () => {
                               ))}
                     </motion.div>
                 </div>
-
-                <AnimatePresence>
-                    {tip && (
-                        <motion.div
-                            key={tip.day.date}
-                            role="tooltip"
-                            initial={{ opacity: 0, y: 4 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            exit={{ opacity: 0 }}
-                            transition={{ duration: 0.15 }}
-                            className="pointer-events-none absolute z-20 -translate-x-1/2 -translate-y-full whitespace-nowrap rounded-md bg-foreground px-2 py-1 text-[11px] font-medium text-background shadow-md"
-                            style={{ left: tip.x, top: tip.y - 6 }}
-                        >
-                            {tip.day.count === 0 ? 'No' : tip.day.count} contribution{tip.day.count === 1 ? '' : 's'} on {formatDay(tip.day.date)}
-                        </motion.div>
-                    )}
-                </AnimatePresence>
             </div>
 
             <div className="mt-3 flex items-center justify-between gap-3 text-xs text-muted-foreground">
