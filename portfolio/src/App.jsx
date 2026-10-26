@@ -6,6 +6,7 @@ import Profile from './components/Profile';
 import Experience from './components/Experience';
 import Achievements from './components/Achievements';
 import Availability from './components/Availability';
+import Featured from './components/Featured';
 import Projects from './components/Projects';
 import GithubActivity from './components/GithubActivity';
 import TechStack from './components/TechStack';
@@ -40,6 +41,7 @@ const App = () => {
 
                 {/* Middle: work */}
                 <div className={`${column} min-w-0`}>
+                    <Featured />
                     <Projects />
                     <Footer />
                 </div>
