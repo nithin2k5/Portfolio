@@ -175,7 +175,7 @@ const Featured = () => {
                 aria-roledescription="carousel"
             >
                 <div className="mb-3 flex items-center justify-between gap-2">
-                    <SectionTitle>
+                    <SectionTitle index="03">
                         Featured
                         <span className="ml-2 font-normal normal-case tabular-nums tracking-normal">
                             {index + 1}/{count}

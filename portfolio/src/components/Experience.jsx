@@ -9,7 +9,7 @@ const Experience = () => {
 
     return (
         <Reveal as="section" className="mx-auto w-full max-w-2xl px-5 pb-8 pt-3 lg:max-w-none lg:px-8 lg:pt-6">
-            <SectionTitle className="mb-6">Experience</SectionTitle>
+            <SectionTitle index="01" className="mb-6">Experience</SectionTitle>
             <ol>
                 {experience.map((exp, index) => {
                     const isOpen = open === index;
@@ -29,7 +29,7 @@ const Experience = () => {
                                 <span className="text-xs font-medium text-muted-foreground">{exp.period}</span>
                                 <span className="mt-1 flex flex-wrap items-baseline gap-x-2 gap-y-0.5">
                                     <span className="font-semibold text-foreground">
-                                        <span className={index === 0 ? 'shiny-text' : ''}>{exp.company}</span>
+                                        {exp.company}
                                     </span>
                                     <span className="text-sm italic text-muted-foreground">{exp.role}</span>
                                     <ChevronDown

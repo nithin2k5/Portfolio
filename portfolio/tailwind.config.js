@@ -24,6 +24,11 @@ module.exports = {
         background: "var(--background)",
         foreground: "var(--foreground)",
         card: "var(--card)",
+        signal: {
+          DEFAULT: "var(--signal)",
+          strong: "var(--signal-strong)",
+          foreground: "var(--on-signal)",
+        },
         muted: {
           DEFAULT: "var(--muted)",
           foreground: "var(--muted-foreground)",
@@ -39,7 +44,8 @@ module.exports = {
         sm: "calc(var(--radius) - 4px)",
       },
       fontFamily: {
-        sans: ["DM Sans", "ui-sans-serif", "system-ui", "sans-serif"],
+        sans: ["Geist", "ui-sans-serif", "system-ui", "sans-serif"],
+        mono: ["Geist Mono", "ui-monospace", "SFMono-Regular", "monospace"],
       },
       keyframes: {
         "accordion-down": {

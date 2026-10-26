@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700;800&family=Geist+Mono:wght@400;500;600&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -15,12 +15,14 @@
         --border: #e5e5e5;
         --ring: #a3a3a3;
         --radius: 0.75rem;
-        --shine-base: #0a0a0a;
-        --shine: #c2c2c2;
         --bg-dot: #00000029;
         --bg-glow: #0000000b;
         --bg-grain-opacity: 0.05;
         --ease-out-expo: cubic-bezier(0.22, 1, 0.36, 1);
+        /* Signature accent: detection-box lime, used sparingly */
+        --signal: #4d7c0f;
+        --signal-strong: #84cc16;
+        --on-signal: #0a0a0a;
     }
 
     .dark {
@@ -32,11 +34,11 @@
         --accent: #1f1f1f;
         --border: #262626;
         --ring: #525252;
-        --shine-base: #8a8a8a;
-        --shine: #ffffff;
         --bg-dot: #ffffff24;
         --bg-glow: #ffffff12;
         --bg-grain-opacity: 0.04;
+        --signal: #c4f042;
+        --signal-strong: #c4f042;
     }
 
     * {
@@ -137,22 +139,6 @@ html.lenis body {
     z-index: 2;
 }
 
-/* Animated text shine */
-@keyframes shine {
-    0% { background-position: 200% 0; }
-    100% { background-position: -200% 0; }
-}
-
-.shiny-text {
-    background-image: linear-gradient(110deg, var(--shine-base) 0%, var(--shine-base) 42%, var(--shine) 50%, var(--shine-base) 58%, var(--shine-base) 100%);
-    background-size: 200% 100%;
-    -webkit-background-clip: text;
-    background-clip: text;
-    -webkit-text-fill-color: transparent;
-    color: transparent;
-    animation: shine 3s linear infinite;
-}
-
 /* Avatar hover ring */
 .avatar-ring {
     filter: drop-shadow(0 0 6px color-mix(in srgb, var(--foreground) 35%, transparent));
@@ -186,12 +172,6 @@ html.lenis body {
 }
 
 @media (prefers-reduced-motion: reduce) {
-    .shiny-text {
-        -webkit-text-fill-color: var(--foreground);
-        color: var(--foreground);
-        animation: none;
-    }
-
     .avatar-ring,
     .avatar-ring__spin {
         animation: none !important;

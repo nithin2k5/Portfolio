@@ -35,8 +35,8 @@ const Availability = () => {
             <div className="rounded-2xl border bg-background/60 p-4 backdrop-blur-sm">
                 <div className="flex items-center gap-2">
                     <span className="relative flex h-2.5 w-2.5" aria-hidden="true">
-                        <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[#00c853] opacity-60" />
-                        <span className="relative inline-flex h-2.5 w-2.5 rounded-full bg-[#00c853]" />
+                        <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-signal-strong opacity-60" />
+                        <span className="relative inline-flex h-2.5 w-2.5 rounded-full bg-signal-strong" />
                     </span>
                     <p className="text-sm font-semibold text-foreground">Open to opportunities</p>
                 </div>

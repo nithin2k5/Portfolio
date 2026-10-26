@@ -121,7 +121,7 @@ const Projects = () => {
     return (
         <Reveal as="section" id="projects" className="mx-auto w-full max-w-2xl scroll-mt-6 py-8 lg:max-w-none lg:px-5 lg:pt-10">
             <div className="mb-2 flex items-center justify-between gap-2 px-5">
-                <SectionTitle count={visible.length}>Projects</SectionTitle>
+                <SectionTitle index="04" count={visible.length}>Projects</SectionTitle>
                 <FilterMenu value={filter} onChange={setFilter} />
             </div>
             <motion.div layout className="flex flex-col lg:gap-1" onMouseLeave={() => setHovered(null)}>

@@ -1,5 +1,4 @@
 import React from 'react';
-import { BadgeCheck } from 'lucide-react';
 import Reveal from './Reveal';
 import Magnetic from './Magnetic';
 import { profile } from '../data/portfolio';
@@ -30,10 +29,8 @@ const Profile = () => (
                 </a>
             </div>
             <div className="flex flex-col lg:items-center lg:text-center">
-                <div className="flex items-center gap-1.5">
-                    <h1 className="text-lg font-bold tracking-tight text-foreground sm:text-xl lg:text-2xl">{profile.name}</h1>
-                    <BadgeCheck size={18} className="text-foreground" aria-label="Verified" />
-                </div>
+                <h1 className="text-lg font-bold tracking-tight text-foreground sm:text-xl lg:text-2xl">{profile.name}</h1>
+                <p className="font-mono text-[11px] text-muted-foreground">@{profile.githubUser}</p>
                 <p className="text-sm font-medium text-muted-foreground sm:text-base">{profile.role}</p>
             </div>
         </Reveal>

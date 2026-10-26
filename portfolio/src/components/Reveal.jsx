@@ -22,10 +22,15 @@ const Reveal = ({ as = 'div', delay = 0, className, children, ...rest }) => {
     );
 };
 
-export const SectionTitle = ({ children, count, className = '' }) => (
-    <div className={`flex items-baseline gap-2 ${className}`}>
-        <h2 className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">{children}</h2>
-        {count !== undefined && <span className="text-[11px] tabular-nums text-muted-foreground">{count}</span>}
+// Numbered, code-style section label, e.g. "01 / experience [1]"
+export const SectionTitle = ({ index, children, count, className = '' }) => (
+    <div className={`flex items-baseline gap-2 font-mono ${className}`}>
+        <h2 className="text-[11px] font-medium uppercase tracking-[0.14em] text-muted-foreground">
+            {index && <span className="mr-1.5 text-signal">{index}</span>}
+            {index && <span className="mr-1.5 opacity-40">/</span>}
+            {children}
+        </h2>
+        {count !== undefined && <span className="text-[11px] tabular-nums text-muted-foreground opacity-60">[{count}]</span>}
     </div>
 );
 

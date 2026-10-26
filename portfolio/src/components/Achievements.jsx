@@ -34,7 +34,7 @@ const Achievements = () => {
 
     return (
         <Reveal as="section" className="mx-auto w-full max-w-2xl px-5 pb-8 pt-3 lg:max-w-none lg:px-8 lg:pt-6">
-            <SectionTitle count={awards.length} className="mb-6">Achievements</SectionTitle>
+            <SectionTitle index="02" count={awards.length} className="mb-6">Achievements</SectionTitle>
             <ul className="space-y-6">
                 {awards.slice(0, INITIAL).map((item) => (
                     <AwardItem key={item.title} item={item} />
