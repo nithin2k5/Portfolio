@@ -235,3 +235,13 @@ html.lenis body {
     .scan-line { animation: none; opacity: 0; }
     .detect-box { animation: none; opacity: 1; }
 }
+
+/* Heatmap dots popping in as a wave; uses `scale` so hover transforms still work */
+@keyframes dot-in {
+    from { scale: 0; }
+    to { scale: 1; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    [style*="dot-in"] { animation: none !important; }
+}

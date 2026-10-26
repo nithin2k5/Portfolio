@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
-import { AnimatePresence, motion } from 'framer-motion';
+import { AnimatePresence, animate, motion, useReducedMotion } from 'framer-motion';
 import Reveal, { EASE, SectionTitle } from './Reveal';
 import { profile } from '../data/portfolio';
 
@@ -38,7 +38,32 @@ const toWeeks = (days) => {
 const formatDay = (date) =>
     new Date(`${date}T00:00:00`).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
 
-const Dot = ({ day, onHover }) => {
+// Counts up to the new total whenever it changes
+const CountUp = ({ value }) => {
+    const reduce = useReducedMotion();
+    const [shown, setShown] = useState(0);
+    const shownRef = useRef(0);
+
+    useEffect(() => {
+        if (reduce) {
+            setShown(value);
+            return undefined;
+        }
+        const controls = animate(shownRef.current, value, {
+            duration: 1.2,
+            ease: EASE,
+            onUpdate: (v) => {
+                shownRef.current = v;
+                setShown(Math.round(v));
+            },
+        });
+        return () => controls.stop();
+    }, [value, reduce]);
+
+    return shown.toLocaleString();
+};
+
+const Dot = ({ day, delay, onHover }) => {
     if (!day) return <span style={{ width: CELL, height: CELL }} />;
     const size = SIZES[day.level];
     return (
@@ -53,6 +78,8 @@ const Dot = ({ day, onHover }) => {
                     width: size,
                     height: size,
                     opacity: OPACITY[day.level],
+                    animation: 'dot-in 0.5s var(--ease-out-expo) both',
+                    animationDelay: `${delay}ms`,
                     backgroundColor: day.level === 0 ? EMPTY : 'var(--foreground)',
                 }}
             />
@@ -161,7 +188,7 @@ const GithubActivity = () => {
                             ? weeks.map((week, i) => (
                                   <div key={i} className="flex flex-col gap-[2px]">
                                       {week.map((day, j) => (
-                                          <Dot key={day?.date ?? `pad-${j}`} day={day} onHover={onHover} />
+                                          <Dot key={day?.date ?? `pad-${j}`} day={day} delay={i * 9 + j * 25} onHover={onHover} />
                                       ))}
                                   </div>
                               ))
@@ -201,7 +228,7 @@ const GithubActivity = () => {
                         'Could not load contributions right now.'
                     ) : (
                         <>
-                            <span className="font-semibold tabular-nums text-foreground">{data ? total.toLocaleString() : '—'}</span>{' '}
+                            <span className="font-semibold tabular-nums text-foreground">{data ? <CountUp value={total} /> : '—'}</span>{' '}
                             contributions {year === 'last' ? 'in the last year' : `in ${year}`}
                         </>
                     )}
