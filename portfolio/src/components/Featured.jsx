@@ -3,6 +3,7 @@ import { motion, useMotionTemplate, useMotionValue, useReducedMotion, useSpring,
 import { ArrowRight, ChevronLeft, ChevronRight, Github } from 'lucide-react';
 import Reveal, { SectionTitle } from './Reveal';
 import ProjectVisual from './ProjectVisual';
+import Magnetic from './Magnetic';
 import { projects } from '../data/portfolio';
 
 const AUTOPLAY_MS = 6000;
@@ -162,7 +163,7 @@ const Featured = () => {
     };
 
     const navButton =
-        'inline-flex h-7 w-7 items-center justify-center rounded-full border text-muted-foreground transition-colors hover:bg-accent hover:text-foreground active:scale-95';
+        'inline-flex h-7 w-7 items-center justify-center rounded-full border text-muted-foreground transition-colors hover:bg-accent hover:text-foreground';
 
     return (
         <Reveal as="section" className="px-5 pt-8 lg:pt-20">
@@ -181,12 +182,16 @@ const Featured = () => {
                         </span>
                     </SectionTitle>
                     <div className="flex items-center gap-1.5">
-                        <button type="button" aria-label="Previous featured slide" data-say="← Previous" onClick={() => go(-1)} className={navButton}>
-                            <ChevronLeft size={14} />
-                        </button>
-                        <button type="button" aria-label="Next featured slide" data-say="Next →" onClick={() => go(1)} className={navButton}>
-                            <ChevronRight size={14} />
-                        </button>
+                        <Magnetic strength={0.4} max={5}>
+                            <button type="button" aria-label="Previous featured slide" data-say="← Previous" onClick={() => go(-1)} className={navButton}>
+                                <ChevronLeft size={14} />
+                            </button>
+                        </Magnetic>
+                        <Magnetic strength={0.4} max={5}>
+                            <button type="button" aria-label="Next featured slide" data-say="Next →" onClick={() => go(1)} className={navButton}>
+                                <ChevronRight size={14} />
+                            </button>
+                        </Magnetic>
                     </div>
                 </div>
 

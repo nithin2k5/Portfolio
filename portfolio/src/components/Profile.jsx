@@ -1,6 +1,7 @@
 import React from 'react';
 import { BadgeCheck } from 'lucide-react';
 import Reveal from './Reveal';
+import Magnetic from './Magnetic';
 import { profile } from '../data/portfolio';
 
 const Profile = () => (
@@ -42,22 +43,26 @@ const Profile = () => (
                 {profile.tagline}
             </p>
             <div className="mt-4 flex gap-2 lg:mt-6">
-                <a
-                    href={profile.github}
-                    target="_blank"
-                    rel="noreferrer"
-                    data-say="Follow me on GitHub 🐙"
-                    className="flex-1 rounded-lg bg-foreground px-4 py-2 text-center text-sm font-semibold text-background transition-opacity hover:opacity-90 active:scale-[0.98]"
-                >
-                    Follow
-                </a>
-                <a
-                    href={`mailto:${profile.email}`}
-                    data-say="Say hi 💬"
-                    className="flex-1 rounded-lg border px-4 py-2 text-center text-sm font-semibold text-foreground transition-colors hover:bg-accent active:scale-[0.98]"
-                >
-                    Message
-                </a>
+                <Magnetic className="flex-1">
+                    <a
+                        href={profile.github}
+                        target="_blank"
+                        rel="noreferrer"
+                        data-say="Follow me on GitHub 🐙"
+                        className="block rounded-lg bg-foreground px-4 py-2 text-center text-sm font-semibold text-background transition-opacity hover:opacity-90"
+                    >
+                        Follow
+                    </a>
+                </Magnetic>
+                <Magnetic className="flex-1">
+                    <a
+                        href={`mailto:${profile.email}`}
+                        data-say="Say hi 💬"
+                        className="block rounded-lg border px-4 py-2 text-center text-sm font-semibold text-foreground transition-colors hover:bg-accent"
+                    >
+                        Message
+                    </a>
+                </Magnetic>
             </div>
         </Reveal>
         <hr className="mt-8 lg:hidden" />

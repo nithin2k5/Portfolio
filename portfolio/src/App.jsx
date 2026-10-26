@@ -12,6 +12,7 @@ import GithubActivity from './components/GithubActivity';
 import TechStack from './components/TechStack';
 import Footer from './components/Footer';
 import CursorBubble from './components/CursorBubble';
+import Magnetic from './components/Magnetic';
 import useSmoothScroll from './components/useSmoothScroll';
 
 const column = 'relative no-scrollbar lg:h-screen lg:overflow-y-auto lg:overscroll-contain';
@@ -29,15 +30,17 @@ const App = () => {
             <Background />
             <CursorBubble />
 
-            <button
-                type="button"
-                onClick={toggleTheme}
-                data-say={isDarkMode ? 'Lights on ☀️' : 'Lights off 🌙'}
-                aria-label={isDarkMode ? 'Switch to light theme' : 'Switch to dark theme'}
-                className="fixed right-4 top-4 z-50 inline-flex h-9 w-9 items-center justify-center rounded-full border bg-background/70 text-muted-foreground backdrop-blur-md transition-colors hover:bg-accent hover:text-foreground"
-            >
-                {isDarkMode ? <Sun size={16} /> : <Moon size={16} />}
-            </button>
+            <Magnetic className="fixed right-4 top-4 z-50" strength={0.35}>
+                <button
+                    type="button"
+                    onClick={toggleTheme}
+                    data-say={isDarkMode ? 'Lights on ☀️' : 'Lights off 🌙'}
+                    aria-label={isDarkMode ? 'Switch to light theme' : 'Switch to dark theme'}
+                    className="inline-flex h-9 w-9 items-center justify-center rounded-full border bg-background/70 text-muted-foreground backdrop-blur-md transition-colors hover:bg-accent hover:text-foreground"
+                >
+                    {isDarkMode ? <Sun size={16} /> : <Moon size={16} />}
+                </button>
+            </Magnetic>
 
             <main className="min-h-screen lg:grid lg:h-screen lg:grid-cols-[minmax(0,1fr)_minmax(0,1.5fr)_minmax(0,1fr)] lg:overflow-hidden">
                 {/* Left: who I am */}
