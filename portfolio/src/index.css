@@ -184,3 +184,41 @@
         scroll-behavior: auto;
     }
 }
+
+/* Fanned phone mockups in the featured carousel */
+.phone {
+    transform: translateX(calc(var(--o) * 72%)) rotate(calc(var(--o) * 8deg));
+    transition: transform 0.5s var(--ease-out-expo);
+}
+
+.group:hover .phone {
+    transform: translateX(calc(var(--o) * 88%)) translateY(calc(-8px + var(--a) * 3px)) rotate(calc(var(--o) * 10deg));
+}
+
+/* Scan line sweeping over the computer vision mockup */
+@keyframes scan {
+    0% { top: 0%; opacity: 0; }
+    10% { opacity: 1; }
+    90% { opacity: 1; }
+    100% { top: 100%; opacity: 0; }
+}
+
+.scan-line {
+    animation: scan 3.2s var(--ease-out-expo) infinite;
+}
+
+@keyframes box-in {
+    0%, 12% { opacity: 0; transform: scale(1.08); }
+    22%, 88% { opacity: 1; transform: scale(1); }
+    100% { opacity: 0; transform: scale(1); }
+}
+
+.detect-box {
+    opacity: 0;
+    animation: box-in 6s var(--ease-out-expo) infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .scan-line { animation: none; opacity: 0; }
+    .detect-box { animation: none; opacity: 1; }
+}

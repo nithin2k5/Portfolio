@@ -2,27 +2,10 @@ import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { motion, useReducedMotion } from 'framer-motion';
 import { ArrowRight, ChevronLeft, ChevronRight, Github } from 'lucide-react';
 import Reveal, { EASE, SectionTitle } from './Reveal';
+import ProjectVisual from './ProjectVisual';
 import { projects } from '../data/portfolio';
 
 const AUTOPLAY_MS = 6000;
-
-// A MacBook-style frame around the project's preview image
-const Laptop = ({ image, title }) => (
-    <div className="absolute inset-x-[10%] top-1/2 -translate-y-[56%] transition-transform duration-500 ease-out-expo group-hover:-translate-y-[60%]">
-        <div className="relative rounded-t-[3.5%] bg-[#0b0b0b] p-[2.2%] pb-[2.6%] shadow-[0_18px_40px_-12px_rgba(0,0,0,0.45)] ring-1 ring-[#2a2a2a]">
-            <span aria-hidden="true" className="absolute left-1/2 top-0 z-10 h-[3.2%] w-[11%] -translate-x-1/2 rounded-b-[40%] bg-[#0b0b0b]" />
-            <div className="relative aspect-[2/1] overflow-hidden rounded-[1.2%] bg-black">
-                <img src={image} alt={`${title} preview`} loading="lazy" draggable="false" className="absolute inset-0 h-full w-full object-cover object-top" />
-            </div>
-        </div>
-        <div
-            aria-hidden="true"
-            className="relative -mx-[6%] h-0 rounded-b-[45%_100%] bg-gradient-to-b from-[#d9d9d9] via-[#a9a9a9] to-[#6f6f6f] pt-[3%] dark:from-[#5a5a5a] dark:via-[#3d3d3d] dark:to-[#232323]"
-        >
-            <span className="absolute left-1/2 top-0 h-[45%] w-[16%] -translate-x-1/2 rounded-b-[40%] bg-black/25" />
-        </div>
-    </div>
-);
 
 const Slide = ({ project, index, onLinkClick }) => (
     <div className="min-w-0 flex-[0_0_100%] pl-4" aria-roledescription="slide" aria-label={`${index + 1} of ${projects.length}`}>
@@ -35,7 +18,7 @@ const Slide = ({ project, index, onLinkClick }) => (
             className="group grid h-full overflow-hidden rounded-2xl border bg-background/60 backdrop-blur-sm transition-colors hover:bg-accent sm:grid-cols-[minmax(0,1fr)_minmax(0,1.1fr)]"
         >
             <div className="relative h-60 overflow-hidden bg-muted sm:h-auto sm:min-h-[280px]">
-                <Laptop image={project.image} title={project.title} />
+                <ProjectVisual project={project} />
                 <span className="absolute left-3 top-3 inline-flex items-center gap-1.5 rounded-full border bg-background px-2.5 py-1 text-[11px] font-semibold text-foreground shadow-sm">
                     <Github size={12} />
                     {project.category}

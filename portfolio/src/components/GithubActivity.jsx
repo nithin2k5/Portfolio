@@ -1,58 +1,229 @@
-import React, { useState } from 'react';
-import { GitHubCalendar } from 'react-github-calendar';
-import { useTheme } from './ThemeContext';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
+import { AnimatePresence, motion } from 'framer-motion';
+import Reveal, { EASE, SectionTitle } from './Reveal';
+import { profile } from '../data/portfolio';
+
+const CELL = 14;
+const FIRST_YEAR = 2025;
+const SIZES = [3, 4, 5, 6, 7];
+const OPACITY = [1, 0.45, 0.65, 0.85, 1];
+const EMPTY = 'color-mix(in srgb, var(--muted-foreground) 35%, transparent)';
+
+const cache = new Map();
+
+const fetchContributions = async (year) => {
+    if (cache.has(year)) return cache.get(year);
+    const res = await fetch(`https://github-contributions-api.jogruber.de/v4/${profile.githubUser}?y=${year}`);
+    if (!res.ok) throw new Error(`GitHub contributions request failed (${res.status})`);
+    const data = await res.json();
+    cache.set(year, data);
+    return data;
+};
+
+// Group days into Sunday-first week columns, padding the first week
+const toWeeks = (days) => {
+    const weeks = [];
+    let week = new Array(new Date(days[0].date).getUTCDay()).fill(null);
+    days.forEach((day) => {
+        week.push(day);
+        if (week.length === 7) {
+            weeks.push(week);
+            week = [];
+        }
+    });
+    if (week.length) weeks.push(week);
+    return weeks;
+};
+
+const formatDay = (date) =>
+    new Date(`${date}T00:00:00`).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+
+const Dot = ({ day, onHover }) => {
+    if (!day) return <span style={{ width: CELL, height: CELL }} />;
+    const size = SIZES[day.level];
+    return (
+        <span
+            className="group/dot flex items-center justify-center"
+            style={{ width: CELL, height: CELL }}
+            onMouseEnter={(e) => onHover(day, e.currentTarget)}
+        >
+            <span
+                className="rounded-full transition-transform duration-150 group-hover/dot:scale-150"
+                style={{
+                    width: size,
+                    height: size,
+                    opacity: OPACITY[day.level],
+                    backgroundColor: day.level === 0 ? EMPTY : 'var(--foreground)',
+                }}
+            />
+        </span>
+    );
+};
 
 const GithubActivity = () => {
-    const { isDarkMode } = useTheme();
     const currentYear = new Date().getFullYear();
-    const [selectedYear, setSelectedYear] = useState(currentYear);
+    const years = useMemo(() => {
+        const list = ['last'];
+        for (let y = currentYear; y >= FIRST_YEAR; y--) list.push(y);
+        return list;
+    }, [currentYear]);
 
-    const years = [];
-    for (let year = currentYear; year >= 2025; year--) {
-        years.push(year);
-    }
+    const [year, setYear] = useState('last');
+    const [data, setData] = useState(null);
+    const [error, setError] = useState(false);
+    const [tip, setTip] = useState(null);
+    const scrollRef = useRef(null);
+    const wrapRef = useRef(null);
+    const drag = useRef(null);
 
-    const explicitTheme = {
-        light: ['#f4f4f5', '#d4d4d8', '#a1a1aa', '#52525b', '#18181b'],
-        dark: ['#27272a', '#52525b', '#a1a1aa', '#e4e4e7', '#fafafa'],
+    useEffect(() => {
+        let cancelled = false;
+        setError(false);
+        if (!cache.has(year)) setData(null);
+        fetchContributions(year)
+            .then((d) => !cancelled && setData(d))
+            .catch(() => !cancelled && setError(true));
+        return () => {
+            cancelled = true;
+        };
+    }, [year]);
+
+    const weeks = useMemo(() => (data?.contributions?.length ? toWeeks(data.contributions) : []), [data]);
+    const total = data?.total?.[year === 'last' ? 'lastYear' : year] ?? 0;
+
+    const onHover = (day, el) => {
+        if (drag.current?.moved) return;
+        const box = el.getBoundingClientRect();
+        const wrap = wrapRef.current.getBoundingClientRect();
+        setTip({ day, x: box.left - wrap.left + CELL / 2, y: box.top - wrap.top });
+    };
+
+    // Drag horizontally to scroll through the year
+    const onPointerDown = (e) => {
+        if (e.pointerType !== 'mouse') return;
+        drag.current = { x: e.clientX, left: scrollRef.current.scrollLeft, moved: false };
+    };
+    const onPointerMove = (e) => {
+        if (!drag.current) return;
+        const dx = e.clientX - drag.current.x;
+        if (Math.abs(dx) > 3) {
+            drag.current.moved = true;
+            setTip(null);
+        }
+        scrollRef.current.scrollLeft = drag.current.left - dx;
+    };
+    const endDrag = () => {
+        drag.current = null;
     };
 
     return (
-        <section className="space-y-8 border-t border-zinc-200/60 dark:border-zinc-800/60 pt-16">
-            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-                <h3 className="text-xs font-bold tracking-widest text-zinc-400 dark:text-zinc-500 uppercase">
-                    GitHub Contributions
-                </h3>
-                <div className="flex gap-2">
-                    {years.map(year => (
+        <Reveal as="section" className="mx-auto w-full max-w-2xl px-5 py-8 lg:max-w-none lg:px-6 lg:pt-20">
+            <div className="mb-4 flex items-center justify-between gap-2">
+                <SectionTitle>GitHub</SectionTitle>
+                <div className="flex gap-1">
+                    {years.map((y) => (
                         <button
-                            key={year}
-                            onClick={() => setSelectedYear(year)}
-                            className={`px-3 py-1.5 text-xs font-medium rounded-md transition-all ${
-                                selectedYear === year
-                                    ? 'bg-zinc-800 text-white dark:bg-zinc-200 dark:text-zinc-900 shadow-sm'
-                                    : 'bg-zinc-100 text-zinc-600 hover:bg-zinc-200 dark:bg-zinc-800/40 dark:text-zinc-400 dark:hover:bg-zinc-800/80 hover:text-zinc-900 dark:hover:text-zinc-200'
+                            key={y}
+                            type="button"
+                            onClick={() => setYear(y)}
+                            aria-pressed={year === y}
+                            className={`rounded-full px-2.5 py-0.5 text-[11px] font-medium tabular-nums transition-colors ${
+                                year === y ? 'bg-foreground text-background' : 'text-muted-foreground hover:bg-accent hover:text-foreground'
                             }`}
                         >
-                            {year}
+                            {y === 'last' ? 'Last 12m' : y}
                         </button>
                     ))}
                 </div>
             </div>
-            <div className="w-full overflow-x-auto custom-scrollbar pb-2">
-                <div className="min-w-max">
-                <GitHubCalendar 
-                    username="nithin2k5" 
-                    year={selectedYear}
-                    colorScheme={isDarkMode ? 'dark' : 'light'}
-                    theme={explicitTheme}
-                    blockSize={14}
-                    blockMargin={5}
-                    fontSize={12}
-                />
+
+            <div ref={wrapRef} className="relative" onMouseLeave={() => setTip(null)}>
+                <div
+                    ref={scrollRef}
+                    dir="rtl"
+                    className="no-scrollbar cursor-grab select-none overflow-x-auto pb-1 active:cursor-grabbing"
+                    onPointerDown={onPointerDown}
+                    onPointerMove={onPointerMove}
+                    onPointerUp={endDrag}
+                    onPointerLeave={endDrag}
+                    onScroll={() => setTip(null)}
+                >
+                    <motion.div
+                        key={weeks.length ? `${year}` : 'loading'}
+                        dir="ltr"
+                        className="flex w-max gap-[2px]"
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        transition={{ duration: 0.4, ease: EASE }}
+                    >
+                        {weeks.length
+                            ? weeks.map((week, i) => (
+                                  <div key={i} className="flex flex-col gap-[2px]">
+                                      {week.map((day, j) => (
+                                          <Dot key={day?.date ?? `pad-${j}`} day={day} onHover={onHover} />
+                                      ))}
+                                  </div>
+                              ))
+                            : Array.from({ length: 53 }, (_, i) => (
+                                  <div key={i} className="flex flex-col gap-[2px]">
+                                      {Array.from({ length: 7 }, (__, j) => (
+                                          <span key={j} className="flex items-center justify-center" style={{ width: CELL, height: CELL }}>
+                                              <span className="h-[3px] w-[3px] animate-pulse rounded-full" style={{ backgroundColor: EMPTY }} />
+                                          </span>
+                                      ))}
+                                  </div>
+                              ))}
+                    </motion.div>
+                </div>
+
+                <AnimatePresence>
+                    {tip && (
+                        <motion.div
+                            key={tip.day.date}
+                            role="tooltip"
+                            initial={{ opacity: 0, y: 4 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            exit={{ opacity: 0 }}
+                            transition={{ duration: 0.15 }}
+                            className="pointer-events-none absolute z-20 -translate-x-1/2 -translate-y-full whitespace-nowrap rounded-md bg-foreground px-2 py-1 text-[11px] font-medium text-background shadow-md"
+                            style={{ left: tip.x, top: tip.y - 6 }}
+                        >
+                            {tip.day.count === 0 ? 'No' : tip.day.count} contribution{tip.day.count === 1 ? '' : 's'} on {formatDay(tip.day.date)}
+                        </motion.div>
+                    )}
+                </AnimatePresence>
+            </div>
+
+            <div className="mt-3 flex items-center justify-between gap-3 text-xs text-muted-foreground">
+                <p>
+                    {error ? (
+                        'Could not load contributions right now.'
+                    ) : (
+                        <>
+                            <span className="font-semibold tabular-nums text-foreground">{data ? total.toLocaleString() : '—'}</span>{' '}
+                            contributions {year === 'last' ? 'in the last year' : `in ${year}`}
+                        </>
+                    )}
+                </p>
+                <div className="flex items-center gap-1" aria-hidden="true">
+                    <span>Less</span>
+                    {SIZES.map((size, level) => (
+                        <span key={level} className="flex h-3 w-3 items-center justify-center">
+                            <span
+                                className="rounded-full"
+                                style={{
+                                    width: size,
+                                    height: size,
+                                    opacity: OPACITY[level],
+                                    backgroundColor: level === 0 ? EMPTY : 'var(--foreground)',
+                                }}
+                            />
+                        </span>
+                    ))}
+                    <span>More</span>
                 </div>
             </div>
-        </section>
+        </Reveal>
     );
 };
 

@@ -60,8 +60,7 @@ export const awards = [
     },
 ];
 
-const ogImage = (repo) => `https://opengraph.githubassets.com/1/${repo}`;
-
+// Optional `images`: add screenshot paths (in /public) to replace the generated mockups
 export const projects = [
     {
         title: 'Sahaay',
@@ -72,7 +71,6 @@ export const projects = [
             'A React Native/Expo application for healthcare assistance, featuring guided flows and accessibility tools.',
         tech: ['React Native', 'Expo', 'Node.js'],
         link: 'https://github.com/dinexh/Sahaay-expo',
-        image: ogImage('dinexh/Sahaay-expo'),
         color: '#10B981',
         stats: [
             { value: 'Expo', label: 'cross-platform build' },
@@ -89,12 +87,11 @@ export const projects = [
             'A mobile application focused on health and wellness tracking, with custom data visualization.',
         tech: ['React Native', 'TypeScript', 'REST API'],
         link: 'https://github.com/nithin2k5/swasthya-app',
-        image: ogImage('nithin2k5/swasthya-app'),
         color: '#6366F1',
         stats: [
             { value: 'TS', label: 'fully typed codebase' },
             { value: 'Charts', label: 'custom data visualization' },
-            { value: 'iOS + Android', label: 'one codebase' },
+            { value: '2', label: 'platforms, one codebase' },
         ],
     },
     {
@@ -106,8 +103,12 @@ export const projects = [
             'A YOLO data generator for computer vision datasets that streamlines annotation and augmentation.',
         tech: ['Python', 'YOLO', 'OpenCV'],
         link: 'https://github.com/nithin2k5/yoloGenerator',
-        image: ogImage('nithin2k5/yoloGenerator'),
         color: '#F59E0B',
+        detections: [
+            { label: 'person', score: 0.94, box: [12, 18, 30, 64] },
+            { label: 'helmet', score: 0.88, box: [16, 12, 14, 16] },
+            { label: 'forklift', score: 0.91, box: [52, 34, 38, 50] },
+        ],
         stats: [
             { value: 'YOLO', label: 'ready-to-train output' },
             { value: 'Auto', label: 'augmentation pipeline' },
@@ -123,8 +124,12 @@ export const projects = [
             'A computer vision application that detects and analyzes conduits in various environments.',
         tech: ['Python', 'OpenCV', 'Machine Learning'],
         link: 'https://github.com/nithin2k5/infac-p3',
-        image: ogImage('nithin2k5/infac-p3'),
         color: '#EF4444',
+        detections: [
+            { label: 'conduit', score: 0.93, box: [8, 30, 52, 18] },
+            { label: 'conduit', score: 0.87, box: [58, 14, 16, 70] },
+            { label: 'joint', score: 0.81, box: [54, 26, 22, 22] },
+        ],
         stats: [
             { value: 'CV', label: 'detection and analysis' },
             { value: 'ML', label: 'trained models' },
