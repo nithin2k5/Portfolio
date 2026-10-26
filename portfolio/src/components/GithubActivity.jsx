@@ -1,6 +1,7 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
-import { animate, motion, useReducedMotion } from 'framer-motion';
+import { motion } from 'framer-motion';
 import Reveal, { EASE, SectionTitle } from './Reveal';
+import CountUp from './CountUp';
 import { profile } from '../data/portfolio';
 
 const CELL = 14;
@@ -37,31 +38,6 @@ const toWeeks = (days) => {
 
 const formatDay = (date) =>
     new Date(`${date}T00:00:00`).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
-
-// Counts up to the new total whenever it changes
-const CountUp = ({ value }) => {
-    const reduce = useReducedMotion();
-    const [shown, setShown] = useState(0);
-    const shownRef = useRef(0);
-
-    useEffect(() => {
-        if (reduce) {
-            setShown(value);
-            return undefined;
-        }
-        const controls = animate(shownRef.current, value, {
-            duration: 1.2,
-            ease: EASE,
-            onUpdate: (v) => {
-                shownRef.current = v;
-                setShown(Math.round(v));
-            },
-        });
-        return () => controls.stop();
-    }, [value, reduce]);
-
-    return shown.toLocaleString();
-};
 
 const describe = (day) =>
     `${day.count === 0 ? 'No' : day.count} contribution${day.count === 1 ? '' : 's'} · ${formatDay(day.date)}`;
