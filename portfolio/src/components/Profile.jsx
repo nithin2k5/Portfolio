@@ -7,18 +7,12 @@ const Profile = () => (
     <section className="mx-auto w-full max-w-2xl px-5 pb-2 pt-16 sm:pt-20 lg:max-w-none lg:px-8 lg:pt-20">
         <Reveal className="flex items-center gap-3 lg:flex-col lg:items-center lg:gap-5">
             <div className="group relative shrink-0">
-                <span
-                    aria-hidden="true"
-                    className="avatar-ring pointer-events-none absolute -inset-[5px] scale-95 rounded-full opacity-0 transition duration-300 group-hover:scale-100 group-hover:opacity-100 lg:-inset-[7px]"
-                >
-                    <span className="avatar-ring__spin absolute inset-0 rounded-full" />
-                </span>
                 <a
                     href={profile.github}
                     target="_blank"
                     rel="noreferrer"
                     aria-label={`${profile.name} on GitHub`}
-                    data-say="That's me 👋"
+                    data-say="human · that's me 👋"
                     className="relative block h-14 w-14 overflow-hidden rounded-full bg-muted outline-none sm:h-16 sm:w-16 lg:h-44 lg:w-44"
                 >
                     <img

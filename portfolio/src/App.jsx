@@ -11,7 +11,7 @@ import Projects from './components/Projects';
 import GithubActivity from './components/GithubActivity';
 import TechStack from './components/TechStack';
 import Footer from './components/Footer';
-import CursorBubble from './components/CursorBubble';
+import TargetLock from './components/TargetLock';
 import Magnetic from './components/Magnetic';
 import useSmoothScroll from './components/useSmoothScroll';
 
@@ -28,7 +28,7 @@ const App = () => {
     return (
         <>
             <Background />
-            <CursorBubble />
+            <TargetLock />
 
             <Magnetic className="fixed right-4 top-4 z-50" strength={0.35}>
                 <button

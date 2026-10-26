@@ -139,45 +139,6 @@ html.lenis body {
     z-index: 2;
 }
 
-/* Avatar hover ring */
-.avatar-ring {
-    filter: drop-shadow(0 0 6px color-mix(in srgb, var(--foreground) 35%, transparent));
-}
-
-.group:hover .avatar-ring,
-.group:focus-within .avatar-ring {
-    animation: avatar-breathe 2.4s ease-in-out infinite;
-}
-
-.avatar-ring__spin {
-    background: conic-gradient(from 0deg, var(--foreground), transparent 30%, color-mix(in srgb, var(--foreground) 60%, transparent) 55%, transparent 80%, var(--foreground));
-    animation: avatar-spin 6s linear infinite;
-    -webkit-mask: radial-gradient(farthest-side, #0000 calc(100% - 3px), #000 calc(100% - 2.5px));
-    mask: radial-gradient(farthest-side, #0000 calc(100% - 3px), #000 calc(100% - 2.5px));
-}
-
-@keyframes avatar-spin {
-    to { rotate: 360deg; }
-}
-
-@keyframes avatar-breathe {
-    0%, 100% {
-        filter: drop-shadow(0 0 4px color-mix(in srgb, var(--foreground) 25%, transparent));
-        opacity: 0.6;
-    }
-    50% {
-        filter: drop-shadow(0 0 12px color-mix(in srgb, var(--foreground) 45%, transparent));
-        opacity: 1;
-    }
-}
-
-@media (prefers-reduced-motion: reduce) {
-    .avatar-ring,
-    .avatar-ring__spin {
-        animation: none !important;
-    }
-}
-
 /* Fanned phone mockups in the featured carousel */
 .phone {
     transform: translateX(calc(var(--o) * 72%)) rotate(calc(var(--o) * 8deg));
