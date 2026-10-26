@@ -1,5 +1,5 @@
 import React, { useMemo, useRef } from 'react';
-import { Sun, Moon } from 'lucide-react';
+import { Sun, Moon, Command } from 'lucide-react';
 import { useTheme } from './components/ThemeContext';
 import Background from './components/Background';
 import Profile from './components/Profile';
@@ -13,6 +13,7 @@ import TechStack from './components/TechStack';
 import Footer from './components/Footer';
 import TargetLock from './components/TargetLock';
 import Magnetic from './components/Magnetic';
+import CommandPalette from './components/CommandPalette';
 import useSmoothScroll from './components/useSmoothScroll';
 
 const column = 'relative no-scrollbar lg:h-screen lg:overflow-y-auto lg:overscroll-contain';
@@ -29,6 +30,20 @@ const App = () => {
         <>
             <Background />
             <TargetLock />
+            <CommandPalette />
+
+            <Magnetic className="fixed right-[60px] top-4 z-50" strength={0.3}>
+                <button
+                    type="button"
+                    onClick={() => window.dispatchEvent(new Event('open-command-palette'))}
+                    aria-label="Open command palette"
+                    data-say="Command palette"
+                    className="inline-flex h-9 items-center gap-1.5 rounded-full border bg-background/70 px-3 font-mono text-[11px] text-muted-foreground backdrop-blur-md transition-colors hover:bg-accent hover:text-foreground"
+                >
+                    <Command size={12} />
+                    K
+                </button>
+            </Magnetic>
 
             <Magnetic className="fixed right-4 top-4 z-50" strength={0.35}>
                 <button

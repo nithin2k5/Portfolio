@@ -151,7 +151,7 @@ const GithubActivity = () => {
     };
 
     return (
-        <Reveal as="section" className="mx-auto w-full max-w-2xl px-5 py-8 lg:max-w-none lg:px-6 lg:pt-20">
+        <Reveal as="section" id="github" className="scroll-mt-6 mx-auto w-full max-w-2xl px-5 py-8 lg:max-w-none lg:px-6 lg:pt-20">
             <div className="mb-4 flex items-center justify-between gap-2">
                 <SectionTitle index="05">GitHub</SectionTitle>
                 <div className="flex gap-1">

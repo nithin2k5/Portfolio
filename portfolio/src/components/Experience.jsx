@@ -8,7 +8,7 @@ const Experience = () => {
     const [open, setOpen] = useState(0);
 
     return (
-        <Reveal as="section" className="mx-auto w-full max-w-2xl px-5 pb-8 pt-3 lg:max-w-none lg:px-8 lg:pt-6">
+        <Reveal as="section" id="experience" className="scroll-mt-6 mx-auto w-full max-w-2xl px-5 pb-8 pt-3 lg:max-w-none lg:px-8 lg:pt-6">
             <SectionTitle index="01" className="mb-6">Experience</SectionTitle>
             <ol>
                 {experience.map((exp, index) => {

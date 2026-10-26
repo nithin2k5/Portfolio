@@ -166,7 +166,7 @@ const Featured = () => {
         'inline-flex h-7 w-7 items-center justify-center rounded-full border text-muted-foreground transition-colors hover:bg-accent hover:text-foreground';
 
     return (
-        <Reveal as="section" className="px-5 pt-8 lg:pt-20">
+        <Reveal as="section" id="featured" className="scroll-mt-6 px-5 pt-8 lg:pt-20">
             <div
                 onMouseEnter={() => setPaused(true)}
                 onMouseLeave={() => setPaused(false)}

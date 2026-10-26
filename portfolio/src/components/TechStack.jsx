@@ -57,7 +57,7 @@ const Pill = ({ name }) => {
 };
 
 const TechStack = () => (
-  <Reveal as="section" className="mx-auto w-full max-w-2xl px-5 pb-10 pt-2 lg:max-w-none lg:px-6 lg:pt-0">
+  <Reveal as="section" id="tools" className="scroll-mt-6 mx-auto w-full max-w-2xl px-5 pb-10 pt-2 lg:max-w-none lg:px-6 lg:pt-0">
     <SectionTitle index="06" count={total} className="mb-4">Tools &amp; Technologies</SectionTitle>
     <div className="flex flex-col gap-4">
       {tools.map((group) => (
