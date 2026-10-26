@@ -141,6 +141,7 @@ const GithubActivity = () => {
                 <div
                     ref={scrollRef}
                     dir="rtl"
+                    data-say="Drag me ↔ or hover a dot"
                     className="no-scrollbar cursor-grab select-none overflow-x-auto pb-1 active:cursor-grabbing"
                     onPointerDown={onPointerDown}
                     onPointerMove={onPointerMove}

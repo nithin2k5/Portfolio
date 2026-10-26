@@ -18,6 +18,7 @@ const Profile = () => (
                     target="_blank"
                     rel="noreferrer"
                     aria-label={`${profile.name} on GitHub`}
+                    data-say="That's me 👋"
                     className="relative block h-14 w-14 overflow-hidden rounded-full bg-muted outline-none sm:h-16 sm:w-16 lg:h-44 lg:w-44"
                 >
                     <img
@@ -45,12 +46,14 @@ const Profile = () => (
                     href={profile.github}
                     target="_blank"
                     rel="noreferrer"
+                    data-say="Follow me on GitHub 🐙"
                     className="flex-1 rounded-lg bg-foreground px-4 py-2 text-center text-sm font-semibold text-background transition-opacity hover:opacity-90 active:scale-[0.98]"
                 >
                     Follow
                 </a>
                 <a
                     href={`mailto:${profile.email}`}
+                    data-say="Say hi 💬"
                     className="flex-1 rounded-lg border px-4 py-2 text-center text-sm font-semibold text-foreground transition-colors hover:bg-accent active:scale-[0.98]"
                 >
                     Message

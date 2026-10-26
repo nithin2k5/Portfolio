@@ -40,6 +40,7 @@ const Pill = ({ name }) => {
   const [Icon, color] = icons[name] ?? [];
   return (
     <li
+      data-say={`I use ${name}`}
       className="group inline-flex items-center gap-1.5 rounded-full border bg-background py-1 pl-1.5 pr-2.5 transition duration-300 ease-out-expo hover:-translate-y-0.5 hover:bg-accent"
       style={{ '--brand': color }}
     >

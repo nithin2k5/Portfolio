@@ -30,6 +30,7 @@ const FilterMenu = ({ value, onChange }) => {
                 type="button"
                 aria-haspopup="listbox"
                 aria-expanded={open}
+                data-say="Filter by category"
                 onClick={() => setOpen((v) => !v)}
                 className="inline-flex items-center gap-1 rounded-full border px-3 py-1 text-xs font-medium text-foreground transition-colors hover:bg-accent"
             >
@@ -73,6 +74,7 @@ const ProjectRow = ({ project }) => (
         href={project.link}
         target="_blank"
         rel="noreferrer"
+        data-say={`Open ${project.title} →`}
         className="group flex w-full items-start gap-3 rounded-xl px-5 py-3 text-left transition-colors hover:bg-accent"
     >
         <span

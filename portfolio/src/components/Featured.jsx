@@ -15,6 +15,7 @@ const Slide = ({ project, index, onLinkClick }) => (
             rel="noreferrer"
             draggable="false"
             onClick={onLinkClick}
+            data-say={`Open ${project.title} on GitHub ↗`}
             className="group grid h-full overflow-hidden rounded-2xl border bg-background/60 backdrop-blur-sm transition-colors hover:bg-accent sm:grid-cols-[minmax(0,1fr)_minmax(0,1.1fr)]"
         >
             <div className="relative h-60 overflow-hidden bg-muted sm:h-auto sm:min-h-[280px]">
@@ -140,10 +141,10 @@ const Featured = () => {
                         </span>
                     </SectionTitle>
                     <div className="flex items-center gap-1.5">
-                        <button type="button" aria-label="Previous featured slide" onClick={() => go(-1)} className={navButton}>
+                        <button type="button" aria-label="Previous featured slide" data-say="← Previous" onClick={() => go(-1)} className={navButton}>
                             <ChevronLeft size={14} />
                         </button>
-                        <button type="button" aria-label="Next featured slide" onClick={() => go(1)} className={navButton}>
+                        <button type="button" aria-label="Next featured slide" data-say="Next →" onClick={() => go(1)} className={navButton}>
                             <ChevronRight size={14} />
                         </button>
                     </div>

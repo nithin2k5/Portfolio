@@ -50,6 +50,7 @@ const Availability = () => {
                 <div className="mt-4 flex gap-2">
                     <a
                         href={profile.resume}
+                        data-say="Grab my resume 📄"
                         target="_blank"
                         rel="noreferrer"
                         className="inline-flex flex-1 items-center justify-center gap-1.5 rounded-lg bg-foreground px-3 py-2 text-sm font-semibold text-background transition-opacity hover:opacity-90 active:scale-[0.98]"
@@ -60,6 +61,7 @@ const Availability = () => {
                     <a
                         href={`mailto:${profile.email}?subject=Available%20for%20Hire`}
                         aria-label="Email me"
+                        data-say="Drop me an email 📮"
                         className="inline-flex items-center justify-center rounded-lg border px-3 py-2 text-foreground transition-colors hover:bg-accent active:scale-[0.98]"
                     >
                         <Mail size={16} />

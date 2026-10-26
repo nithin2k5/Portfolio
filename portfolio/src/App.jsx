@@ -11,6 +11,7 @@ import Projects from './components/Projects';
 import GithubActivity from './components/GithubActivity';
 import TechStack from './components/TechStack';
 import Footer from './components/Footer';
+import CursorBubble from './components/CursorBubble';
 
 const column = 'relative no-scrollbar lg:h-screen lg:overflow-y-auto lg:overscroll-contain';
 
@@ -20,10 +21,12 @@ const App = () => {
     return (
         <>
             <Background />
+            <CursorBubble />
 
             <button
                 type="button"
                 onClick={toggleTheme}
+                data-say={isDarkMode ? 'Lights on ☀️' : 'Lights off 🌙'}
                 aria-label={isDarkMode ? 'Switch to light theme' : 'Switch to dark theme'}
                 className="fixed right-4 top-4 z-50 inline-flex h-9 w-9 items-center justify-center rounded-full border bg-background/70 text-muted-foreground backdrop-blur-md transition-colors hover:bg-accent hover:text-foreground"
             >
