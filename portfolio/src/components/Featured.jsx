@@ -1,61 +1,101 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { motion, useReducedMotion } from 'framer-motion';
+import { motion, useMotionTemplate, useMotionValue, useReducedMotion, useSpring, useTransform } from 'framer-motion';
 import { ArrowRight, ChevronLeft, ChevronRight, Github } from 'lucide-react';
 import Reveal, { SectionTitle } from './Reveal';
 import ProjectVisual from './ProjectVisual';
 import { projects } from '../data/portfolio';
 
 const AUTOPLAY_MS = 6000;
+const TILT = 5;
+const TILT_SPRING = { stiffness: 220, damping: 22, mass: 0.6 };
 
-const Slide = ({ project, index, onLinkClick }) => (
-    <div className="min-w-0 flex-[0_0_100%] pl-4" aria-roledescription="slide" aria-label={`${index + 1} of ${projects.length}`}>
-        <a
-            href={project.link}
-            target="_blank"
-            rel="noreferrer"
-            draggable="false"
-            onClick={onLinkClick}
-            data-say={`Open ${project.title} on GitHub ↗`}
-            className="group grid h-full overflow-hidden rounded-2xl border bg-background/60 backdrop-blur-sm transition-colors hover:bg-accent sm:grid-cols-[minmax(0,1fr)_minmax(0,1.1fr)]"
+const Slide = ({ project, index, active, onLinkClick }) => {
+    const reduce = useReducedMotion();
+    // Pointer position across the card, 0..1 on each axis
+    const px = useMotionValue(0.5);
+    const py = useMotionValue(0.5);
+    const rotateY = useSpring(useTransform(px, [0, 1], [-TILT, TILT]), TILT_SPRING);
+    const rotateX = useSpring(useTransform(py, [0, 1], [TILT, -TILT]), TILT_SPRING);
+    const glareX = useTransform(px, (v) => `${v * 100}%`);
+    const glareY = useTransform(py, (v) => `${v * 100}%`);
+    const glare = useMotionTemplate`radial-gradient(420px circle at ${glareX} ${glareY}, color-mix(in srgb, var(--foreground) 9%, transparent), transparent 60%)`;
+
+    const onPointerMove = (e) => {
+        if (reduce || e.pointerType !== 'mouse') return;
+        const box = e.currentTarget.getBoundingClientRect();
+        px.set((e.clientX - box.left) / box.width);
+        py.set((e.clientY - box.top) / box.height);
+    };
+    const onPointerLeave = () => {
+        px.set(0.5);
+        py.set(0.5);
+    };
+
+    return (
+        <div
+            className="min-w-0 flex-[0_0_100%] pl-4 transition-[opacity,transform] duration-700 ease-out-expo [perspective:1200px]"
+            style={{ opacity: active ? 1 : 0.35, transform: active ? 'scale(1)' : 'scale(0.94)' }}
+            aria-roledescription="slide"
+            aria-label={`${index + 1} of ${projects.length}`}
+            aria-hidden={!active}
         >
-            <div className="relative h-60 overflow-hidden bg-muted sm:h-auto sm:min-h-[280px]">
-                <ProjectVisual project={project} />
-                <span className="absolute left-3 top-3 inline-flex items-center gap-1.5 rounded-full border bg-background px-2.5 py-1 text-[11px] font-semibold text-foreground shadow-sm">
-                    <Github size={12} />
-                    {project.category}
-                </span>
-            </div>
-            <div className="flex flex-col p-5">
-                <div className="flex items-center gap-3">
-                    <span
-                        className="flex h-11 w-11 shrink-0 items-center justify-center rounded-[22%] border border-black/5 text-lg font-bold text-white"
-                        style={{ backgroundColor: project.color }}
-                    >
-                        {project.title[0]}
+            <motion.a
+                style={{ rotateX, rotateY, transformStyle: 'preserve-3d' }}
+                onPointerMove={onPointerMove}
+                onPointerLeave={onPointerLeave}
+                tabIndex={active ? 0 : -1}
+                href={project.link}
+                target="_blank"
+                rel="noreferrer"
+                draggable="false"
+                onClick={onLinkClick}
+                data-say={`Open ${project.title} on GitHub ↗`}
+                className="group relative grid h-full overflow-hidden rounded-2xl border bg-background/60 backdrop-blur-sm transition-colors hover:bg-accent sm:grid-cols-[minmax(0,1fr)_minmax(0,1.1fr)]"
+            >
+                <motion.span
+                    aria-hidden="true"
+                    className="pointer-events-none absolute inset-0 z-10 opacity-0 transition-opacity duration-500 group-hover:opacity-100"
+                    style={{ background: glare }}
+                />
+                <div className="relative h-60 overflow-hidden bg-muted sm:h-auto sm:min-h-[280px]">
+                    <ProjectVisual project={project} />
+                    <span className="absolute left-3 top-3 inline-flex items-center gap-1.5 rounded-full border bg-background px-2.5 py-1 text-[11px] font-semibold text-foreground shadow-sm">
+                        <Github size={12} />
+                        {project.category}
                     </span>
-                    <div className="min-w-0">
-                        <p className="truncate text-lg font-bold tracking-tight text-foreground">{project.title}</p>
-                        <p className="truncate text-xs text-muted-foreground">{project.tags.join(' · ')}</p>
-                    </div>
                 </div>
-                <p className="mt-3 text-sm leading-relaxed text-muted-foreground">{project.description}</p>
-                <dl className="mt-4 grid grid-cols-3 gap-2">
-                    {project.stats.map((stat) => (
-                        <div key={stat.label}>
-                            <dt className="sr-only">{stat.label}</dt>
-                            <dd className="truncate text-xl font-bold tracking-tight text-foreground">{stat.value}</dd>
-                            <dd className="line-clamp-2 text-[11px] leading-tight text-muted-foreground">{stat.label}</dd>
+                <div className="flex flex-col p-5">
+                    <div className="flex items-center gap-3">
+                        <span
+                            className="flex h-11 w-11 shrink-0 items-center justify-center rounded-[22%] border border-black/5 text-lg font-bold text-white"
+                            style={{ backgroundColor: project.color }}
+                        >
+                            {project.title[0]}
+                        </span>
+                        <div className="min-w-0">
+                            <p className="truncate text-lg font-bold tracking-tight text-foreground">{project.title}</p>
+                            <p className="truncate text-xs text-muted-foreground">{project.tags.join(' · ')}</p>
                         </div>
-                    ))}
-                </dl>
-                <span className="mt-auto inline-flex items-center gap-1.5 pt-4 text-sm font-semibold text-foreground">
-                    View on GitHub
-                    <ArrowRight size={14} className="transition-transform duration-300 ease-out-expo group-hover:translate-x-1" />
-                </span>
-            </div>
-        </a>
-    </div>
-);
+                    </div>
+                    <p className="mt-3 text-sm leading-relaxed text-muted-foreground">{project.description}</p>
+                    <dl className="mt-4 grid grid-cols-3 gap-2">
+                        {project.stats.map((stat) => (
+                            <div key={stat.label}>
+                                <dt className="sr-only">{stat.label}</dt>
+                                <dd className="truncate text-xl font-bold tracking-tight text-foreground">{stat.value}</dd>
+                                <dd className="line-clamp-2 text-[11px] leading-tight text-muted-foreground">{stat.label}</dd>
+                            </div>
+                        ))}
+                    </dl>
+                    <span className="mt-auto inline-flex items-center gap-1.5 pt-4 text-sm font-semibold text-foreground">
+                        View on GitHub
+                        <ArrowRight size={14} className="transition-transform duration-300 ease-out-expo group-hover:translate-x-1" />
+                    </span>
+                </div>
+            </motion.a>
+        </div>
+    );
+};
 
 const Featured = () => {
     const [index, setIndex] = useState(0);
@@ -164,7 +204,7 @@ const Featured = () => {
                         onPointerCancel={onPointerUp}
                     >
                         {projects.map((project, i) => (
-                            <Slide key={project.title} project={project} index={i} onLinkClick={onLinkClick} />
+                            <Slide key={project.title} project={project} index={i} active={i === index} onLinkClick={onLinkClick} />
                         ))}
                     </div>
                 </div>
