@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -6,31 +6,181 @@
 
 @layer base {
     :root {
-        --background: 210 20% 98%;
-        --foreground: 240 10% 3.9%;
-        --muted: 240 3.8% 46.1%;
-        --border: 240 5.9% 90%;
+        --background: #ffffff;
+        --foreground: #0a0a0a;
+        --card: #ffffff;
+        --muted: #f5f5f5;
+        --muted-foreground: #737373;
+        --accent: #f5f5f5;
+        --border: #e5e5e5;
+        --ring: #a3a3a3;
+        --radius: 0.75rem;
+        --shine-base: #0a0a0a;
+        --shine: #c2c2c2;
+        --bg-dot: #00000029;
+        --bg-glow: #0000000b;
+        --bg-grain-opacity: 0.05;
+        --ease-out-expo: cubic-bezier(0.22, 1, 0.36, 1);
     }
 
-    [data-theme='dark'] {
-        --background: 0 0% 0%;
-        --foreground: 0 0% 100%;
-        --muted: 240 5% 64.9%;
-        --border: 240 3.7% 15.9%;
+    .dark {
+        --background: #0a0a0a;
+        --foreground: #ededed;
+        --card: #101010;
+        --muted: #1a1a1a;
+        --muted-foreground: #a1a1a1;
+        --accent: #1f1f1f;
+        --border: #262626;
+        --ring: #525252;
+        --shine-base: #8a8a8a;
+        --shine: #ffffff;
+        --bg-dot: #ffffff24;
+        --bg-glow: #ffffff12;
+        --bg-grain-opacity: 0.04;
+    }
+
+    * {
+        border-color: var(--border);
     }
 
     html {
         scroll-behavior: smooth;
+        scrollbar-width: none;
+    }
+
+    html::-webkit-scrollbar {
+        display: none;
     }
 
     body {
-        @apply font-sans antialiased selection:bg-zinc-900 selection:text-white dark:selection:bg-white dark:selection:text-zinc-900 transition-colors duration-300;
-        background-color: hsl(var(--background));
-        color: hsl(var(--foreground));
+        @apply font-sans antialiased;
+        background-color: var(--background);
+        color: var(--foreground);
+    }
+
+    ::selection {
+        background: var(--foreground);
+        color: var(--background);
     }
 }
 
-/* Hide scrollbar for clean look */
-::-webkit-scrollbar {
-    display: none;
+@layer utilities {
+    .no-scrollbar {
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+    }
+
+    .no-scrollbar::-webkit-scrollbar {
+        display: none;
+    }
+}
+
+/* Page background: top glow, corner-masked dot grid, drifting streaks and film grain */
+.page-bg {
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    background: radial-gradient(ellipse 70% 45% at 50% -8%, var(--bg-glow), transparent 70%);
+}
+
+.page-bg-dots {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    -webkit-mask-image: radial-gradient(ellipse 42vw 48vh at 0% 0%, #000 15%, #0000 100%), radial-gradient(ellipse 42vw 48vh at 100% 100%, #000 15%, #0000 100%);
+    mask-image: radial-gradient(ellipse 42vw 48vh at 0% 0%, #000 15%, #0000 100%), radial-gradient(ellipse 42vw 48vh at 100% 100%, #000 15%, #0000 100%);
+}
+
+.page-bg-streaks {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    -webkit-mask-image: radial-gradient(ellipse 75% 70% at 50% 50%, #0000008c 0%, #000 55%, #0000 100%);
+    mask-image: radial-gradient(ellipse 75% 70% at 50% 50%, #0000008c 0%, #000 55%, #0000 100%);
+}
+
+.page-bg::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    opacity: var(--bg-grain-opacity);
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    background-size: 160px 160px;
+}
+
+/* Theme switch: circular reveal from the toggle via the View Transitions API */
+::view-transition-old(root),
+::view-transition-new(root) {
+    animation: none;
+    mix-blend-mode: normal;
+}
+
+::view-transition-new(root) {
+    z-index: 2;
+}
+
+/* Animated text shine */
+@keyframes shine {
+    0% { background-position: 200% 0; }
+    100% { background-position: -200% 0; }
+}
+
+.shiny-text {
+    background-image: linear-gradient(110deg, var(--shine-base) 0%, var(--shine-base) 42%, var(--shine) 50%, var(--shine-base) 58%, var(--shine-base) 100%);
+    background-size: 200% 100%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: transparent;
+    animation: shine 3s linear infinite;
+}
+
+/* Avatar hover ring */
+.avatar-ring {
+    filter: drop-shadow(0 0 6px color-mix(in srgb, var(--foreground) 35%, transparent));
+}
+
+.group:hover .avatar-ring,
+.group:focus-within .avatar-ring {
+    animation: avatar-breathe 2.4s ease-in-out infinite;
+}
+
+.avatar-ring__spin {
+    background: conic-gradient(from 0deg, var(--foreground), transparent 30%, color-mix(in srgb, var(--foreground) 60%, transparent) 55%, transparent 80%, var(--foreground));
+    animation: avatar-spin 6s linear infinite;
+    -webkit-mask: radial-gradient(farthest-side, #0000 calc(100% - 3px), #000 calc(100% - 2.5px));
+    mask: radial-gradient(farthest-side, #0000 calc(100% - 3px), #000 calc(100% - 2.5px));
+}
+
+@keyframes avatar-spin {
+    to { rotate: 360deg; }
+}
+
+@keyframes avatar-breathe {
+    0%, 100% {
+        filter: drop-shadow(0 0 4px color-mix(in srgb, var(--foreground) 25%, transparent));
+        opacity: 0.6;
+    }
+    50% {
+        filter: drop-shadow(0 0 12px color-mix(in srgb, var(--foreground) 45%, transparent));
+        opacity: 1;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .shiny-text {
+        -webkit-text-fill-color: var(--foreground);
+        color: var(--foreground);
+        animation: none;
+    }
+
+    .avatar-ring,
+    .avatar-ring__spin {
+        animation: none !important;
+    }
+
+    html {
+        scroll-behavior: auto;
+    }
 }

@@ -7,6 +7,7 @@ import Experience from './components/Experience';
 import TechStack from './components/TechStack';
 import GithubActivity from './components/GithubActivity';
 import Footer from './components/Footer';
+import Background from './components/Background';
 
 const App = () => {
     // Add active section tracking for the sidebar navigation
@@ -40,7 +41,9 @@ const App = () => {
     ];
 
     return (
-        <div className="bg-white dark:bg-zinc-900 min-h-screen font-sans text-zinc-900 dark:text-white selection:bg-zinc-900 selection:text-white dark:selection:bg-white dark:selection:text-zinc-900">
+        <div className="min-h-screen font-sans text-zinc-900 dark:text-white selection:bg-zinc-900 selection:text-white dark:selection:bg-white dark:selection:text-zinc-900">
+            <Background />
+
             {/* Theme Toggle Button */}
             <button
                 onClick={toggleTheme}
