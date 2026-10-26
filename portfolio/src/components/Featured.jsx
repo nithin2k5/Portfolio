@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { motion, useReducedMotion } from 'framer-motion';
 import { ArrowRight, ChevronLeft, ChevronRight, Github } from 'lucide-react';
-import Reveal, { EASE, SectionTitle } from './Reveal';
+import Reveal, { SectionTitle } from './Reveal';
 import ProjectVisual from './ProjectVisual';
 import { projects } from '../data/portfolio';
 
@@ -60,36 +60,62 @@ const Featured = () => {
     const [index, setIndex] = useState(0);
     const [paused, setPaused] = useState(false);
     const [width, setWidth] = useState(0);
-    const viewportRef = useRef(null);
+    const [dragX, setDragX] = useState(null);
+    const trackRef = useRef(null);
+    const drag = useRef(null);
     const dragged = useRef(false);
     const reduce = useReducedMotion();
     const count = projects.length;
 
     const go = useCallback((delta) => setIndex((i) => (i + delta + count) % count), [count]);
 
+    // Each slide spans the full track, so one step is the track's own width
     useEffect(() => {
-        const el = viewportRef.current;
-        const observer = new ResizeObserver(([entry]) => setWidth(entry.contentRect.width));
-        observer.observe(el);
+        const observer = new ResizeObserver(([entry]) => setWidth(entry.target.offsetWidth));
+        observer.observe(trackRef.current);
         return () => observer.disconnect();
     }, []);
 
     useEffect(() => {
-        if (paused || reduce) return undefined;
+        if (paused || reduce || dragX !== null) return undefined;
         const id = setTimeout(() => go(1), AUTOPLAY_MS);
         return () => clearTimeout(id);
-    }, [index, paused, reduce, go]);
+    }, [index, paused, reduce, dragX, go]);
 
-    const onDragEnd = (_, info) => {
-        const swipe = info.offset.x + info.velocity.x * 0.2;
-        if (swipe < -width / 5) go(1);
-        else if (swipe > width / 5) go(-1);
-        // Let the click that ends a drag fall through without opening the link
-        setTimeout(() => {
-            dragged.current = false;
-        }, 0);
+    const onPointerDown = (e) => {
+        if (e.button !== 0) return;
+        drag.current = { x: e.clientX, y: e.clientY, t: performance.now(), axis: null };
+        dragged.current = false;
     };
 
+    const onPointerMove = (e) => {
+        const d = drag.current;
+        if (!d) return;
+        const dx = e.clientX - d.x;
+        const dy = e.clientY - d.y;
+        if (!d.axis && Math.hypot(dx, dy) > 6) {
+            d.axis = Math.abs(dx) > Math.abs(dy) ? 'x' : 'y';
+            if (d.axis === 'x') e.currentTarget.setPointerCapture(e.pointerId);
+        }
+        if (d.axis !== 'x') return;
+        dragged.current = true;
+        // Resist past the first and last slides
+        const atEdge = (index === 0 && dx > 0) || (index === count - 1 && dx < 0);
+        setDragX(atEdge ? dx * 0.25 : dx);
+    };
+
+    const onPointerUp = (e) => {
+        const d = drag.current;
+        drag.current = null;
+        if (!d || d.axis !== 'x') return;
+        const dx = e.clientX - d.x;
+        const velocity = dx / Math.max(performance.now() - d.t, 1);
+        if ((dx < -width / 5 || velocity < -0.5) && index < count - 1) go(1);
+        else if ((dx > width / 5 || velocity > 0.5) && index > 0) go(-1);
+        setDragX(null);
+    };
+
+    // Swallow the click that ends a drag so it doesn't open the link
     const onLinkClick = (e) => {
         if (dragged.current) e.preventDefault();
     };
@@ -123,24 +149,23 @@ const Featured = () => {
                     </div>
                 </div>
 
-                <div ref={viewportRef} className="overflow-hidden">
-                    <motion.div
-                        className="-ml-4 flex cursor-grab active:cursor-grabbing"
-                        drag="x"
-                        dragConstraints={{ left: -(count - 1) * width, right: 0 }}
-                        dragElastic={0.12}
-                        dragMomentum={false}
-                        onDragStart={() => {
-                            dragged.current = true;
+                <div className="overflow-hidden">
+                    <div
+                        ref={trackRef}
+                        className="-ml-4 flex cursor-grab touch-pan-y select-none active:cursor-grabbing"
+                        style={{
+                            transform: `translate3d(${-index * width + (dragX ?? 0)}px, 0, 0)`,
+                            transition: dragX !== null || reduce ? 'none' : 'transform 0.6s cubic-bezier(0.22, 1, 0.36, 1)',
                         }}
-                        onDragEnd={onDragEnd}
-                        animate={{ x: -index * width }}
-                        transition={reduce ? { duration: 0 } : { duration: 0.6, ease: EASE }}
+                        onPointerDown={onPointerDown}
+                        onPointerMove={onPointerMove}
+                        onPointerUp={onPointerUp}
+                        onPointerCancel={onPointerUp}
                     >
                         {projects.map((project, i) => (
                             <Slide key={project.title} project={project} index={i} onLinkClick={onLinkClick} />
                         ))}
-                    </motion.div>
+                    </div>
                 </div>
 
                 <div className="mt-3 flex justify-center gap-1.5" role="tablist" aria-label="Featured slides">
