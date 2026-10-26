@@ -1,83 +1,73 @@
-import React from 'react';
-import { Trophy, Award, Star } from 'lucide-react';
+import React, { useState } from 'react';
+import { AnimatePresence, motion } from 'framer-motion';
+import { Trophy, Award, Star, ChevronDown } from 'lucide-react';
+import Reveal, { EASE, SectionTitle } from './Reveal';
+import { awards } from '../data/portfolio';
 
-const awards = [
-    {
-        rank: '1st Place',
-        icon: <Trophy size={20} className="text-amber-500/80" />,
-        title: 'Research Conclave 2026',
-        org: 'VR Siddhartha Engineering College',
-        year: '2026',
-    },
-    {
-        rank: 'Domain Winners',
-        icon: <Trophy size={20} className="text-amber-500/80" />,
-        title: 'Nxtgen Hackathon',
-        org: 'SRM University',
-        year: '2026',
-    },
-    {
-        rank: '2nd Place',
-        icon: <Award size={20} />,
-        title: 'Research Conclave 2025',
-        org: 'VR Siddhartha Engineering College',
-        year: '2025',
-    },
-    {
-        rank: 'Finalist',
-        icon: <Star size={20} />,
-        title: 'BITS Hackathon',
-        org: 'National Level, BITS Pilani Hyderabad',
-        year: '2024',
-    },
-    {
-        rank: '2nd Place',
-        icon: <Award size={20} />,
-        title: 'CodeForCause',
-        org: 'Built a social impact platform connecting volunteers with local NGOs.',
-        year: '2023',
-    },
-];
+const icons = { trophy: Trophy, award: Award, star: Star };
+const INITIAL = 3;
+
+const AwardItem = ({ item }) => {
+    const Icon = icons[item.icon];
+    return (
+        <li className="group flex gap-3.5">
+            <span
+                className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border bg-muted text-foreground transition-transform duration-300 ease-out-expo group-hover:-rotate-6 group-hover:scale-110"
+                aria-hidden="true"
+            >
+                <Icon size={16} />
+            </span>
+            <div className="min-w-0">
+                <p className="text-xs font-medium text-muted-foreground">
+                    {item.rank} · {item.year}
+                </p>
+                <p className="mt-0.5 font-semibold text-foreground">{item.title}</p>
+                <p className="mt-1 text-sm leading-relaxed text-muted-foreground">{item.org}</p>
+            </div>
+        </li>
+    );
+};
 
 const Achievements = () => {
+    const [showAll, setShowAll] = useState(false);
+    const rest = awards.slice(INITIAL);
+
     return (
-        <section className="space-y-12 border-t border-zinc-200/60 dark:border-zinc-800/60 pt-16">
-            <h3 className="text-xs font-bold tracking-widest text-zinc-400 dark:text-zinc-500 uppercase">
-                Awards &amp; Recognition
-            </h3>
-
-            <div className="flex flex-col">
-                {awards.map((item, index) => (
-                    <div
-                        key={index}
-                        className="group flex items-start gap-6 py-5 border-b border-zinc-100 dark:border-zinc-800/60 hover:border-zinc-300 dark:hover:border-zinc-700 transition-colors duration-300"
-                    >
-                        {/* Icon Container */}
-                        <div className="mt-1 shrink-0 text-zinc-400 dark:text-zinc-600 group-hover:text-zinc-900 dark:group-hover:text-zinc-100 transition-colors duration-300">
-                            {item.icon}
-                        </div>
-
-                        {/* Left: rank + title + org */}
-                        <div className="flex flex-col gap-1 flex-1 min-w-0 transform group-hover:translate-x-1 transition-transform duration-300">
-                            <span className="text-[11px] font-bold tracking-widest text-zinc-400 dark:text-zinc-500 uppercase">
-                                {item.rank}
-                            </span>
-                            <h4 className="font-bold text-[15px] tracking-wide text-zinc-900 dark:text-zinc-100 leading-snug">
-                                {item.title}
-                            </h4>
-                            <p className="text-sm text-zinc-500 dark:text-zinc-400 leading-relaxed">
-                                {item.org}
-                            </p>
-                        </div>
-
-                        {/* Right: year */}
-                        <span className="shrink-0 text-[11px] font-bold tracking-widest text-zinc-300 dark:text-zinc-700 uppercase group-hover:text-zinc-900 dark:group-hover:text-zinc-300 transition-colors duration-300 pt-0.5">
-                            {item.year}
-                        </span>
-                    </div>
+        <Reveal as="section" className="mx-auto w-full max-w-2xl px-5 pb-8 pt-3 lg:max-w-none lg:px-8 lg:pt-6">
+            <SectionTitle count={awards.length} className="mb-6">Achievements</SectionTitle>
+            <ul className="space-y-6">
+                {awards.slice(0, INITIAL).map((item) => (
+                    <AwardItem key={item.title} item={item} />
                 ))}
-            </div>
-        </section>
+            </ul>
+            <AnimatePresence initial={false}>
+                {showAll && (
+                    <motion.div
+                        initial={{ height: 0, opacity: 0 }}
+                        animate={{ height: 'auto', opacity: 1 }}
+                        exit={{ height: 0, opacity: 0 }}
+                        transition={{ duration: 0.45, ease: EASE }}
+                        className="overflow-hidden"
+                    >
+                        <ul className="space-y-6 pt-6">
+                            {rest.map((item) => (
+                                <AwardItem key={item.title} item={item} />
+                            ))}
+                        </ul>
+                    </motion.div>
+                )}
+            </AnimatePresence>
+            {rest.length > 0 && (
+                <button
+                    type="button"
+                    onClick={() => setShowAll((v) => !v)}
+                    className="mt-5 inline-flex items-center gap-1 pl-[50px] text-xs font-semibold uppercase tracking-widest text-muted-foreground transition-colors hover:text-foreground"
+                >
+                    {showAll ? 'Show less' : `See all (${awards.length})`}
+                    <ChevronDown size={14} className={`transition-transform duration-300 ease-out-expo ${showAll ? 'rotate-180' : ''}`} />
+                </button>
+            )}
+        </Reveal>
     );
 };
 

@@ -1,22 +1,31 @@
 import React from 'react';
+import { profile } from '../data/portfolio';
 
-const Footer = () => {
-  return (
-    <footer className="pt-32 pb-12 flex flex-col sm:flex-row items-center justify-between gap-6 border-t border-zinc-200/60 dark:border-zinc-800/60 mt-12">
-      <div className="text-[10px] font-bold tracking-widest text-zinc-400 dark:text-zinc-500 uppercase">
-        DESIGNED & DEVELOPED BY NITHIN KUMAR © {new Date().getFullYear()}
-      </div>
+const links = [
+  { name: 'GitHub', href: profile.github },
+  { name: 'LinkedIn', href: profile.linkedin },
+  { name: 'Email', href: `mailto:${profile.email}` },
+];
 
-      <div className="flex items-center gap-6">
-        <a href="https://github.com/nithin2k5" target="_blank" rel="noreferrer" className="text-[10px] font-bold tracking-widest text-zinc-900 dark:text-zinc-100 uppercase hover:text-zinc-500 dark:hover:text-zinc-400 transition-colors">
-          Github
+const Footer = () => (
+  <footer className="mx-auto flex w-full max-w-2xl flex-col items-center justify-between gap-3 border-t px-5 py-8 sm:flex-row lg:max-w-none lg:px-10">
+    <p className="text-xs text-muted-foreground">
+      © {new Date().getFullYear()} {profile.name}. Designed &amp; built with care.
+    </p>
+    <div className="flex items-center gap-4">
+      {links.map((link) => (
+        <a
+          key={link.name}
+          href={link.href}
+          target={link.href.startsWith('mailto') ? undefined : '_blank'}
+          rel="noreferrer"
+          className="text-xs font-semibold text-muted-foreground transition-colors hover:text-foreground"
+        >
+          {link.name}
         </a>
-        <a href="https://linkedin.com" target="_blank" rel="noreferrer" className="text-[10px] font-bold tracking-widest text-zinc-900 dark:text-zinc-100 uppercase hover:text-zinc-500 dark:hover:text-zinc-400 transition-colors">
-          LinkedIn
-        </a>
-      </div>
-    </footer>
-  );
-};
+      ))}
+    </div>
+  </footer>
+);
 
 export default Footer;
