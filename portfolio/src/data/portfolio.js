@@ -1,6 +1,7 @@
 export const profile = {
     name: 'Nithin Kumar K',
     role: 'Full-Stack Developer',
+    roles: ['Full-Stack Developer', 'Computer Vision Engineer', 'Mobile App Developer'],
     tagline: 'Engineering robust solutions across Web, Mobile, Desktop and Computer Vision.',
     avatar: 'https://github.com/nithin2k5.png?size=352',
     github: 'https://github.com/nithin2k5',

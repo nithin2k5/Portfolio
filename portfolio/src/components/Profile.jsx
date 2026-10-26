@@ -1,6 +1,7 @@
 import React from 'react';
 import Reveal from './Reveal';
 import Magnetic from './Magnetic';
+import DecodeText from './DecodeText';
 import { profile } from '../data/portfolio';
 
 const Profile = () => (
@@ -25,7 +26,9 @@ const Profile = () => (
             <div className="flex flex-col lg:items-center lg:text-center">
                 <h1 className="text-lg font-bold tracking-tight text-foreground sm:text-xl lg:text-2xl">{profile.name}</h1>
                 <p className="font-mono text-[11px] text-muted-foreground">@{profile.githubUser}</p>
-                <p className="text-sm font-medium text-muted-foreground sm:text-base">{profile.role}</p>
+                <p className="text-sm font-medium text-muted-foreground sm:text-base">
+                    <DecodeText words={profile.roles} />
+                </p>
             </div>
         </Reveal>
 

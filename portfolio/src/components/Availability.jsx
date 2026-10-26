@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Download, Mail } from 'lucide-react';
 import Reveal from './Reveal';
 import Magnetic from './Magnetic';
+import LastPush from './LastPush';
 import { profile } from '../data/portfolio';
 
 const formatTime = (date) =>
@@ -48,6 +49,7 @@ const Availability = () => {
                     <p className="pb-1 text-right text-xs text-muted-foreground">{statusFor(localHour(now))}</p>
                 </div>
                 <p className="mt-2 text-xs text-muted-foreground">Usually replies within a day</p>
+                <LastPush />
                 <div className="mt-4 flex gap-2">
                     <Magnetic className="flex flex-1">
                         <a
