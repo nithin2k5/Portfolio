@@ -94,7 +94,7 @@ html.lenis body {
     overflow: hidden;
 }
 
-/* Page background: top glow, corner-masked dot grid, drifting streaks and film grain */
+/* Page background: top glow, tracked keypoint field and film grain */
 .page-bg {
     position: fixed;
     inset: 0;
@@ -103,20 +103,13 @@ html.lenis body {
     background: radial-gradient(ellipse 70% 45% at 50% -8%, var(--bg-glow), transparent 70%);
 }
 
-.page-bg-dots {
+.page-bg-field {
     position: absolute;
     inset: 0;
     overflow: hidden;
-    -webkit-mask-image: radial-gradient(ellipse 42vw 48vh at 0% 0%, #000 15%, #0000 100%), radial-gradient(ellipse 42vw 48vh at 100% 100%, #000 15%, #0000 100%);
-    mask-image: radial-gradient(ellipse 42vw 48vh at 0% 0%, #000 15%, #0000 100%), radial-gradient(ellipse 42vw 48vh at 100% 100%, #000 15%, #0000 100%);
-}
-
-.page-bg-streaks {
-    position: absolute;
-    inset: 0;
-    overflow: hidden;
-    -webkit-mask-image: radial-gradient(ellipse 75% 70% at 50% 50%, #0000008c 0%, #000 55%, #0000 100%);
-    mask-image: radial-gradient(ellipse 75% 70% at 50% 50%, #0000008c 0%, #000 55%, #0000 100%);
+    /* Quieter behind the reading area, fuller toward the edges */
+    -webkit-mask-image: radial-gradient(ellipse 65% 70% at 50% 45%, #00000040 0%, #000000a0 55%, #000 100%);
+    mask-image: radial-gradient(ellipse 65% 70% at 50% 45%, #00000040 0%, #000000a0 55%, #000 100%);
 }
 
 .page-bg::after {

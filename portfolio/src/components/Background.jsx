@@ -1,6 +1,8 @@
 import React, { useEffect, useRef } from 'react';
 
-const GAP = 22;
+const LINK = 120;
+const TRACK = 190;
+const MAX_POINTS = 110;
 
 const readVar = (name) =>
     getComputedStyle(document.documentElement).getPropertyValue(name).trim();
@@ -18,114 +20,129 @@ const fitCanvas = (canvas) => {
     return { ctx, w, h };
 };
 
-// A dot grid that brightens around the cursor, plus light streaks gliding along grid lines.
+const seed = (w, h) =>
+    Array.from({ length: Math.min(MAX_POINTS, Math.round((w * h) / 15000)) }, () => {
+        const angle = Math.random() * Math.PI * 2;
+        const speed = 5 + Math.random() * 9;
+        return { x: Math.random() * w, y: Math.random() * h, vx: Math.cos(angle) * speed, vy: Math.sin(angle) * speed };
+    });
+
+// Drifting keypoints linked like a pose skeleton; the cursor is a tracked point that
+// pulls nearby keypoints in and marks the closest ones with detection brackets
 const Background = () => {
-    const dotsRef = useRef(null);
-    const streaksRef = useRef(null);
+    const canvasRef = useRef(null);
 
     useEffect(() => {
         const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-        let dots = fitCanvas(dotsRef.current);
-        let streaks = fitCanvas(streaksRef.current);
-        let dotColor = readVar('--bg-dot');
-        let fg = readVar('--foreground');
-        const mouse = { x: -9999, y: -9999 };
-        const lines = [];
+        let view = fitCanvas(canvasRef.current);
+        let points = seed(view.w, view.h);
+        let colors = {};
+        const readColors = () => {
+            colors = { dot: readVar('--bg-dot'), fg: readVar('--foreground'), signal: readVar('--signal-strong') };
+        };
+        readColors();
+        const mouse = { x: -9999, y: -9999, active: false };
         let frame;
-        let dotsDirty = true;
         let last = performance.now();
 
-        const drawDots = () => {
-            const { ctx, w, h } = dots;
+        const draw = (dt) => {
+            const { ctx, w, h } = view;
             ctx.clearRect(0, 0, w, h);
-            for (let x = GAP / 2; x < w; x += GAP) {
-                for (let y = GAP / 2; y < h; y += GAP) {
-                    const d = Math.hypot(x - mouse.x, y - mouse.y);
-                    const boost = Math.max(0, 1 - d / 160);
-                    ctx.globalAlpha = 1;
-                    ctx.fillStyle = dotColor;
-                    ctx.beginPath();
-                    ctx.arc(x, y, 1 + boost * 0.9, 0, Math.PI * 2);
-                    ctx.fill();
-                    if (boost > 0) {
-                        ctx.globalAlpha = boost * 0.35;
-                        ctx.fillStyle = fg;
-                        ctx.fill();
+
+            for (const p of points) {
+                if (mouse.active) {
+                    const dx = mouse.x - p.x;
+                    const dy = mouse.y - p.y;
+                    const d = Math.hypot(dx, dy);
+                    if (d < TRACK && d > 1) {
+                        p.x += (dx / d) * 14 * dt;
+                        p.y += (dy / d) * 14 * dt;
+                    }
+                }
+                p.x += p.vx * dt;
+                p.y += p.vy * dt;
+                if (p.x < -20) p.x = w + 20;
+                if (p.x > w + 20) p.x = -20;
+                if (p.y < -20) p.y = h + 20;
+                if (p.y > h + 20) p.y = -20;
+            }
+
+            // Skeleton links between nearby keypoints
+            ctx.lineWidth = 1;
+            ctx.strokeStyle = colors.fg;
+            for (let i = 0; i < points.length; i++) {
+                for (let j = i + 1; j < points.length; j++) {
+                    const a = points[i];
+                    const b = points[j];
+                    const d = Math.hypot(a.x - b.x, a.y - b.y);
+                    if (d < LINK) {
+                        ctx.globalAlpha = (1 - d / LINK) * 0.1;
+                        ctx.beginPath();
+                        ctx.moveTo(a.x, a.y);
+                        ctx.lineTo(b.x, b.y);
+                        ctx.stroke();
                     }
                 }
             }
+
             ctx.globalAlpha = 1;
-        };
-
-        const spawn = () => {
-            const { w, h } = streaks;
-            const horizontal = Math.random() > 0.5;
-            const lane = Math.floor(Math.random() * ((horizontal ? h : w) / GAP)) * GAP + GAP / 2;
-            const dir = Math.random() > 0.5 ? 1 : -1;
-            const span = horizontal ? w : h;
-            lines.push({
-                horizontal,
-                lane,
-                dir,
-                pos: dir > 0 ? -120 : span + 120,
-                speed: 140 + Math.random() * 160,
-                len: 80 + Math.random() * 100,
-                end: dir > 0 ? span + 120 : -120,
-            });
-        };
-
-        const drawStreaks = (dt) => {
-            const { ctx, w, h } = streaks;
-            ctx.clearRect(0, 0, w, h);
-            if (lines.length < 4 && Math.random() < dt * 0.9) spawn();
-            for (let i = lines.length - 1; i >= 0; i--) {
-                const l = lines[i];
-                l.pos += l.speed * dt * l.dir;
-                const tail = l.pos - l.len * l.dir;
-                const [x1, y1, x2, y2] = l.horizontal
-                    ? [tail, l.lane, l.pos, l.lane]
-                    : [l.lane, tail, l.lane, l.pos];
-                const grad = ctx.createLinearGradient(x1, y1, x2, y2);
-                grad.addColorStop(0, 'transparent');
-                grad.addColorStop(1, fg);
-                ctx.globalAlpha = 0.22;
-                ctx.strokeStyle = grad;
-                ctx.lineWidth = 1;
+            ctx.fillStyle = colors.dot;
+            for (const p of points) {
                 ctx.beginPath();
-                ctx.moveTo(x1, y1);
-                ctx.lineTo(x2, y2);
-                ctx.stroke();
-                if ((l.dir > 0 && l.pos > l.end) || (l.dir < 0 && l.pos < l.end)) lines.splice(i, 1);
+                ctx.arc(p.x, p.y, 1.3, 0, Math.PI * 2);
+                ctx.fill();
             }
+
+            if (!mouse.active) return;
+
+            // Tracking lines from the cursor, brackets on the three closest keypoints
+            const near = points
+                .map((p) => ({ p, d: Math.hypot(p.x - mouse.x, p.y - mouse.y) }))
+                .filter((n) => n.d < TRACK)
+                .sort((a, b) => a.d - b.d);
+            ctx.strokeStyle = colors.signal;
+            near.forEach(({ p, d }, i) => {
+                ctx.globalAlpha = (1 - d / TRACK) * 0.55;
+                ctx.beginPath();
+                ctx.moveTo(mouse.x, mouse.y);
+                ctx.lineTo(p.x, p.y);
+                ctx.stroke();
+                if (i < 3) {
+                    const s = 5;
+                    ctx.globalAlpha = (1 - d / TRACK) * 0.9;
+                    ctx.beginPath();
+                    ctx.moveTo(p.x - s, p.y - s + 2.5);
+                    ctx.lineTo(p.x - s, p.y - s);
+                    ctx.lineTo(p.x - s + 2.5, p.y - s);
+                    ctx.moveTo(p.x + s - 2.5, p.y + s);
+                    ctx.lineTo(p.x + s, p.y + s);
+                    ctx.lineTo(p.x + s, p.y + s - 2.5);
+                    ctx.stroke();
+                }
+            });
             ctx.globalAlpha = 1;
         };
 
         const tick = (now) => {
             const dt = Math.min((now - last) / 1000, 0.05);
             last = now;
-            if (dotsDirty) {
-                drawDots();
-                dotsDirty = false;
-            }
-            drawStreaks(dt);
+            draw(dt);
             frame = requestAnimationFrame(tick);
         };
 
         const onResize = () => {
-            dots = fitCanvas(dotsRef.current);
-            streaks = fitCanvas(streaksRef.current);
-            dotsDirty = true;
-            if (reduceMotion) drawDots();
+            view = fitCanvas(canvasRef.current);
+            points = seed(view.w, view.h);
+            if (reduceMotion) draw(0);
         };
         const onMove = (e) => {
+            if (e.pointerType !== 'mouse') return;
             mouse.x = e.clientX;
             mouse.y = e.clientY;
-            dotsDirty = true;
+            mouse.active = true;
         };
         const onLeave = () => {
-            mouse.x = -9999;
-            mouse.y = -9999;
-            dotsDirty = true;
+            mouse.active = false;
         };
         const onVisibility = () => {
             cancelAnimationFrame(frame);
@@ -136,19 +153,17 @@ const Background = () => {
         };
         // Re-read colors whenever the theme class flips
         const themeObserver = new MutationObserver(() => {
-            dotColor = readVar('--bg-dot');
-            fg = readVar('--foreground');
-            dotsDirty = true;
-            if (reduceMotion) drawDots();
+            readColors();
+            if (reduceMotion) draw(0);
         });
         themeObserver.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
 
         window.addEventListener('resize', onResize);
         window.addEventListener('pointermove', onMove, { passive: true });
-        document.addEventListener('pointerleave', onLeave);
+        document.documentElement.addEventListener('pointerleave', onLeave);
         document.addEventListener('visibilitychange', onVisibility);
 
-        if (reduceMotion) drawDots();
+        if (reduceMotion) draw(0);
         else frame = requestAnimationFrame(tick);
 
         return () => {
@@ -156,18 +171,15 @@ const Background = () => {
             themeObserver.disconnect();
             window.removeEventListener('resize', onResize);
             window.removeEventListener('pointermove', onMove);
-            document.removeEventListener('pointerleave', onLeave);
+            document.documentElement.removeEventListener('pointerleave', onLeave);
             document.removeEventListener('visibilitychange', onVisibility);
         };
     }, []);
 
     return (
         <div aria-hidden="true" className="page-bg">
-            <div className="page-bg-dots">
-                <canvas ref={dotsRef} className="absolute left-0 top-0" />
-            </div>
-            <div className="page-bg-streaks">
-                <canvas ref={streaksRef} className="absolute left-0 top-0" />
+            <div className="page-bg-field">
+                <canvas ref={canvasRef} className="absolute left-0 top-0" />
             </div>
         </div>
     );
