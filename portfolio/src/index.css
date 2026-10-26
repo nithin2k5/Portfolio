@@ -44,7 +44,6 @@
     }
 
     html {
-        scroll-behavior: smooth;
         scrollbar-width: none;
     }
 
@@ -73,6 +72,24 @@
     .no-scrollbar::-webkit-scrollbar {
         display: none;
     }
+}
+
+/* Lenis smooth scrolling */
+html.lenis,
+html.lenis body {
+    height: auto;
+}
+
+.lenis.lenis-smooth {
+    scroll-behavior: auto !important;
+}
+
+.lenis.lenis-smooth [data-lenis-prevent] {
+    overscroll-behavior: contain;
+}
+
+.lenis.lenis-stopped {
+    overflow: hidden;
 }
 
 /* Page background: top glow, corner-masked dot grid, drifting streaks and film grain */
@@ -178,10 +195,6 @@
     .avatar-ring,
     .avatar-ring__spin {
         animation: none !important;
-    }
-
-    html {
-        scroll-behavior: auto;
     }
 }
 

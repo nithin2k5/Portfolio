@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo, useRef } from 'react';
 import { Sun, Moon } from 'lucide-react';
 import { useTheme } from './components/ThemeContext';
 import Background from './components/Background';
@@ -12,11 +12,17 @@ import GithubActivity from './components/GithubActivity';
 import TechStack from './components/TechStack';
 import Footer from './components/Footer';
 import CursorBubble from './components/CursorBubble';
+import useSmoothScroll from './components/useSmoothScroll';
 
 const column = 'relative no-scrollbar lg:h-screen lg:overflow-y-auto lg:overscroll-contain';
 
 const App = () => {
     const { isDarkMode, toggleTheme } = useTheme();
+    const leftRef = useRef(null);
+    const middleRef = useRef(null);
+    const rightRef = useRef(null);
+    const columns = useMemo(() => [leftRef, middleRef, rightRef], []);
+    useSmoothScroll(columns);
 
     return (
         <>
@@ -35,7 +41,7 @@ const App = () => {
 
             <main className="min-h-screen lg:grid lg:h-screen lg:grid-cols-[minmax(0,1fr)_minmax(0,1.5fr)_minmax(0,1fr)] lg:overflow-hidden">
                 {/* Left: who I am */}
-                <aside className={`${column} lg:border-r lg:pb-[30vh]`}>
+                <aside ref={leftRef} className={`${column} lg:border-r lg:pb-[30vh]`}>
                     <Profile />
                     <Experience />
                     <Achievements />
@@ -43,14 +49,14 @@ const App = () => {
                 </aside>
 
                 {/* Middle: work */}
-                <div className={`${column} min-w-0`}>
+                <div ref={middleRef} className={`${column} min-w-0`}>
                     <Featured />
                     <Projects />
                     <Footer />
                 </div>
 
                 {/* Right: activity and stack */}
-                <aside className={`${column} lg:border-l`}>
+                <aside ref={rightRef} className={`${column} lg:border-l`}>
                     <GithubActivity />
                     <TechStack />
                 </aside>
